@@ -1,5 +1,4 @@
 --https://www.roblox.com/games/455366377/The-Streets
-local Ticker = tick()
 local Players,ReplicatedStorage,UserInput,CoreGui,TeleportService,RunService,Lighting,StarterGui,HttpService,TweenService,MarketplaceService = game:GetService'Players',game:GetService'ReplicatedStorage',game:GetService'UserInputService',game:GetService'CoreGui',game:GetService'TeleportService',game:GetService'RunService',game:GetService'Lighting',game:GetService'StarterGui',game:GetService'HttpService',game:GetService'TweenService',game:GetService'MarketplaceService'
 local LP = Players.LocalPlayer
 local Mouse = LP:GetMouse()
@@ -102,7 +101,7 @@ gamememe.__namecall = newcclosure(function(self,...)
 			if tostring(self.Name) == "lIII" or tostring(self.Parent) == "ReplicatedStorage" or Arguments[1] == "hey" then 
 				return wait(9e9)
 			end
-			if getnamecallmethod() == "FireServer" and Arguments[1] == "play" then
+			if Arguments[1] == "play" then
 			local TempTable = {}
 				tostring(Arguments[2]):gsub('.',function(Char)
 					if UrlEncoder[Char] then 
@@ -114,6 +113,9 @@ gamememe.__namecall = newcclosure(function(self,...)
 				Arguments[2] = table.concat(TempTable,"")
 				PlayOnDeath = Arguments[2]
 				return name(self,unpack(Arguments))
+			end
+			if Arguments[1] == "stop" then 
+				PlayOnDeath = nil 
 			end
 		end
 	end
@@ -1348,8 +1350,6 @@ LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGa
 for i in pairs(CmdsList) do 
 	CmdsAmount = i 
 end
-
-notif("Cyrus' Admin Loaded in: "..tostring(tick()-Ticker):sub(1,7).." Amount of Commands: "..CmdsAmount.." Current Admin Version: v10000",10,"rbxassetid://2831398990")
 
 spawn(function()
 	while wait(SpamDelay) do 
