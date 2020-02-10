@@ -16,7 +16,7 @@ local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
-local NHumanoid,NModel,NPart,NGrav = Instance.new('Humanoid'),Instance.new('Model',game),Instance.new('Part',game),workspace.Gravity
+local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
 
@@ -70,7 +70,7 @@ gamememe.__newindex = newcclosure(function(self,Property,b)
 	if not checkcaller() and not is_protosmasher_caller() then
 		local a = getfenv(2).script
 		if tostring(self) == "Humanoid" and Property == "Health" or Property == "WalkSpeed" or Property == "JumpPower" then 
-			return nindex(NHumanoid,Property,b)
+			return nindex(Instance.new'Humanoid',Property,b)
 		end
    		if Property == "CFrame" and self.Parent == LP.Character then 
        		return
@@ -90,10 +90,10 @@ gamememe.__namecall = (function(self,...)
 	if not checkcaller() and not is_protosmasher_caller() then 
 	local Arguments = {...}
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then 
-			return name(NPart,...)
+			return name(Instance.new'Part',...)
 		end 
 		if getnamecallmethod() == "BreakJoints" and tostring(self) == LP.Character.Name then
-			return name(NModel,...)
+			return name(Instance.new'Model',...)
 		end
 		if Arguments[#Arguments] == "Kick" and tostring(self) == LP then 
 			return nil 
