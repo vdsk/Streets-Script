@@ -5,12 +5,12 @@ local LP = Players.LocalPlayer
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
 local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime = nil,nil,nil,nil,nil
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath = nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 Cmds = {}
-local AntiKillTools,Keys,KeyTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;}
+local AntiKillTools,Keys,KeyTable,UrlEncoder = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
 local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
@@ -86,26 +86,34 @@ gamememe.__index = newcclosure(function(self,Property,b)
   	return index(self,Property,b)
 end)
 
-gamememe.__namecall = newcclosure(function(self,...)
+gamememe.__namecall = (function(self,...)
 	if not checkcaller() and not is_protosmasher_caller() then 
 	local Arguments = {...}
-  Arguments[#Arguments] = nil 
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then 
 			return name(NPart,...)
 		end 
-    if getnamecallmethod() == "BreakJoints" and tostring(self) == LP.Character.Name then
-      	return name(NModel,...)
-    end
-    if Arguments[#Arguments] == "Kick" and tostring(self) == LP then 
-        print'lol'
-        return 
-    end
-		if getnamecallmethod() == "FireServer" then
-			if tostring(self.Name) == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
+		if getnamecallmethod() == "BreakJoints" and tostring(self) == LP.Character.Name then
+			return name(NModel,...)
+		end
+		if Arguments[#Arguments] == "Kick" and tostring(self) == LP then 
+			return nil 
+		end
+		if getnamecallmethod() == "FireServer" then 
+			if tostring(self.Name) == "lIII" or tostring(self.Parent) == "ReplicatedStorage" or Arguments[1] == "hey" then 
 				return wait(9e9)
 			end
-			if Arguments[1] == "hey" then 
-				return wait(9e9)
+			if getnamecallmethod() == "FireServer" and Arguments[1] == "play" then
+			local TempTable = {}
+				tostring(Arguments[2]):gsub('.',function(Char)
+					if UrlEncoder[Char] then 
+						table.insert(TempTable,UrlEncoder[Char])
+					else 
+						table.insert(TempTable,Char)
+					end
+				end)
+				Arguments[2] = table.concat(TempTable,"")
+				PlayOnDeath = Arguments[2]
+				return name(self,unpack(Arguments))
 			end
 		end
 	end
@@ -599,7 +607,7 @@ local function GodFuckIhateRobloxIHaveNoMotivationForThisShitGame(Thing)
 end
 
 local function Added()
-	repeat wait(0.5) until LP.Character:FindFirstChildWhichIsA'Humanoid' and LP.Character.Animate
+	repeat wait(0.5) until LP.Character:FindFirstChildWhichIsA'Humanoid' and LP.Character.Animate 
     LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
     LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
     LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = SpawnWS or NormalWS
@@ -608,6 +616,13 @@ local function Added()
     StarterGui:SetCore('ResetButtonCallback',BindableEvent)
 	if SpawnAtDeathPos then
         Teleport(DeathPos)
+	end
+	if PlayOnDeath then 
+		local Tool = LP.Backpack:FindFirstChild'BoomBox'
+		repeat wait() until Tool 
+		Tool.Parent = LP.Character
+		Tool:FindFirstChildOfClass'RemoteEvent':FireServer("play",PlayOnDeath)
+		Tool.Parent = LP.Backpack
 	end
 	if WaitingToRespawn then 
         Teleport(WaitingToRespawnPos)
