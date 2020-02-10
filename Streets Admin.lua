@@ -1,4 +1,4 @@
---https://www.roblox.com/games/455366377/The-Streets / https://discord.gg/jZZDV69
+--https://www.roblox.com/games/455366377/The-Streets
 local Ticker = tick()
 local Players,ReplicatedStorage,UserInput,CoreGui,TeleportService,RunService,Lighting,StarterGui,HttpService,TweenService,MarketplaceService = game:GetService'Players',game:GetService'ReplicatedStorage',game:GetService'UserInputService',game:GetService'CoreGui',game:GetService'TeleportService',game:GetService'RunService',game:GetService'Lighting',game:GetService'StarterGui',game:GetService'HttpService',game:GetService'TweenService',game:GetService'MarketplaceService'
 local LP = Players.LocalPlayer
@@ -439,7 +439,7 @@ local function UnFblink()
 	end
 end
 
---[[local function esp()
+local function esp()
 	for _,createESP in pairs(LP.Character:GetDescendants()) do
 	if createESP.Name == "Torso" or createESP.Name == "Left Leg" or createESP.Name == "Right Leg" or createESP.Name == "UpperTorso" or createESP.Name == "LowerTorso" or createESP.Name == "RightLowerLeg" or createESP.Name == "RightUpperLeg" or createESP.Name == "RightFoot"or createESP.Name == "UpperTorso" or createESP.Name == "LeftFoot" or createESP.Name == "LeftLowerLeg" or createESP.Name == "LeftUpperLeg" or createESP.Name == "Left Arm" or createESP.Name == "Right Arm" then
 		if createESP.Name ~= "HumanoidRootPart" and createESP.Name ~= "Handle" then
@@ -471,7 +471,7 @@ end
 			end
 		end
 	end
-end]]
+end
 
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
