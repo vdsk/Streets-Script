@@ -86,7 +86,7 @@ gamememe.__index = newcclosure(function(self,Property,b)
   	return index(self,Property,b)
 end)
 
-gamememe.__namecall = (function(self,...)
+gamememe.__namecall = newcclosure(function(self,...)
 	if not checkcaller() and not is_protosmasher_caller() then 
 	local Arguments = {...}
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then 
