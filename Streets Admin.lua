@@ -3,13 +3,13 @@ local Players,ReplicatedStorage,UserInput,CoreGui,TeleportService,RunService,Lig
 local LP = Players.LocalPlayer
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
-local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath = nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
-local AntiKillTools,Keys,KeyTable,UrlEncoder = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
+local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);}
 local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
@@ -31,7 +31,7 @@ LP.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = LP.PlayerGui.Chat.Frame.Ch
 
 local BindableEvent = Instance.new'BindableEvent'
 BindableEvent.Event:Connect(function()
-  LP.Character:BreakJoints()
+	LP.Character:BreakJoints()
 end)
 StarterGui:SetCore('ResetButtonCallback',BindableEvent)
 
@@ -52,6 +52,28 @@ local function Teleport(Part)
 		Play:play()
 	end
 end
+
+local function Heal()
+    if Debounce then return end
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,0)
+    wait()
+    repeat  
+        LP.Character.HumanoidRootPart.CFrame = PartTable['Burger']
+        game:GetService'RunService'.Heartbeat:wait()
+    until LP.Backpack:FindFirstChild'Burger' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0 
+    repeat 
+        LP.Character.HumanoidRootPart.CFrame = PartTable['Drink']
+        game:GetService'RunService'.Heartbeat:wait()
+    until LP.Backpack:FindFirstChild'Drink' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0 
+    local Children = LP.Backpack:GetChildren() 
+    for i = 1,#Children do 
+        if Children[i].Name == "Drink" or Children[i].Name == "Burger" then 
+            Children[i].Parent = LP.Character
+            Children[i]:Activate()
+            repeat wait() until not LP.Character:FindFirstChildOfClass'Tool'
+        end
+    end
+end 
 
 local SavedSettings = {
 	Keys = {};
@@ -530,6 +552,12 @@ local function HotkeyHandler(Key)
 					else
 						RunCmd(CMD)
 					end
+					elseif string.sub(string.lower(CMD),1,5) == "blink" then 
+						if Blinking then 
+							Blinking = false
+						else 
+							RunCmd(CMD)
+						end
 					elseif CMD == "noclip" then
 						if Noclipping then 
 						RunCmd("noclip off")
@@ -581,7 +609,7 @@ local function Looped()
             LP.Character:FindFirstChildOfClass'Humanoid'.Sit = false
 		end
 		if AutoStomp then
-			local Players,OldTool = Players:GetPlayers(),nil
+			local Players = Players:GetPlayers()
 			for i = 1,#Players do
 				if Players[i] ~= LP and Players[i].Character and Players[i].Character.Head then
 					if (LP.Character.HumanoidRootPart.Position - Players[i].Character.HumanoidRootPart.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0 then
@@ -589,9 +617,6 @@ local function Looped()
 						if not CurrentTool then 
 							CurrentTool = LP.Backpack.Punch
 							CurrentTool.Parent = LP.Character
-							if LP.Character:FindFirstChildOfClass'Tool' then 
-								OldTool = LP.Character:FindFirstChildOfClass'Tool'
-							end
 						end
 						LP.Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.HumanoidRootPart.Position)
 						LP.Backpack.ServerTraits.Finish:FireServer(CurrentTool)
@@ -599,7 +624,10 @@ local function Looped()
 				end
 			end
 		end
-    end)
+		if GodMode and LP.Character:FindFirstChild'Right Leg' then 
+			LP.Character['Right Leg']:Destroy()
+		end 
+	end)
 end
 
 local function GodFuckIhateRobloxIHaveNoMotivationForThisShitGame(Thing)
@@ -634,6 +662,11 @@ end
 Cmds.nogh = function(Arguments)
   NoGh = not NoGh
   notif("Command: NoGh","has been set to "..tostring(NoGh),5,"rbxassetid://1281284684")
+end
+
+Cmds.god = function(Arguments)
+	GodMode = not GodMode
+	LP.Character:BreakJoints()
 end
 
 Cmds.grip = function(Arguments) 
@@ -1299,6 +1332,12 @@ if chatting then return end
 			end
 		end
 	end
+	if key.KeyCode == Enum.KeyCode.H then
+		Heal()
+        Debounce = true 
+        repeat wait() until workspace:FindFirstChild'Burger | $15' and workspace:FindFirstChild'Drink | $15' 
+		Debounce = false 
+	end 
 end
 
 local function Ended(Key,Chatting)
@@ -1331,8 +1370,9 @@ if Mouse.Target then
 		if Target.Locker.Value then 
 				Target.Lock.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
 				Target.Click.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
-			else 
+			else
 				Target.Click.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
+				Target.Lock.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
 			end
 		end
 	end
@@ -1365,31 +1405,20 @@ spawn(function()
 	end
 end)
 
-spawn(function()
-	while true do
-		if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' then
-			if LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight > 0 or flying or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character:FindFirstChildOfClass'Humanoid'.Sit then 
-				local JP = LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower
-				LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = 1.5
-				LP.Character:FindFirstChildOfClass'Humanoid':ChangeState(3)
-				wait(0.2)
-				LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = JP
-			else 
-				wait()
-			end
+while true do
+	if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'HumanoidRootPart' then
+		if LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight > 0 or flying or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character:FindFirstChildOfClass'Humanoid'.Sit then 
+			local JP = LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower
+			LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = 1.5
+			LP.Character:FindFirstChildOfClass'Humanoid':ChangeState(3)
+			wait(0.2)
+			LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = JP
 		end
-	end
-end)
-
-while true do 
-	if AirWalkOn then
-		if LP.Character:FindFirstChild'HumanoidRootPart' then
+		if AirWalkOn then 
 			LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight = 0
 			AirWalk.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0,-4,0)
 		end
-	end
-	if Blinking then
-		if LP.Character:FindFirstChild'HumanoidRootPart' then
+		if Blinking then 
 			LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame + LP.Character.HumanoidRootPart.CFrame.lookVector * BlinkSpeed
 		end
 	end
