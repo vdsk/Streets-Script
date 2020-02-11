@@ -7,4 +7,5 @@ checkcaller/is_protosmasher_caller
 newcclosure
 CoreGui Access (level 6 context level)
 ] 
+https://www.roblox.com/games/455366377/The-Streets
 So pretty much any actually good exploit on the market will work. I recommend protosmasher or synapse X 
