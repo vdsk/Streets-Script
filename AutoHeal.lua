@@ -8,26 +8,30 @@ local PartTable  = {
 }
 
 local function Heal()
-    if Debounce then return end
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,0)
+	if Debounce then return end
+	local CFRame = LP.Character.HumanoidRootPart.CFrame 
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
     wait()
     repeat  
         LP.Character.HumanoidRootPart.CFrame = PartTable['Burger']
         game:GetService'RunService'.Heartbeat:wait()
-    until LP.Backpack:FindFirstChild'Burger' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0 
+	until LP.Backpack:FindFirstChild'Burger' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	if LP.Backpack:FindFirstChild'Burger' then 
+		local Burg = LP.Backpack.Burger
+		Burg.Parent = LP.Character
+		Burg:Activate()
+	end
     repeat 
         LP.Character.HumanoidRootPart.CFrame = PartTable['Drink']
         game:GetService'RunService'.Heartbeat:wait()
-    until LP.Backpack:FindFirstChild'Drink' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0 
-    local Children = LP.Backpack:GetChildren() 
-    for i = 1,#Children do 
-        if Children[i].Name == "Drink" or Children[i].Name == "Burger" then 
-            Children[i].Parent = LP.Character
-            Children[i]:Activate()
-            repeat wait() until not LP.Character:FindFirstChildOfClass'Tool'
-        end
-    end
-end 
+	until LP.Backpack:FindFirstChild'Drink' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	if LP.Backpack:FindFirstChild'Drink' then 
+		local Drink = LP.Backpack.Drink
+		Drink.Parent = LP.Character
+		Drink:Activate()
+	end
+	LP.Character.HumanoidRootPart.CFrame = CFRame
+end
 
 UserInput.InputBegan:Connect(function(Key,Chatting)
     if Key.KeyCode == Enum.KeyCode.H and not Chatting then 
