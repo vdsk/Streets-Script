@@ -37,4 +37,3 @@ UserInput.InputBegan:Connect(function(Key,Chatting)
         Debounce = false 
     end
 end)
-
