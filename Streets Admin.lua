@@ -24,7 +24,7 @@ ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welc
 
 if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(5084531) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
-	repeat wait() until LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed == 500
+	wait(5)
 	LP:Kick("No rogangsters!")
 	while true do end 
 	return 
