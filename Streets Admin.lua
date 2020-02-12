@@ -1475,8 +1475,15 @@ local CoolkidTable = {
 	['62009114'] = "!fishgang X_D6";
 	['57370993'] = "!fishgang Karma";
 	['713966451'] = "!fishgang Karma Alt";
-	['20220183'] = "WowYoureAdopted";
+	['20220183'] = "Wya";
 	['105183043'] = "Pedo skid"; 
+	['114164798'] = "!fishgang Slays"
+	['868723261'] = "!fishgang Slays";
+	['1066925283'] = "!fishgang Slays";
+	['83600543'] = "!fishgang Slays";
+	['779000075'] = "!fishgang Slays";
+	['1202666022'] = "!fishgang Slays";
+	['134755460'] = "!fishgang Slays";
 }
 
 local function espcoolkid(plr,Name)
