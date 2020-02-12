@@ -3,14 +3,14 @@ local Players,ReplicatedStorage,UserInput,CoreGui,TeleportService,RunService,Lig
 local LP = Players.LocalPlayer
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
-local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath = nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
-local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);}
-local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]"} -- Only bfg multiuzi works without bfg bypass
+local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
+local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]","godmode"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
@@ -19,7 +19,8 @@ local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
 
-if workspace:FindFirstChild'Armoured Truck' then 
+if workspace:FindFirstChild'Armoured Truck' then
+	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);}
     workspace["Armoured Truck"]:Destroy()
 elseif workspace:FindFirstChild'TPer' then 
     workspace['TPer']:Destroy()
@@ -54,25 +55,29 @@ local function Teleport(Part)
 end
 
 local function Heal()
-    if Debounce then return end
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,0)
+	if Debounce then return end
+	local CFRame = LP.Character.HumanoidRootPart.CFrame 
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
     wait()
     repeat  
         LP.Character.HumanoidRootPart.CFrame = PartTable['Burger']
         game:GetService'RunService'.Heartbeat:wait()
-    until LP.Backpack:FindFirstChild'Burger' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0 
+	until LP.Backpack:FindFirstChild'Burger' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	if LP.Backpack:FindFirstChild'Burger' then 
+		local Burg = LP.Backpack.Burger
+		Burg.Parent = LP.Character
+		Burg:Activate()
+	end
     repeat 
         LP.Character.HumanoidRootPart.CFrame = PartTable['Drink']
         game:GetService'RunService'.Heartbeat:wait()
-    until LP.Backpack:FindFirstChild'Drink' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0 
-    local Children = LP.Backpack:GetChildren() 
-    for i = 1,#Children do 
-        if Children[i].Name == "Drink" or Children[i].Name == "Burger" then 
-            Children[i].Parent = LP.Character
-            Children[i]:Activate()
-            repeat wait() until not LP.Character:FindFirstChildOfClass'Tool'
-        end
-    end
+	until LP.Backpack:FindFirstChild'Drink' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	if LP.Backpack:FindFirstChild'Drink' then 
+		local Drink = LP.Backpack.Drink
+		Drink.Parent = LP.Character
+		Drink:Activate()
+	end
+	LP.Character.HumanoidRootPart.CFrame = CFRame
 end 
 
 local SavedSettings = {
@@ -507,26 +512,33 @@ end
 
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
-	  for i,v in pairs(LP.Backpack:GetChildren()) do 
-        if v:IsA'Tool' and v.Name == "Uzi" then
-            v.Parent = LP.Character 
-            v.Fire:FireServer(Mouse.hit)
-        if MinigunMode then 
-          wait()
-        end
-      end
-    end
-    repeat wait() until LP.Backpack:FindFirstChild'Uzi' 
+		local Child = LP.Backpack:GetChildren()
+		for i = 1,#Child do 
+			if Child[i]:isA'Uzi' and Child[i].Name == "Uzi" then
+				Child[i].Parent = LP.Character
+				Child[i].Fire:FireServer(Mouse.hit)
+			end
+		end
+    repeat wait(0.5) until not LP.Character:FindFirstChild'Uzi' 
     LP.Backpack.Uzi.Parent = LP.Character
   end
-  	if MultiUzi and not LP.Character:FindFirstChildOfClass'Tool' then
-		for i,v in pairs(LP.PlayerGui:GetChildren()) do
-			if v:IsA'Tool' and v.Name == "Uzi" then 
-				v.Grip = CFrame.new(0,0,-10)
-				v.Parent = LP.Backpack
-				v.Parent = LP.Character
-				v.Fire:FireServer(Mouse.hit)
-				v.Parent = LP.PlayerGui
+  if NormalBfg then 
+	local Child = LP.Character:GetChildren()
+		for i = 1,#Child do 
+			if Child[i]:FindFirstChild'Fire' then
+				Child[i].Fire:FireServer(Mouse.hit)
+			end
+		end
+	end
+	if MultiUzi and not LP.Character:FindFirstChildOfClass'Tool' then
+		local Child = LP.PlayerGui:GetChildren() 
+		for i = 1,#Child do
+			if Child[i]:IsA'Tool' and Child[i].Name == "Uzi" then 
+				Child[i].Grip = CFrame.new(0,0,-10)
+				Child[i].Parent = LP.Backpack
+				Child[i].Parent = LP.Character
+				Child[i].Fire:FireServer(Mouse.hit)
+				Child[i].Parent = LP.PlayerGui
 			end
 		end
 	end
@@ -627,6 +639,14 @@ local function Looped()
 		if GodMode and LP.Character:FindFirstChild'Right Leg' then 
 			LP.Character['Right Leg']:Destroy()
 		end 
+		if NormalBfg then 
+		local Child = LP.Backpack:GetChildren()
+			for i = 1,#Child do 
+				if Child[i]:FindFirstChild'Fire' then
+					Child[i].Parent = LP.Character
+				end
+			end
+		end
 	end)
 end
 
@@ -638,12 +658,13 @@ end
 
 local function Added()
 	repeat wait(0.5) until LP.Character:FindFirstChildWhichIsA'Humanoid' and LP.Character.Animate 
-    LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
-    LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
+	LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
+	LP.Backpack.ChildAdded:Connect(MultiUzif)
+	LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
+	StarterGui:SetCore('ResetButtonCallback',BindableEvent)
     LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = SpawnWS or NormalWS
     LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower = SpawnJP or NormalJP
     LP.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight = SpawnHH or NormalHH
-    StarterGui:SetCore('ResetButtonCallback',BindableEvent)
 	if SpawnAtDeathPos then
         Teleport(DeathPos)
 	end
@@ -664,7 +685,7 @@ Cmds.nogh = function(Arguments)
   notif("Command: NoGh","has been set to "..tostring(NoGh),5,"rbxassetid://1281284684")
 end
 
-Cmds.god = function(Arguments)
+Cmds.godmode = function(Arguments)
 	GodMode = not GodMode
 	LP.Character:BreakJoints()
 end
@@ -1023,6 +1044,13 @@ Cmds.unloop = function(Arguments)
     SpawnHH = NormalHH 
 end
 
+Cmds.antiaim = function(Arguments)
+	local Anim = Instance.new'Animation'
+	Anim.AnimationId = "rbxassetid://215384594"
+	local Track = LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim2)
+	Track:play(4,45,250)
+end
+
 Cmds.key = function(Arguments)
 	if Arguments[1] and Arguments[2] then
 		for x,v in pairs(Keys) do
@@ -1113,9 +1141,11 @@ end
 
 Cmds.bfg = function(Arguments)
   if not Arguments[1] then 
-      BfgOn = not BfgOn
+	  	BfgOn = not BfgOn
+  elseif Arguments[1] and Arguments[1]:lower() == "allbfg" then 
+		NormalBfg = not NormalBfg
   elseif Arguments[1] and Arguments[1]:lower() == "minigun" then 
-      MinigunMode = not MinigunMode
+      	MinigunMode = not MinigunMode
   elseif Arguments[1] and Arguments[1]:lower() == "multiuzi" then 
         MultiUzi = not MultiUzi
     end
@@ -1332,7 +1362,7 @@ if chatting then return end
 			end
 		end
 	end
-	if key.KeyCode == Enum.KeyCode.H then
+	if PartTable and key.KeyCode == Enum.KeyCode.H then
 		Heal()
         Debounce = true 
         repeat wait() until workspace:FindFirstChild'Burger | $15' and workspace:FindFirstChild'Drink | $15' 
