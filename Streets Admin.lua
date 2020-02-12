@@ -15,6 +15,8 @@ local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoi
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
+local Closure = hide_me or newcclosure
+local writeable = setreadonly(gamememe,false) or make_writeable(gamememe)
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
 local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
@@ -22,6 +24,7 @@ ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welc
 
 if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(5084531) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
+	repeat wait() until LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed == 500
 	LP:Kick("No rogangsters!")
 	while true do end 
 	return 
@@ -93,13 +96,6 @@ local SavedSettings = {
 	ClickTpKey = "";
 	BlinkKey = "";
 }
-
-local Closure = newcclosure or protect_function
-if setreadonly then
-	setreadonly(gamememe,false)
-elseif make_writeable then 
-	make_writeable(gamememe)
-end
 
 gamememe.__newindex = Closure(function(self,Property,b)
 	if not checkcaller() and not is_protosmasher_caller() then
