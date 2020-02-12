@@ -4,14 +4,14 @@ local LP = Players.LocalPlayer
 repeat wait() until LP.Character and LP.Character:FindFirstChild'Humanoid'
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
-local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath = nil,nil,nil,nil,nil,nil
+local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]","godmode","antiaim"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]","godmode","antiaim","aimlock"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
@@ -55,6 +55,27 @@ local Arguments = string.split(Msg," ")
 		NCommand(Arguments)
     end
 end
+
+--[[local function Center(x,y)
+	return math.sqrt(math.pow((x - workspace.CurrentCamera.ViewportSize.X/2),2) + math.pow((y - workspace.CurrentCamera.ViewportSize.Y/2),2))
+end
+
+local function ClosestPlayer()
+	local Child,Player = Players:GetPlayers(),nil
+	local NearestDistance = math.huge
+	for i = 1,#Child do
+		if Child[i] ~= LP and Child[i].Character and Child[i].Character.Head and not Child[i].Character:FindFirstChild'KO' then
+			local ActualDistance = Center(workspace.CurrentCamera:WorldToScreenPoint(Child[i].Character.Head.Position).X,workspace.CurrentCamera:WorldToScreenPoint(Child[i].Character.Head.Position).Y)
+			if ActualDistance < NearestDistance and ActualDistance < 700 then
+				NearestDistance = ActualDistance
+				Player = Child[i]
+			end
+		end
+	end
+	return Player,NearestDistance
+ end
+ lol not used yet 
+]]
 
 local function Teleport(Part)
 	if _G.DoYouHaveBfgBypass then 
@@ -148,6 +169,9 @@ gamememe.__namecall = Closure(function(self,...)
 			end
 			if Arguments[1] == "stop" then 
 				PlayOnDeath = nil 
+			end
+			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then 
+				return name(self,AimlockTarget.HumanoidRootPart.CFrame)
 			end
 		end
 	end
@@ -515,26 +539,28 @@ local function esp()
 	end
 end
 
+local function fire(Tool,Part)
+	Tool.Fire:FireServer(Mouse.Hit)
+end
+
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
 		local Child = LP.Backpack:GetChildren()
 		for i = 1,#Child do 
-			if Child[i]:isA'Uzi' and Child[i].Name == "Uzi" then
+			if Child[i]:isA'Tool' and Child[i].Name == "Uzi" then
 				Child[i].Parent = LP.Character
-				Child[i].Fire:FireServer(Mouse.hit)
+				fire(Child[i])
 				if MinigunMode then 
 					wait()
 				end
 			end
 		end
-    repeat wait(0.5) until not LP.Character:FindFirstChild'Uzi' 
-    LP.Backpack.Uzi.Parent = LP.Character
   end
   if NormalBfg then 
 	local Child = LP.Character:GetChildren()
 		for i = 1,#Child do 
 			if Child[i]:FindFirstChild'Fire' then
-				Child[i].Fire:FireServer(Mouse.hit)
+				fire(Child[i])
 				if MinigunMode then 
 					wait()
 				end
@@ -548,13 +574,16 @@ local function Modes()
 				Child[i].Grip = CFrame.new(0,0,-10)
 				Child[i].Parent = LP.Backpack
 				Child[i].Parent = LP.Character
-				Child[i].Fire:FireServer(Mouse.hit)
+				fire(Child[i])
 				Child[i].Parent = LP.PlayerGui
 				if MinigunMode then 
 					wait()
 				end
 			end
 		end
+	end
+	if Mouse.Target and Players:GetPlayerFromCharacter(Mouse.Target.Parent) and Mouse.Target.Parent:FindFirstChildOfClass'Humanoid' and AimLock then 
+		AimlockTarget = Mouse.Target.Parent
 	end
 end
 
@@ -1065,6 +1094,11 @@ Cmds.antiaim = function(Arguments)
 	Track:play(4,45,250)
 end
 
+Cmds.aimlock = function(Arguments)
+	AimLock = not AimLock
+	notif("Command: AimLock","has been set to "..tostring(AimLock),5,"rbxassetid://1281284684")
+end
+
 Cmds.key = function(Arguments)
 	if Arguments[1] and Arguments[2] then
 		for x,v in pairs(Keys) do
@@ -1263,6 +1297,9 @@ Cmds.luacode = function(Arguments)
 	end 
 end
 
+Cmds.aimbot = function(Arguments)
+
+end
 Cmds.unesp = function(Arguments)
 	if not Arguments[1] then
 		for _,v in pairs(CoreGui:GetDescendants()) do
@@ -1365,13 +1402,17 @@ if chatting then return end
 		CText:CaptureFocus()
 		Cframe:TweenPosition(UDim2.new(0.015, 0, 0.95, 0), "Out", "Elastic", 0.5, true)
 	end
-	if key.KeyCode == Enum.KeyCode.Q and Players:GetPlayerFromCharacter(Mouse.Target.Parent) then 
-		for _,v in pairs(Players:GetPlayerFromCharacter(Mouse.Target.Parent).Character:GetDescendants()) do 
+	local Target,Player = Mouse.Target
+		if Target then 
+			Player = Players:GetPlayerFromCharacter(Target.Parent) or Players:GetPlayerFromCharacter(Target.Parent.Parent)
+		end
+	if key.KeyCode == Enum.KeyCode.Q and Player then
+		for _,v in pairs(Player:GetDescendants()) do 
 			if v:IsA'Sound' and v.Name == "SoundX" then
 				local Id = MarketplaceService:GetProductInfo(v.SoundId:match"%d+")
 				if Id.AssetTypeId == 3 then
-					notif("Stole the audio"..Id.AssetID,"From "..Players:GetPlayerFromCharacter(Mouse.Target.Parent).Name,5,nil)
-					writefile("AudioLog From "..Players:GetPlayerFromCharacter(Mouse.Target.Parent).Name.." "..math.random(1,99)..".txt","Stolen ID: "..Id.AssetId.." From: "..Players:GetPlayerFromCharacter(Mouse.Target.Parent).Name)
+					notif("Stole the audio"..Id.AssetId,"From "..Player.Name,5,nil)
+					writefile("AudioLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen ID: "..Id.AssetId.." From: "..Player.Name)
 				end
 			end
 		end
