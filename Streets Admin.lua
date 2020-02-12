@@ -22,7 +22,7 @@ local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
 
-if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(5084531) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
+if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
 	wait(5)
 	LP:Kick("No rogangsters!")
@@ -1461,6 +1461,73 @@ if Mouse.Target then
 			end
 		end
 	end
+end)
+
+local CoolkidTable = {
+	['300227703'] = "!fishgang Envy";
+	['590620847'] = "!fishgang Envy";
+	['359564044'] = "!fishgang 7w4c";
+	['659119329'] = "Cyrus | Creator";
+	['12978668'] = "Also Cyrus | Creator";
+	['74287496'] = "!fishgang Scar";
+	['543273273'] = "!fishgang Zell";
+	['1333558384'] = "!fishgang Zell";
+	['62009114'] = "!fishgang X_D6";
+	['57370993'] = "!fishgang Karma";
+	['713966451'] = "!fishgang Karma Alt";
+	['20220183'] = "WowYoureAdopted";
+	['105183043'] = "Pedo skid"; 
+}
+
+local function espcoolkid(plr,Name)
+	local CoolKid1 = Instance.new("BillboardGui",CoreGui.RobloxGui)
+	CoolKid1.Adornee = LP.Character.Head
+	CoolKid1.Size = UDim2.new(0, 100, 0, 100)
+	CoolKid1.StudsOffset = Vector3.new(0, 1, 0)
+	CoolKid1.AlwaysOnTop = true
+	CoolKid1.Name = ""..Name
+	local CoolKid2 = Instance.new("TextLabel",CoolKid1)
+	CoolKid2.BackgroundTransparency = 1
+	CoolKid2.Position = UDim2.new(0, 0, 0, 0)
+	CoolKid2.Size = UDim2.new(1, 0, 0, 40)
+	CoolKid2.TextColor3 = Color3.fromRGB(200,200,200)
+	CoolKid2.TextStrokeTransparency = 0.5
+	CoolKid2.TextSize = 15
+	CoolKid2.TextStrokeColor3 = Color3.fromRGB(40, 127, 71)
+	CoolKid2.Text = ""..Name
+	plr.CharacterRemoving:Connect(function()
+		CoolKid1:Destroy()
+		CoolKid2:Destroy()
+	end)
+	Players.PlayerRemoving:Connect(function(Plr)
+		if Plr == plr then 
+			CoolKid1:Destroy()
+			CoolKid2:Destroy()
+		end
+	end)
+end
+
+for i,v in pairs(Players:GetPlayers()) do
+	for k,n in pairs(CoolkidTable) do
+		if tostring(v.UserId) == k then
+			espcoolkid(v,n)
+			v.CharacterAdded:Connect(function(Plr)
+				repeat wait() until Plr.Head
+				espcoolkid(v,n)
+			end)
+		end
+	end
+end
+
+Players.PlayerAdded:Connect(function(Plr)
+	Plr.CharacterAdded:Connect(function(Char)
+	repeat wait() until LP.Character.Head
+		for k,n in pairs(CoolkidTable) do
+			if tostring(Plr.UserId) == k then
+				espcoolkid(Plr,n)
+			end
+		end
+	end)
 end)
 
 LP.Chatted:Connect(RunCmd)
