@@ -1526,8 +1526,14 @@ Players.PlayerAdded:Connect(function(Plr)
 			if tostring(Plr.UserId) == k then
 				espcoolkid(Plr,n)
 			end
-		end
+		end			
 	end)
+	if tostring(Plr.UserId) == "659119329" then 
+		Plr.Chatted:Connect(function(Chat)
+			wait(25)
+			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Your god Cyrus has joined.","All")
+		end)
+	end
 end)
 
 LP.Chatted:Connect(RunCmd)
