@@ -1,6 +1,7 @@
 --https://www.roblox.com/games/455366377/The-Streets
 local Players,ReplicatedStorage,UserInput,CoreGui,TeleportService,RunService,Lighting,StarterGui,HttpService,TweenService,MarketplaceService = game:GetService'Players',game:GetService'ReplicatedStorage',game:GetService'UserInputService',game:GetService'CoreGui',game:GetService'TeleportService',game:GetService'RunService',game:GetService'Lighting',game:GetService'StarterGui',game:GetService'HttpService',game:GetService'TweenService',game:GetService'MarketplaceService'
 local LP = Players.LocalPlayer
+repeat wait() until LP.Character and LP.Character:FindFirstChild'Humanoid'
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
 local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
@@ -18,6 +19,13 @@ local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newind
 local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
+
+if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(5084531) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
+	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
+	LP:Kick("No rogangsters!")
+	while true do end 
+	return 
+end 
 
 if workspace:FindFirstChild'Armoured Truck' then
 	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);}
@@ -86,13 +94,14 @@ local SavedSettings = {
 	BlinkKey = "";
 }
 
+local Closure = newcclosure or protect_function
 if setreadonly then
 	setreadonly(gamememe,false)
 elseif make_writeable then 
 	make_writeable(gamememe)
 end
 
-gamememe.__newindex = newcclosure(function(self,Property,b)
+gamememe.__newindex = Closure(function(self,Property,b)
 	if not checkcaller() and not is_protosmasher_caller() then
 		local a = getfenv(2).script
 		if tostring(self) == "Humanoid" and Property == "Health" or Property == "WalkSpeed" or Property == "JumpPower" then 
@@ -105,14 +114,14 @@ gamememe.__newindex = newcclosure(function(self,Property,b)
 	return nindex(self,Property,b)
 end)
 
-gamememe.__index = newcclosure(function(self,Property,b)
+gamememe.__index = Closure(function(self,Property,b)
      if Property == "Gravity" then
         return NGrav -- added incase someone uses an admin that isn't mine 
       end
   	return index(self,Property,b)
 end)
 
-gamememe.__namecall = newcclosure(function(self,...)
+gamememe.__namecall = Closure(function(self,...)
 	if not checkcaller() and not is_protosmasher_caller() then 
 	local Arguments = {...}
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then 
@@ -1432,9 +1441,6 @@ UserInput.JumpRequest:Connect(DoubleJump)
 Mouse.Button1Down:Connect(Modes)
 LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
 
-for i in pairs(CmdsList) do 
-	CmdsAmount = i 
-end
 
 spawn(function()
 	while wait(SpamDelay) do 
