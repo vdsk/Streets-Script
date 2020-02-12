@@ -10,7 +10,7 @@ local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]","godmode"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]","godmode","antiaim"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
@@ -517,6 +517,9 @@ local function Modes()
 			if Child[i]:isA'Uzi' and Child[i].Name == "Uzi" then
 				Child[i].Parent = LP.Character
 				Child[i].Fire:FireServer(Mouse.hit)
+				if MinigunMode then 
+					wait()
+				end
 			end
 		end
     repeat wait(0.5) until not LP.Character:FindFirstChild'Uzi' 
@@ -527,6 +530,9 @@ local function Modes()
 		for i = 1,#Child do 
 			if Child[i]:FindFirstChild'Fire' then
 				Child[i].Fire:FireServer(Mouse.hit)
+				if MinigunMode then 
+					wait()
+				end
 			end
 		end
 	end
@@ -539,6 +545,9 @@ local function Modes()
 				Child[i].Parent = LP.Character
 				Child[i].Fire:FireServer(Mouse.hit)
 				Child[i].Parent = LP.PlayerGui
+				if MinigunMode then 
+					wait()
+				end
 			end
 		end
 	end
