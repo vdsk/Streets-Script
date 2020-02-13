@@ -31,7 +31,7 @@ if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP
 end 
 
 if workspace:FindFirstChild'Armoured Truck' then
-	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);}
+	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Ammo'] = workspace:FindFirstChild'Buy Ammo | $25':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)}
     workspace["Armoured Truck"]:Destroy()
 elseif workspace:FindFirstChild'TPer' then 
     workspace['TPer']:Destroy()
@@ -109,6 +109,18 @@ local function Heal()
 		Drink.Parent = LP.Character
 		Drink:Activate()
 	end
+	LP.Character.HumanoidRootPart.CFrame = CFRame
+end 
+
+local function Ammo()
+	if Debounce then return end
+	local CFRame,Old = LP.Character.HumanoidRootPart.CFrame,LP.Character:FindFirstChildOfClass'Tool'.Clips.Value
+	LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
+    wait()
+    repeat  
+        LP.Character.HumanoidRootPart.CFrame = PartTable['Ammo']
+        game:GetService'RunService'.Heartbeat:wait()
+	until Old < LP.Character:FindFirstChildOfClass'Tool'.Clips.Value or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
 	LP.Character.HumanoidRootPart.CFrame = CFRame
 end 
 
@@ -1450,6 +1462,13 @@ if chatting then return end
 		Heal()
         Debounce = true 
         repeat wait() until workspace:FindFirstChild'Burger | $15' and workspace:FindFirstChild'Drink | $15' 
+		Debounce = false 
+	end
+	if PartTable and key.KeyCode == Enum.KeyCode.R then
+		if LP.Character:FindFirstChildOfClass'Tool' and not LP.Character:FindFirstChildOfClass'Tool'.Clips or not LP.Character:FindFirstChildOfClass'Tool' then notif("Tool needed","Hold a gun",5,nil) return end 
+		Ammo()
+		Debounce = true 
+		repeat wait() until workspace:FindFirstChild'Buy Ammo | $25' 
 		Debounce = false 
 	end 
 end
