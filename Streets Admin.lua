@@ -1500,7 +1500,7 @@ local function espcoolkid(Plr,Char)
 	CoolKid2.BackgroundTransparency = 1
 	CoolKid2.Position = UDim2.new(0, 0, 0, 0)
 	CoolKid2.Size = UDim2.new(1, 0, 0, 40)
-	CoolKid2.TextColor3 = Color3.fromRGB(200,200,200)
+	CoolKid2.TextColor3 = Color3.fromRGB(125,0,0)
 	CoolKid2.TextStrokeTransparency = 0.5
 	CoolKid2.TextSize = 15
 	CoolKid2.TextStrokeColor3 = Color3.fromRGB(125,0,0)
