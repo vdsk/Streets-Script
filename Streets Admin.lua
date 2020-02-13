@@ -1,11 +1,11 @@
 --https://www.roblox.com/games/455366377/The-Streets
 local Players,ReplicatedStorage,UserInput,CoreGui,TeleportService,RunService,Lighting,StarterGui,HttpService,TweenService,MarketplaceService = game:GetService'Players',game:GetService'ReplicatedStorage',game:GetService'UserInputService',game:GetService'CoreGui',game:GetService'TeleportService',game:GetService'RunService',game:GetService'Lighting',game:GetService'StarterGui',game:GetService'HttpService',game:GetService'TweenService',game:GetService'MarketplaceService'
 local LP = Players.LocalPlayer
-repeat wait() until LP.Character and LP.Character:FindFirstChild'Humanoid'
+repeat wait() until LP and LP.Character and LP.Character:FindFirstChild'Humanoid'
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
 local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,Prefix = nil,nil,nil,nil,nil,nil,nil,""
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
@@ -540,7 +540,11 @@ local function esp()
 end
 
 local function fire(Tool,Part)
-	Tool.Fire:FireServer(Mouse.Hit)
+	if AimlockTarget and AimLock then 
+		Tool.Fire:FireServer(AimlockTarget.HumanoidRootPart.CFrame)
+	else
+		Tool.Fire:FireServer(Mouse.Hit)
+	end
 end
 
 local function Modes()
@@ -1090,8 +1094,7 @@ end
 Cmds.antiaim = function(Arguments)
 	local Anim = Instance.new'Animation'
 	Anim.AnimationId = "rbxassetid://215384594"
-	local Track = LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim2)
-	Track:play(4,45,250)
+	LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim):play(5,45,250)
 end
 
 Cmds.aimlock = function(Arguments)
@@ -1514,7 +1517,7 @@ local function espcoolkid(Plr,Char)
 	end)
 end
 
-for i,v in pairs(Players:GetPlayers()) do 
+for _,v in pairs(Players:GetPlayers()) do 
 	if CoolkidTable[tostring(v.UserId)] then 
 		espcoolkid(v,v.Character)
 		v.CharacterAdded:Connect(function(Char)
@@ -1522,11 +1525,12 @@ for i,v in pairs(Players:GetPlayers()) do
 			espcoolkid(v,v.Character)
 		end)
 		v.Chatted:Connect(function(Chat)
-			if CoolkidTable[tostring(v.UserId)] then return end 
-			if Chat:sub(1,5) == "exec " then 
-				RunCmd(chat:sub(6))
-			elseif Chat:sub(1,4) == "lua " then 
-				RunCmd(chat:sub(5))
+			if not CoolkidTable[tostring(v.UserId)] then 
+				if Chat:sub(1,5) == "exec " then 
+					RunCmd(Chat:sub(6))
+				elseif Chat:sub(1,4) == "lua " then 
+					RunCmd(Chat:sub(5))
+				end
 			end
 		end)
 	end
@@ -1539,11 +1543,12 @@ Players.PlayerAdded:Connect(function(plr)
 			espcoolkid(plr,Char)
 		end)
 		plr.Chatted:Connect(function(Chat)
-			if CoolkidTable[tostring(plr.UserId)] then return end 
-			if Chat:sub(1,5) == "exec " then 
-				RunCmd(chat:sub(6))
-			elseif Chat:sub(1,4) == "lua " then 
-				RunCmd(chat:sub(5))
+			if not CoolkidTable[tostring(plr.UserId)] then
+				if Chat:sub(1,5) == "exec " then 
+					RunCmd(Chat:sub(6))
+				elseif Chat:sub(1,4) == "lua " then 
+					RunCmd(Chat:sub(5))
+				end
 			end
 		end)
 	end
@@ -1576,22 +1581,24 @@ spawn(function()
 	end
 end)
 
-while true do
-	if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'HumanoidRootPart' then
-		if LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight > 0 or flying or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character:FindFirstChildOfClass'Humanoid'.Sit then 
-			local JP = LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower
-			LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = 1.5
-			LP.Character:FindFirstChildOfClass'Humanoid':ChangeState(3)
-			wait(0.2)
-			LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = JP
+spawn(function()
+	while true do
+		if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'HumanoidRootPart' then
+			if LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight > 0 or flying or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character:FindFirstChildOfClass'Humanoid'.Sit then 
+				local JP = LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower
+				LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = 1.5
+				LP.Character:FindFirstChildOfClass'Humanoid':ChangeState(3)
+				wait(0.2)
+				LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = JP
+			end
+			if AirWalkOn then 
+				LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight = 0
+				AirWalk.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0,-4,0)
+			end
+			if Blinking then 
+				LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame + LP.Character.HumanoidRootPart.CFrame.lookVector * BlinkSpeed
+			end
 		end
-		if AirWalkOn then 
-			LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight = 0
-			AirWalk.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0,-4,0)
-		end
-		if Blinking then 
-			LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame + LP.Character.HumanoidRootPart.CFrame.lookVector * BlinkSpeed
-		end
+		wait()
 	end
-	wait()
-end
+end)
