@@ -77,6 +77,49 @@ local function ClosestPlayer()
  lol not used yet 
 ]]
 
+local function loluzistatscool()
+	local Child = LP.PlayerGui:GetChildren()
+	local UziAmount,ClipsAmount,AmmoAmount,Damage = 0,0,0,0
+	for i = 1,#Child do
+		if Child[i].Name == "Uzi" and Child[i].Clips and Child[i].Ammo then 
+			UziAmount = UziAmount + 1 
+			ClipsAmount = ClipsAmount + Child[i].Clips.Value
+			AmmoAmount = AmmoAmount + Child[i].Ammo.Value
+		end
+	end 
+	local ZetoxUzi = LP.Backpack:FindFirstChild'Zetox Uzi' or LP.Character:FindFirstChild'Zetox Uzi'
+	ZetoxUzi.ToolTip = "Zetox Uzi | Clips "..tostring(ClipsAmount / UziAmount).." | Damage "..tostring(UziAmount * 20).." | Ammo "..tostring(AmmoAmount / UziAmount).." | Uzi Amount "..tostring(UziAmount)
+end
+
+local ReloadDebounce = false 
+local function lolmultiuzithatisreloading(Part)
+	if Part.Parent.Name == "Buy Ammo | $25" and LP.Character:FindFirstChild'Zetox Uzi' and LP.PlayerGui:FindFirstChild'Uzi' then 
+		ReloadDebounce = true 
+		local ActualUzi,LowestAmmo,Child = nil,math.huge,LP.PlayerGui:GetChildren()
+		for i = 1,#Child do 
+			if Child[i].Name == "Uzi" and Child[i].Clips and Child[i].Clips.Value < LowestAmmo then 
+				LowestAmmo = Child[i].Clips.Value 
+				ActualUzi = Child[i]
+			end
+		end
+		ActualUzi.Parent = LP.Backpack
+		ActualUzi.Parent = LP.Character
+		repeat wait() until Part.Parent.Name == "Bought!" 
+		ActualUzi.Parent = LP.PlayerGui
+		ReloadDebounce = false 
+	end
+end
+
+local function lolmultiuzithatcanactuallyreload()
+	if LP.Backpack:FindFirstChild'Zetox Uzi' or LP.Character:FindFirstChild'Zetox Uzi' then return end 
+	local Tool = Instance.new('Tool',LP.Backpack)
+	Tool.RequiresHandle = false 
+	Tool.CanBeDropped = false 
+	Tool.Name = "Zetox Uzi"
+	Tool.ToolTip = "Zetox Uzi"
+	Tool.Equipped:Connect(loluzistatscool)
+end 
+
 local function Teleport(Part)
 	if _G.DoYouHaveBfgBypass then 
 		LP.Character.HumanoidRootPart.CFrame = Part
@@ -184,7 +227,7 @@ gamememe.__namecall = Closure(function(self,...)
 				PlayOnDeath = nil 
 			end
 			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then 
-				return name(self,AimlockTarget.HumanoidRootPart.CFrame)
+				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
 			end
 		end
 	end
@@ -379,9 +422,11 @@ end
 
 local function MultiUzif(Tool)
     if Tool:IsA'Tool' and Tool.Name == "Uzi" and MultiUzi then 
-        wait()
+		wait()
+		lolmultiuzithatcanactuallyreload()
+		loluzistatscool()
         Tool.Parent = LP.PlayerGui
-    end
+	end
 end
 
 local function notif(title,message,length,icon)
@@ -554,7 +599,7 @@ end
 
 local function fire(Tool,Part)
 	if AimlockTarget and AimLock then 
-		Tool.Fire:FireServer(AimlockTarget.HumanoidRootPart.CFrame)
+		Tool.Fire:FireServer(AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
 	else
 		Tool.Fire:FireServer(Mouse.Hit)
 	end
@@ -584,11 +629,12 @@ local function Modes()
 			end
 		end
 	end
-	if MultiUzi and not LP.Character:FindFirstChildOfClass'Tool' then
+	if MultiUzi and LP.Character:FindFirstChild'Zetox Uzi' then
+		loluzistatscool()
 		local Child = LP.PlayerGui:GetChildren() 
 		for i = 1,#Child do
-			if Child[i]:IsA'Tool' and Child[i].Name == "Uzi" then 
-				Child[i].Grip = CFrame.new(0,0,-10)
+			if Child[i]:IsA'Tool' and Child[i].Name == "Uzi" then
+				Child[i].Grip = CFrame.new(0,0,-6)
 				Child[i].Parent = LP.Backpack
 				Child[i].Parent = LP.Character
 				fire(Child[i])
@@ -721,6 +767,7 @@ local function Added()
 	LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
 	LP.Backpack.ChildAdded:Connect(MultiUzif)
 	LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
+	LP.Character['Right Leg'].Touched:Connect(lolmultiuzithatisreloading)
 	StarterGui:SetCore('ResetButtonCallback',BindableEvent)
     LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = SpawnWS or NormalWS
     LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower = SpawnJP or NormalJP
@@ -1205,9 +1252,17 @@ end
 
 Cmds.bfg = function(Arguments)
   if not Arguments[1] then 
-	  	BfgOn = not BfgOn
+	if _G.DoYouHaveBfgBypass then 
+		BfgOn = not BfgOn
+	else
+		MultiUzi = not MultiUzi
+	end
   elseif Arguments[1] and Arguments[1]:lower() == "allbfg" then 
-		NormalBfg = not NormalBfg
+		if _G.DoYouHaveBfgBypass then 
+			NormalBfg = not NormalBfg
+		else 
+			notif("Command: BFG","This mode is only for people with BFG bypass.",5,"rbxassetid://1281284684")
+		end
   elseif Arguments[1] and Arguments[1]:lower() == "minigun" then 
       	MinigunMode = not MinigunMode
   elseif Arguments[1] and Arguments[1]:lower() == "multiuzi" then 
@@ -1313,9 +1368,6 @@ Cmds.luacode = function(Arguments)
 	end 
 end
 
-Cmds.aimbot = function(Arguments)
-
-end
 Cmds.unesp = function(Arguments)
 	if not Arguments[1] then
 		for _,v in pairs(CoreGui:GetDescendants()) do
@@ -1584,6 +1636,7 @@ LP.Chatted:Connect(RunCmd)
 LP.Backpack.ChildAdded:Connect(MultiUzif)
 LP.CharacterAdded:Connect(Added)
 LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
+LP.Character['Right Leg'].Touched:Connect(lolmultiuzithatisreloading)
 RunService.Stepped:Connect(Looped)
 Mouse.KeyDown:Connect(HotkeyHandler)
 CText.Changed:Connect(Changed)
