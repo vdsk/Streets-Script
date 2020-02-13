@@ -1503,7 +1503,7 @@ local function espcoolkid(Plr,Char)
 	CoolKid2.TextColor3 = Color3.fromRGB(200,200,200)
 	CoolKid2.TextStrokeTransparency = 0.5
 	CoolKid2.TextSize = 15
-	CoolKid2.TextStrokeColor3 = Color3.fromRGB(40, 127, 71)
+	CoolKid2.TextStrokeColor3 = Color3.fromRGB(125,0,0)
 	CoolKid2.Text = ""..CoolkidTable[tostring(Plr.UserId)]
 	Plr.CharacterRemoving:Connect(function()
 		CoolKid1:Destroy()
