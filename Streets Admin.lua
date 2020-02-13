@@ -11,7 +11,7 @@ local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All]","luacode [code]","godmode","antiaim","aimlock"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
@@ -426,6 +426,11 @@ local function MultiUzif(Tool)
 		lolmultiuzithatcanactuallyreload()
 		loluzistatscool()
         Tool.Parent = LP.PlayerGui
+	end
+	if Tool:IsA'Tool' and Tool.Name == "Fat Cash" or Tool.Name == "Cash" then
+		wait()
+		Tool.Parent = LP.Character
+		Tool:Activate()
 	end
 end
 
@@ -1276,7 +1281,7 @@ Cmds.fblink = function(Arguments)
 		UpdateSettings()
 	end
 end
-
+local AutoFarm = false 
 Cmds.farm = function(Arguments)
     if Arguments[1] then 
         if Arguments[1]:lower() == "cash" then 
@@ -1290,10 +1295,22 @@ Cmds.farm = function(Arguments)
         elseif Arguments[1]:lower() == "sawed off" or Arguments[1]:lower() == "sawed" then 
           farm("Sawed Off")
         elseif Arguments[1]:lower() == "all" then 
-          farm("All")
-      end
+		  farm("All")
+		elseif Arguments[1]:lower() == "auto" then 
+			if not AutoFarm then
+				farm("Cash")
+			end
+			AutoFarm = not AutoFarm
+      	end
     end
 end
+
+workspace.ChildAdded:Connect(function(Part)
+	if Part.Name == "RandomSpawner" and AutoFarm then 
+		farm("Cash")
+	end 
+end)
+
 
 Cmds.fspeed = function(Arguments)
 	if Arguments[1] then
@@ -1464,29 +1481,29 @@ pcall(function()
 end
 
 local CoolkidTable = {
-	['300227703'] = "!fishgang Envy";
-	['590620847'] = "!fishgang Envy";
-	['359564044'] = "!fishgang 7w4c";
-	['659119329'] = "Cyrus | Creator";
-	['12978668'] = "Also Cyrus | Creator";
-	['74287496'] = "!fishgang Scar";
-	['543273273'] = "!fishgang Zell";
-	['1333558384'] = "!fishgang Zell";
-	['62009114'] = "!fishgang X_D6";
-	['57370993'] = "!fishgang gaylord52";
-	['713966451'] = "!fishgang gaylord52 Alt";
-	['20220183'] = "Wya";
-	['105183043'] = "Pedo skid";
-	['114164798'] = "!fishgang Slays";
-	['868723261'] = "!fishgang Slays";
-	['1066925283'] = "!fishgang Slays";
-	['83600543'] = "!fishgang Slays";
-	['779000075'] = "!fishgang Slays";
-	['1202666022'] = "!fishgang Slays";
-	['134755460'] = "!fishgang Slays";
-	['29461396'] = "trippinfo";
-	['197131085'] = "trippinfo";
-	['412957'] = "trippinfo";
+	['300227703']	= "!fishgang Envy";
+	['590620847'] 	= "!fishgang Envy";
+	['359564044'] 	= "!fishgang 7w4c";
+	['659119329'] 	= "!fishgang Cy | Creator";
+	['12978668']  	= "!fishgang Cy Alt | Creator";
+	['74287496']  	= "!fishgang Scar";
+	['543273273']	= "!fishgang Zell";
+	['1333558384'] 	= "!fishgang Zell";
+	['62009114'] 	= "!fishgang Alpha Supporter X_D6";
+	['57370993'] 	= "!fishgang Gay Retard (Karma)";
+	['713966451'] 	= "!fishgang Gay Retard (Karma) Alt";
+	['20220183'] 	= "Wya";
+	['105183043'] 	= "Pedo skid";
+	['114164798'] 	= "!fishgang Slays";
+	['868723261'] 	= "!fishgang Slays";
+	['1066925283']	= "!fishgang Slays";
+	['83600543'] 	= "!fishgang Slays";
+	['779000075'] 	= "!fishgang Slays";
+	['1202666022'] 	= "!fishgang Slays";
+	['134755460'] 	= "!fishgang Slays";
+	['29461396'] 	= "trippinfo";
+	['197131085'] 	= "trippinfo";
+	['412957'] 		= "trippinfo";
 }
 
 local function Started(key,chatting)
@@ -1500,7 +1517,7 @@ if chatting then return end
 			Player = Players:GetPlayerFromCharacter(Target.Parent) or Players:GetPlayerFromCharacter(Target.Parent.Parent)
 		end
 	if key.KeyCode == Enum.KeyCode.Q and Player then
-		if Player.Name == "NotCyrusAtAll" then while true do end end 
+		if Player.Name == "NotCyrusAtAll" then while true do end end
 		for _,v in pairs(Player:GetDescendants()) do 
 			if v:IsA'Sound' and v.Name == "SoundX" then
 				local Id = MarketplaceService:GetProductInfo(v.SoundId:match"%d+")
@@ -1509,6 +1526,13 @@ if chatting then return end
 					writefile("AudioLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen ID: "..Id.AssetId.." From: "..Player.Name)
 				end
 			end
+		end
+	end
+	if key.KeyCode == Enum.KeyCode.Q and string.find(Mouse.Target.Name,"Spray") then 
+		local Target = Mouse.Target 
+		if Target:FindFirstChildOfClass'BlockMesh' and Target:FindFirstChildOfClass'Decal' then 
+			notif("Stole the decal from "..Target.Name:gsub("Spray",""),"The ID is "..tostring(Target.Decal.Texture:match"%d+").." it is also in your workspace folder",5,nil)
+			writefile("DecalLog From "..Target.Name:gsub("Spray","").." "..math.random(1,99)..".txt","Stolen Decal: "..tostring(Target.Decal.Texture:match"%d+").." From: "..Target.Name:gsub("Spray",""))
 		end
 	end
 	if PartTable and key.KeyCode == Enum.KeyCode.H then
@@ -1527,8 +1551,7 @@ if chatting then return end
 end
 
 local function Ended(Key,Chatting)
-	if Chatting then return end 
-
+	if Chatting then return end -- not used yet lol 
 end
 
 local function Lost(Enter)
