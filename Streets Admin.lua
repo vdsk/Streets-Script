@@ -81,6 +81,7 @@ local function Teleport(Part)
 	if _G.DoYouHaveBfgBypass then 
 		LP.Character.HumanoidRootPart.CFrame = Part
 	else
+		NeverSitting,Noclipping = true,true
 		local Play = TweenService:Create(LP.Character.HumanoidRootPart, TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
 		Play:play()
 	end
