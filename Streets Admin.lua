@@ -600,7 +600,9 @@ local function fire(Tool,Part)
 		Tool.Fire:FireServer(Mouse.Hit)
 	end
 end
-local OnlyAimLock = false 
+
+
+local OnlyAimLock,AimDebounce = false,false
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
 		local Child = LP.Backpack:GetChildren()
@@ -641,7 +643,8 @@ local function Modes()
 			end
 		end
 	end
-	if Mouse.Target and Players:GetPlayerFromCharacter(Mouse.Target.Parent) and Mouse.Target.Parent:FindFirstChildOfClass'Humanoid' and AimLock and not OnlyAimLock then 
+	if Mouse.Target and Players:GetPlayerFromCharacter(Mouse.Target.Parent) and Mouse.Target.Parent:FindFirstChildOfClass'Humanoid' and AimLock and not OnlyAimLock and not AimDebounce then 
+		AimDebounce = true 
 		AimlockTarget = Mouse.Target.Parent
 		AimlockTarget:FindFirstChildOfClass'Humanoid'.Died:Connect(function(a)
 			AimlockTarget = nil
@@ -651,9 +654,12 @@ local function Modes()
 			if P.Name == "KO" then 
 				AimlockTarget = nil 
 				OnlyAimLock = false
+				AimDebounce = false 
 			end
 		end)
 		notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
+		wait(3)
+		AimDebounce = false 
 	end
 end
 
@@ -903,7 +909,8 @@ Cmds.speed = function(Arguments)
 end
 
 Cmds.ws = function(Arguments)
-	if Arguments[1] then 
+	if Arguments[1] then
+		Normalwalk = true
 		RunCmd("speed "..Arguments[1])
 	end
 end
@@ -1280,6 +1287,47 @@ Cmds.aimlock = function(Arguments)
 		notif("Command: AimLock","has been set to "..tostring(AimLock),5,"rbxassetid://1281284684")
 	end
 end
+
+
+--[[Cmds.join = function(Arguments)
+	if Arguments[1] and Arguments[2] then 
+		local Username,UserId = pcall(function() -- legit just how synapse x stream sniper does it just edited to work with my admin credit: https://github.com/syngp/SynapseX/blob/master/Synapse%20Scripts/StreamSniper.lua
+			if tonumber(Arguments[2]) then 
+				return tonumber(Arguments[2])
+			end 
+			return Players:GetUserIdFromNameAsync(Arguments[2])
+		end)
+		if not Username then 
+			notif("Command: Join","Not a player",5,"rbxassetid://1281284684")
+		end 
+		local Thumbnail,Index,Place = HttpService:JSONDecode(game:HttpGet('https://www.roblox.com/headshot-thumbnail/json?userId='..UserId..'&width=48&height=48')),0
+		if Arguments[2]:lower() == "prison" then Place = "4669040" elseif Arguments[2]:lower() == "streets" then Place = "4669040" end
+		while true do
+			local GameInstances = HttpService:JSONDecode(game:HttpGet("https://www.roblox.com/games/getgameinstancesjson?placeId=" ..Place.. "&startindex=" ..Index))
+				for GameIndex,GameValue in pairs(GameInstances.Collection) do 
+					for PlayerIndex,PlayerValue in pairs(GameValue.CurrentPlayers) do 
+						if PlayerValue.Id == UserId or PlayerValue.Thumbnail.Url == Thumbnail.Url then
+							TeleportService:TeleportToPlaceInstance(tonumber(PlaceId),GameValue.Guid)
+							LP.OnTeleport:Connect(function(State)
+								if State == Enum.TeleportState.Failed then 
+									TeleportService:TeleportToPlaceInstance(tonumber(PlaceId),GameValue.Guid)
+									print'failed'
+								end 
+							end)
+							return 
+						end
+					end
+				end
+				if Index > GameInstances.TotalCollectionSize then 
+					notif("Command: Join","They might be in a VIP server or not on streets/prison.",5,"rbxassetid://1281284684")
+				end
+			end
+		Index = Index + 10 
+	end
+end
+
+Currently broken so not in use 
+]]
 
 Cmds.key = function(Arguments)
 	if Arguments[1] and Arguments[2] then
@@ -1660,10 +1708,10 @@ local CoolkidTable = {
 
 local function Started(Key,chatting)
 if chatting then return end 
-	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed and Normalwalk then 
+	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ShiftSpeed 
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftControl and Normalwalk then 
+	if Key.KeyCode == Enum.KeyCode.LeftControl and not Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ControlSpeed 
 	end 
 	if Key.KeyCode == Enum.KeyCode.Quote then
@@ -1697,10 +1745,10 @@ end
 
 local function Ended(Key,Chatting)
 	if Chatting then return end -- used now lol 
-	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed and Normalwalk then
+	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftControl and ControlSpeed and Normalwalk then 
+	if Key.KeyCode == Enum.KeyCode.LeftControl and not Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
 	end 
 end
