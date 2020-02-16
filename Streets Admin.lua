@@ -246,7 +246,6 @@ local function savesettings()
     Keys = SettingsToSave.Keys
     ClickTpKey = SettingsToSave.ClickTpKey
 	BlinkKey = SettingsToSave.BlinkKey
-	KeyBinds = SettingsToSave.KeyBinds
 end 
 
 local function updateSettings()
@@ -254,7 +253,6 @@ local function updateSettings()
         Keys = Keys;
 		ClickTpKey = ClickTpKey;
 		BlinkKey = BlinkKey;
-		KeyBinds = KeyBinds;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -264,7 +262,6 @@ local function runsettings()
     Keys = SettingsToRun.Keys
     ClickTpKey = SettingsToRun.ClickTpKey
 	BlinkKey = SettingsToRun.BlinkKey
-	KeyBinds = SettingsToRun.KeyBinds
 end
 
 local Work,Error = pcall(function() readfile("CyrusStreetsAdminSettings") end)
@@ -1266,7 +1263,7 @@ Cmds.aimlock = function(Arguments)
 			AimLock = true
 			OnlyAimLock = true 
 			AimlockTarget = v.Character
-			b = v:FindFirstChildOfClass'Humanoid'.Died:Connect(function(Char)
+			b = v.Character:FindFirstChildOfClass'Humanoid'.Died:Connect(function(Char)
 				AimlockTarget = nil 
 			end)
 			AimlockTarget.ChildAdded:Connect(function(P) 
