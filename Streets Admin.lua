@@ -25,7 +25,7 @@ local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText = Instance.new("TextBox",Cframe)
 local CmdFrame = Instance.new("Frame",Cframe)
 
-if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") then 
+if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") or LP.UserId == "1460654046" or LP.UserId == "1427672031" then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
 	wait(5)
 	LP:Kick("No rogangsters!")
@@ -178,7 +178,7 @@ gamememe.__newindex = Closure(function(self,Property,b)
 	if not Caller() then
 		local a = getfenv(2).script
 		if tostring(self) == "Humanoid" and Property == "Health" or Property == "WalkSpeed" or Property == "JumpPower" then 
-			return nindex(Instance.new'Humanoid',Property,b)
+			return 
 		end
    		if Property == "CFrame" and self.Parent == LP.Character then 
        		return
@@ -197,12 +197,9 @@ end)
 gamememe.__namecall = Closure(function(self,...)
 	if not Caller() then 
 	local Arguments = {...}
-		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then 
-			return name(Instance.new'Part',...)
+		if getnamecallmethod() == "Destroy" or getnamecallmethod() == "Remove" or getnamecallmethod() == "ClearAllChildren" or getnamecallmethod() == "BreakJoints" and tostring(self) == LP.Character.Name then 
+			return 
 		end 
-		if getnamecallmethod() == "BreakJoints" and tostring(self) == LP.Character.Name then
-			return name(Instance.new'Model',...)
-		end
 		if Arguments[#Arguments] == "Kick" and tostring(self) == LP then 
 			return nil 
 		end
@@ -227,7 +224,7 @@ gamememe.__namecall = Closure(function(self,...)
 				PlayOnDeath = nil 
 			end
 			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
+				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity/5)
 			end
 		end
 	end
@@ -745,13 +742,13 @@ local function Looped()
 			local Players = Players:GetPlayers()
 			for i = 1,#Players do
 				if Players[i] ~= LP and Players[i].Character and Players[i].Character.Head and not Players[i]:IsFriendsWith(LP.UserId) then
-					if (LP.Character.HumanoidRootPart.Position - Players[i].Character.HumanoidRootPart.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0 then
+					if (LP.Character.HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0 then
 						local CurrentTool = LP.Character:FindFirstChild'Punch'
 						if not CurrentTool then 
 							CurrentTool = LP.Backpack.Punch
 							CurrentTool.Parent = LP.Character
 						end
-						LP.Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.HumanoidRootPart.Position)
+						LP.Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
 						LP.Backpack.ServerTraits.Finish:FireServer(CurrentTool)
 					end
 				end
@@ -782,7 +779,7 @@ local function GodFuckIhateRobloxIHaveNoMotivationForThisShitGame(Thing)
     end
 end
 
-local function b(Tool)
+local function bc(Tool)
 	if Tool.Name == "Uzi" then 
 		loluzistatscool()
 	end
@@ -823,7 +820,7 @@ local function Added()
 	LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
 	LP.Backpack.ChildAdded:Connect(MultiUzif)
 	LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
-	LP.PlayerGui.ChildAdded:Connect(b)
+	LP.PlayerGui.ChildAdded:Connect(bc)
 	LP.Character['Left Leg'].Touched:Connect(lolmultiuzithatisreloading)
 	LP.Character.Humanoid.Died:Connect(lol)
 	StarterGui:SetCore('ResetButtonCallback',BindableEvent)
@@ -1039,7 +1036,7 @@ end
 Cmds.to = function(Arguments)
 	if Arguments[1] then
 	    for _,v in pairs(PlrFinder(Arguments[1])) do 
-            Teleport(v.Character.HumanoidRootPart.CFrame)
+            Teleport(v.Character.Torso.CFrame)
         Noclipping,NeverSitting = false,false
       end
 	end
@@ -1288,6 +1285,14 @@ Cmds.aimlock = function(Arguments)
 	end
 end
 
+Cmds.bringcar = function(Arguments)
+local Car = workspace.Cars:GetDescendants() 
+	for i = 1,#Car do 
+		if Car[i]:IsA'VehicleSeat' and Car[i].Name == "Drive" and not Car[i].Occupant then 
+			LP.Character.HumanoidRootPart.CFrame = Car[i].CFrame
+		end
+	end 
+end
 
 --[[Cmds.join = function(Arguments)
 	if Arguments[1] and Arguments[2] then 
@@ -1552,8 +1557,8 @@ Cmds.esp = function(Arguments)
 						end
 						RunService.Stepped:connect(function()
 						pcall(function() 
-							if current and LP.Character:FindFirstChildOfClass'Humanoid' and espPlayer.Character:FindFirstChild("HumanoidRootPart") then
-								Info.Text = espPlayer.Name.." (".. math.floor((LP.Character:FindFirstChild("HumanoidRootPart").Position - espPlayer.Character:FindFirstChild("HumanoidRootPart").Position).magnitude)..")"
+							if current and LP.Character:FindFirstChildOfClass'Humanoid' and espPlayer.Character:FindFirstChild("Torso") then
+								Info.Text = espPlayer.Name.." (".. math.floor((LP.Character.Torso.Position - espPlayer.Character.Torso.Position).magnitude)..")"
 							end
 						end)
 						end)
@@ -1704,6 +1709,7 @@ local CoolkidTable = {
 	['412957'] 		= "trippinfo";
 	['1443431439']  = "wk1r";
 	['164282612']   = "wk1r";
+	['548617338']   = "Sirhurt Gamer";
 }
 
 local function Started(Key,chatting)
@@ -1855,7 +1861,7 @@ end)
 
 LP.Chatted:Connect(RunCmd)
 LP.Backpack.ChildAdded:Connect(MultiUzif)
-LP.PlayerGui.ChildAdded:Connect(b)
+LP.PlayerGui.ChildAdded:Connect(bc)
 LP.Character.ChildAdded:Connect(GodFuckIhateRobloxIHaveNoMotivationForThisShitGame)
 LP.CharacterAdded:Connect(Added)
 LP.Character.Humanoid.StateChanged:Connect(HumanoidState)
