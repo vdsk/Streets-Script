@@ -896,9 +896,11 @@ Cmds.muteallradios = function(Arguments)
 	end
 end
 
+local Normalwalk = false  
 Cmds.speed = function(Arguments)
 	if Arguments[1] then
 		WalkSpeed = Arguments[1]
+		NormalWalk = true
 		LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = Arguments[1]
 	end
 end
@@ -911,12 +913,14 @@ end
 
 Cmds.sprintspeed = function(Arguments)
 	if Arguments[1] then
+		Normalwalk = false 
 		ShiftSpeed = Arguments[1]
 	end
 end
 
 Cmds.crouchspeed = function(Arguments)
-	if Arguments[1] then 
+	if Arguments[1] then
+		Normalwalk = false 
 		ControlSpeed = Arguments[1]
 	end
 end
@@ -1659,10 +1663,10 @@ local CoolkidTable = {
 
 local function Started(Key,chatting)
 if chatting then return end 
-	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then 
+	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed and Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ShiftSpeed 
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftControl then 
+	if Key.KeyCode == Enum.KeyCode.LeftControl and Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ControlSpeed 
 	end 
 	if Key.KeyCode == Enum.KeyCode.Quote then
@@ -1696,10 +1700,10 @@ end
 
 local function Ended(Key,Chatting)
 	if Chatting then return end -- used now lol 
-	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
+	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed and Normalwalk then
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftControl and ControlSpeed then 
+	if Key.KeyCode == Enum.KeyCode.LeftControl and ControlSpeed and Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
 	end 
 end
