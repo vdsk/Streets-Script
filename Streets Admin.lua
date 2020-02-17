@@ -1711,6 +1711,7 @@ local CoolkidTable = {
 	['164282612']   = "wk1r";
 	['548617338']   = "Sirhurt Gamer";
 	['1275692258']  = "Big Dick";
+	['1291336911'] 	= "I'm lazy";
 }
 
 local function Started(Key,chatting)
