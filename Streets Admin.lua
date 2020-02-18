@@ -124,21 +124,21 @@ end
 
 local function Teleport(Part)
 	if _G.DoYouHaveBfgBypass then 
-		LP.Character.HumanoidRootPart.CFrame = Part
+		LP.Character.Torso.CFrame = Part
 	else
 		NeverSitting,Noclipping = true,true
-		local Play = TweenService:Create(LP.Character.HumanoidRootPart, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
+		local Play = TweenService:Create(LP.Character.Torso, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
 		Play:play()
 	end
 end
 
 local function Heal()
 	if Debounce then return end
-	local CFRame = LP.Character.HumanoidRootPart.CFrame 
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
+	local CFRame = LP.Character.Torso.CFrame 
+    LP.Character.Torso.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
     wait()
     repeat  
-        LP.Character.HumanoidRootPart.CFrame = PartTable['Burger']
+        LP.Character.Torso.CFrame = PartTable['Burger']
         game:GetService'RunService'.Heartbeat:wait()
 	until LP.Backpack:FindFirstChild'Burger' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
 	if LP.Backpack:FindFirstChild'Burger' then 
@@ -147,7 +147,7 @@ local function Heal()
 		Burg:Activate()
 	end
     repeat 
-        LP.Character.HumanoidRootPart.CFrame = PartTable['Drink']
+        LP.Character.Torso.CFrame = PartTable['Drink']
         game:GetService'RunService'.Heartbeat:wait()
 	until LP.Backpack:FindFirstChild'Drink' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
 	if LP.Backpack:FindFirstChild'Drink' then 
@@ -155,58 +155,71 @@ local function Heal()
 		Drink.Parent = LP.Character
 		Drink:Activate()
 	end
-	LP.Character.HumanoidRootPart.CFrame = CFRame
+	LP.Character.Torso.CFrame = CFRame
 end 
 
 local function Ammo()
 	if Debounce then return end
-	local CFRame,Old,Anim = LP.Character.HumanoidRootPart.CFrame,LP.Character:FindFirstChildOfClass'Tool'.Clips.Value,Instance.new'Animation'
+	local CFRame,Old,Anim = LP.Character.Torso.CFrame,LP.Character:FindFirstChildOfClass'Tool'.Clips.Value,Instance.new'Animation'
 	Anim.AnimationId = "rbxassetid://188632011" 
 	local Track = LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim)
-	LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
+	LP.Character.Torso.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
     wait()
 	repeat  
 		Track:play(.1,1,1)
-        LP.Character.HumanoidRootPart.CFrame = PartTable['Ammo']
+        LP.Character.Torso.CFrame = PartTable['Ammo']
         game:GetService'RunService'.Heartbeat:wait()
 	until Old < LP.Character:FindFirstChildOfClass'Tool'.Clips.Value or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
 	Track:Stop()
-	LP.Character.HumanoidRootPart.CFrame = CFRame
+	LP.Character.Torso.CFrame = CFRame
 end 
+
+getrenv().print = nil
+hook = hookfunction(Instance.new'RemoteEvent'.FireServer,function(self,...)
+local Args = {...}
+	if not checkcaller() and tostring(self.Parent) == Rep or tostring(Args[#Args]) == "hey" then 
+		return wait(9e9)
+	end
+end)
 
 gamememe.__newindex = Closure(function(self,Property,b)
 	if not Caller() then
 		local a = getfenv(2).script
-		if tostring(self) == "Humanoid" and Property == "Health" or Property == "WalkSpeed" or Property == "JumpPower" then 
-			return 
+		if tostring(self) == "Humanoid" and Property == "WalkSpeed" then 
+			return nindex(Instance.new'Humanoid',Property,b)
 		end
-   		if Property == "CFrame" and self.Parent == LP.Character then 
-       		return
+		if tostring(self) == "Humanoid" and Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
+			return
+        end
+		if Property == "CFrame" and self.Parent == LP.Character then
+       		return 
     	end
 	end
 	return nindex(self,Property,b)
 end)
 
-gamememe.__index = Closure(function(self,Property,b)
-     if Property == "Gravity" then
-        return NGrav -- added incase someone uses an admin that isn't mine 
-      end
-  	return index(self,Property,b)
+gamememe.__index = Closure(function(self,Property)
+	if not Caller() then 
+		if Property == "Gravity" then
+			return NGrav -- added incase someone uses an admin that isn't mine 
+		end
+	end
+  	return index(self,Property)
 end)
 
 gamememe.__namecall = Closure(function(self,...)
 	if not Caller() then 
 	local Arguments = {...}
 		if getnamecallmethod() == "Destroy" or getnamecallmethod() == "Remove" or getnamecallmethod() == "ClearAllChildren" or getnamecallmethod() == "BreakJoints" and tostring(self) == LP.Character.Name then 
-			return 
+			return
 		end 
 		if Arguments[#Arguments] == "Kick" and tostring(self) == LP then 
 			return nil 
 		end
+		if getnamecallmethod() == "SetStateEnabled" then 
+			return Instance.new'Humanoid'
+		end
 		if getnamecallmethod() == "FireServer" then 
-			if tostring(self.Name) == "lIII" or tostring(self.Parent) == "ReplicatedStorage" or Arguments[1] == "hey" then 
-				return wait(9e9)
-			end
 			if Arguments[1] == "play" then
 			local TempTable = {}
 				tostring(Arguments[2]):gsub('.',function(Char)
@@ -713,8 +726,8 @@ local function HotkeyHandler(Key)
 		end
 	end
     if Key == ClickTpKey and Mouse.Target then
-        if (Mouse.hit.Position - LP.Character.HumanoidRootPart.Position).magnitude < 50 then 
-            LP.Character.HumanoidRootPart.CFrame = CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0))
+        if (Mouse.hit.Position - LP.Character.Torso.Position).magnitude < 50 then 
+            LP.Character.Torso.CFrame = CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0))
         else
             Teleport(CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0)))
         end
@@ -742,13 +755,13 @@ local function Looped()
 			local Players = Players:GetPlayers()
 			for i = 1,#Players do
 				if Players[i] ~= LP and Players[i].Character and Players[i].Character.Head and not Players[i]:IsFriendsWith(LP.UserId) then
-					if (LP.Character.HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0 then
+					if (LP.Character.Torso.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0 then
 						local CurrentTool = LP.Character:FindFirstChild'Punch'
 						if not CurrentTool then 
 							CurrentTool = LP.Backpack.Punch
 							CurrentTool.Parent = LP.Character
 						end
-						LP.Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
+						LP.Character.Torso.CFrame = CFrame.new(Players[i].Character.Torso.Position)
 						LP.Backpack.ServerTraits.Finish:FireServer(CurrentTool)
 					end
 				end
@@ -1020,7 +1033,7 @@ end
 
 Cmds.reset = function(Arguments)
 	WaitingToRespawn = true 
-	WaitingToRespawnPos = LP.Character.HumanoidRootPart.CFrame
+	WaitingToRespawnPos = LP.Character.Torso.CFrame
 	LP.Character:BreakJoints()
 end
 
@@ -1076,7 +1089,7 @@ local function ToolAdded(h)
 		for _,v in pairs(AntiKillTools) do if h == v then return end end 
 			AntiKill.Parent = workspace
 			AntiKill.CFrame = LP.Character.Head.CFrame + Vector3.new(0,-4,0)
-			LP.Character.HumanoidRootPart.CFrame = AntiKill.CFrame
+			LP.Character.Torso.CFrame = AntiKill.CFrame
 			LP.Character.Head.Anchored = true
 			AntiKill.Parent = nil 
 			repeat wait() until not LP.Character:FindFirstChild(h)
@@ -1289,7 +1302,7 @@ Cmds.bringcar = function(Arguments)
 local Car = workspace.Cars:GetDescendants() 
 	for i = 1,#Car do 
 		if Car[i]:IsA'VehicleSeat' and Car[i].Name == "Drive" and not Car[i].Occupant then 
-			LP.Character.HumanoidRootPart.CFrame = Car[i].CFrame
+			LP.Character.Torso.CFrame = Car[i].CFrame
 		end
 	end 
 end
@@ -1712,11 +1725,13 @@ local CoolkidTable = {
 	['548617338']   = "Sirhurt Gamer";
 	['1275692258']  = "Big Dick";
 	['1291336911'] 	= "I'm lazy";
+	['d8bi']        = "Bird";
 }
 
 local function Started(Key,chatting)
 if chatting then return end 
-	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then 
+	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then
+		KeyTable['Shift'] = true 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ShiftSpeed 
 	end
 	if Key.KeyCode == Enum.KeyCode.LeftControl and not Normalwalk then 
@@ -1754,6 +1769,7 @@ end
 local function Ended(Key,Chatting)
 	if Chatting then return end -- used now lol 
 	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then
+		KeyTable['Shift'] = false 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
 	end
 	if Key.KeyCode == Enum.KeyCode.LeftControl and not Normalwalk then 
@@ -1890,7 +1906,7 @@ end)
 
 spawn(function()
 	while true do
-		if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'HumanoidRootPart' and LP.Character:FindFirstChild'Head' then
+		if LP.Character and LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character:FindFirstChild'Torso' and LP.Character:FindFirstChild'Head' then
 			if LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight > 0 or flying or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character:FindFirstChildOfClass'Humanoid'.Sit then 
 				local JP = LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower
 				LP.Character:FindFirstChildOfClass'Humanoid'.JumpPower = 1.5
@@ -1900,10 +1916,10 @@ spawn(function()
 			end
 			if AirWalkOn then 
 				LP.Character:FindFirstChildOfClass'Humanoid'.HipHeight = 0
-				AirWalk.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0,-4,0)
+				AirWalk.CFrame = LP.Character.Torso.CFrame * CFrame.new(0,-4,0)
 			end
 			if Blinking then 
-				LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame + LP.Character.HumanoidRootPart.CFrame.lookVector * BlinkSpeed
+				LP.Character.Torso.CFrame = LP.Character.Torso.CFrame + LP.Character.Torso.CFrame.lookVector * BlinkSpeed
 			end
 		end
 		wait()
