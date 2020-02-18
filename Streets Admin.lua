@@ -14,11 +14,6 @@ local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['
 local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","Lock // Unlock","DeathSpawn","Btools","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
-local gamememe = getrawmetatable(game)
-local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
-local writeable = setreadonly(gamememe,false) or make_writeable(gamememe)
-local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
-local NGrav = workspace.Gravity
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
@@ -174,23 +169,25 @@ local function Ammo()
 	LP.Character.Torso.CFrame = CFRame
 end 
 
-getrenv().print = nil
+local gamememe = getrawmetatable(game)
+local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
+local writeable = setreadonly(gamememe,false) or make_writeable(gamememe)
+local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
+local hook 
 hook = hookfunction(Instance.new'RemoteEvent'.FireServer,function(self,...)
-local Args = {...}
-	if not checkcaller() and tostring(self.Parent) == Rep or tostring(Args[#Args]) == "hey" then 
-		return wait(9e9)
+	local Arguments = {...}
+	if Arguments[#Arguments] == "hey" or string.find(Arguments[#Arguments]:lower(),"walkspeed") or Arguments[#Arguments] == "bork" then 
+		return
 	end
 end)
 
 gamememe.__newindex = Closure(function(self,Property,b)
 	if not Caller() then
-		local a = getfenv(2).script
-		if tostring(self) == "Humanoid" and Property == "WalkSpeed" then 
-			return nindex(Instance.new'Humanoid',Property,b)
+		if self:IsA'Humanoid' then 
+			if Property == "WalkSpeed" or Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
+				return 
+			end
 		end
-		if tostring(self) == "Humanoid" and Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
-			return
-        end
 		if Property == "CFrame" and self.Parent == LP.Character then
        		return 
     	end
@@ -199,10 +196,8 @@ gamememe.__newindex = Closure(function(self,Property,b)
 end)
 
 gamememe.__index = Closure(function(self,Property)
-	if not Caller() then 
-		if Property == "Gravity" then
-			return NGrav -- added incase someone uses an admin that isn't mine 
-		end
+	if Property == "Gravity" then
+		return
 	end
   	return index(self,Property)
 end)
@@ -215,9 +210,6 @@ gamememe.__namecall = Closure(function(self,...)
 		end 
 		if Arguments[#Arguments] == "Kick" and tostring(self) == LP then 
 			return nil 
-		end
-		if getnamecallmethod() == "SetStateEnabled" then 
-			return Instance.new'Humanoid'
 		end
 		if getnamecallmethod() == "FireServer" then 
 			if Arguments[1] == "play" then
