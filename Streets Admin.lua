@@ -1885,11 +1885,6 @@ spawn(function()
 				LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame + LP.Character.HumanoidRootPart.CFrame.lookVector * BlinkSpeed
 			end
 		end
-		for _,v in pairs(getnilinstances()) do 
-			if v:IsA'BoolValue' then 
-				LP:Kick"No. Just no. If you see this message don't dm Cyrus as you know what you've done."
-			end
-		end
 		wait()
 	end
 end)
