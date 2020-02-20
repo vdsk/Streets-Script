@@ -203,7 +203,26 @@ gamememe.__namecall = Closure(function(self,...)
             end
             if Arguments[1] == "hey" then 
                 return wait(9e9)
-            end
+			end
+			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
+				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
+			end
+			if Arguments[1] == "play" then
+				local TempTable = {}
+					tostring(Arguments[2]):gsub('.',function(Char)
+						if UrlEncoder[Char] then 
+							table.insert(TempTable,UrlEncoder[Char])
+						else 
+							table.insert(TempTable,Char)
+						end
+					end)
+					Arguments[2] = table.concat(TempTable,"")
+					PlayOnDeath = Arguments[2]
+					return name(self,unpack(Arguments))
+				end
+			if Arguments[1] == "stop" then 
+				PlayOnDeath = nil 
+			end
         end
     end
     return name(self,...)
