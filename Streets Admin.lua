@@ -14,7 +14,7 @@ local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['
 local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
-ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
+ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText = Instance.new("TextBox",Cframe)
@@ -1389,6 +1389,18 @@ Cmds.unview = function(Arguments)
 	View(LP)
 end
 
+--[[Cmds.audioprotect = function(Arguments)
+	if Arguments[2] then
+		print(Arguments[2])
+		local HttpGet = game:HttpGet("https://www.roblox.com/studio/plugins/info?assetId="..Arguments[2])
+		local Find = string.find(HttpGet,"value=")
+		local ID = HttpGet:sub(Find + 7,Find + 16)
+		PlayOnDeath = ID
+		LP.Character.BoomBox:FindFirstChildOfClass'RemoteEvent':FireServer("play",ID)
+	end
+end -- hidden gamer command soon:tm: 
+]]
+
 Cmds.style = function(Arguments)
 if not _G.DoYouHaveBfgBypass then notif("Command: Style","This is only for people with BFG bypass. Use the grip command.",5,"rbxassetid://1281284684") return end 
   if Arguments[1] then 
@@ -1871,6 +1883,11 @@ spawn(function()
 			end
 			if Blinking then 
 				LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame + LP.Character.HumanoidRootPart.CFrame.lookVector * BlinkSpeed
+			end
+		end
+		for _,v in pairs(getnilinstances()) do 
+			if v:IsA'BoolValue' then 
+				LP:Kick"No. Just no. If you see this message don't dm Cyrus as you know what you've done."
 			end
 		end
 		wait()
