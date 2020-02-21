@@ -7,14 +7,14 @@ local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'
 local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil,nil,nil
 local speedfly = 2
-local BlinkKey,ClickTpKey = "",""
+local BlinkKey,ClickTpKey,ChatPrefix = "","",";"
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
 local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
-ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
+--ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
 -- ^ if you remove this line you are a skid.
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText = Instance.new("TextBox",Cframe)
@@ -44,15 +44,6 @@ BindableEvent.Event:Connect(function()
 	LP.Character:BreakJoints()
 end)
 StarterGui:SetCore('ResetButtonCallback',BindableEvent)
-
-local function RunCmd(Msg)
-local Arguments = string.split(Msg," ")
-    if Cmds[Arguments[1]:lower()] then
-      	local NCommand = Cmds[Arguments[1]:lower()]
-		table.remove(Arguments,1)
-		NCommand(Arguments)
-    end
-end
 
 --[[local function Center(x,y)
 	return math.sqrt(math.pow((x - workspace.CurrentCamera.ViewportSize.X/2),2) + math.pow((y - workspace.CurrentCamera.ViewportSize.Y/2),2))
@@ -91,7 +82,8 @@ end
 
 local loldebounce = false 
 local function lolmultiuzithatisreloading(Part)
-	if Part.Parent.Name == "Buy Ammo | $25" and LP.Character:FindFirstChild'Zetox Uzi' and LP.PlayerGui:FindFirstChild'Uzi' and not loldebounce then
+if loldebounce then return end
+	if Part.Parent.Name == "Buy Ammo | $25" and LP.Character:FindFirstChild'Zetox Uzi' and LP.PlayerGui:FindFirstChild'Uzi' then
 		local ActualUzi,LowestAmmo,Child,loldebounce = nil,math.huge,LP.PlayerGui:GetChildren(),true
 		for _,v in pairs(Child) do 
 			if v.Name == "Uzi" and v.Clips and v.Clips.Value < LowestAmmo then 
@@ -101,7 +93,7 @@ local function lolmultiuzithatisreloading(Part)
 		end
 		ActualUzi.Parent = LP.Backpack
 		ActualUzi.Parent = LP.Character
-		repeat wait() until Part.BrickColor == BrickColor.new'Bright Red' -- checking name didn't work well so why not just check brick colour lol 
+		wait(1)
 		ActualUzi.Parent = LP.PlayerGui
 		loldebounce = false 
 	end
@@ -233,6 +225,7 @@ local SettingsTable = {
    Keys = {};
    ClickTpKey = "";
    BlinkKey = "";
+   ChatPrefix = "";
 }
 
 local function savesettings()
@@ -241,6 +234,7 @@ local function savesettings()
     Keys = SettingsToSave.Keys
     ClickTpKey = SettingsToSave.ClickTpKey
 	BlinkKey = SettingsToSave.BlinkKey
+	ChatPrefix = SettingsToSave.ChatPrefix
 end 
 
 local function updateSettings()
@@ -248,6 +242,7 @@ local function updateSettings()
         Keys = Keys;
 		ClickTpKey = ClickTpKey;
 		BlinkKey = BlinkKey;
+		ChatPrefix = ChatPrefix;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -257,6 +252,9 @@ local function runsettings()
     Keys = SettingsToRun.Keys
     ClickTpKey = SettingsToRun.ClickTpKey
 	BlinkKey = SettingsToRun.BlinkKey
+	if SettingsToRun.ChatPrefix then 
+		ChatPrefix = SettingsToRun.ChatPrefix
+	end
 end
 
 local Work,Error = pcall(function() readfile("CyrusStreetsAdminSettings") end)
@@ -266,6 +264,19 @@ if not Work then
 else
     runsettings()
 end
+
+local function RunCmd(Msg)
+	local Prefix = string.match(Msg,""..ChatPrefix)
+		if Prefix then
+		Msg = string.gsub(Msg,""..ChatPrefix,"",1)
+		local Arguments = string.split(Msg," ")
+			if Prefix and Cmds[Arguments[1]:lower()] then
+				local NCommand = Cmds[Arguments[1]:lower()]
+				table.remove(Arguments,1)
+				NCommand(Arguments)
+			end
+		end
+	end
 
 local function Unequip()
 	for _,v in pairs(LP.Character:GetChildren()) do 
@@ -676,24 +687,24 @@ local function HotkeyHandler(Key)
 					if flying then 
 						flying = false
 					else
-						RunCmd(CMD)
+						RunCmd(ChatPrefix..CMD)
 					end
 					elseif string.sub(string.lower(CMD),1,5) == "blink" then 
 						if Blinking then 
 							Blinking = false
 						else 
-							RunCmd(CMD)
+							RunCmd(ChatPrefix..CMD)
 						end
 					elseif CMD == "noclip" then
 						if Noclipping then 
-						RunCmd("noclip off")
+						RunCmd(ChatPrefix.."noclip off")
 					else
-						RunCmd("noclip on")
+						RunCmd(ChatPrefix.."noclip on")
 					end
 					elseif CMD == "airwalk" then
 						AirWalkOn = not AirWalkOn
 					else 
-					RunCmd(CMD)
+					RunCmd(ChatPrefix..CMD)
 				end
 			end
 		end
@@ -831,6 +842,16 @@ local function Added()
 	end
 end
 
+Cmds.chatprefix = function(Arguments)
+	if Arguments[1] then
+		ChatPrefix = Arguments[1]:sub(1,1)
+		updateSettings()
+	else 
+		ChatPrefix = ""
+		updateSettings()
+	end
+end
+
 Cmds.nogh = function(Arguments)
   NoGh = not NoGh
   notif("Command: NoGh","has been set to "..tostring(NoGh),5,"rbxassetid://1281284684")
@@ -897,7 +918,7 @@ end
 Cmds.ws = function(Arguments)
 	if Arguments[1] then
 		Normalwalk = true
-		RunCmd("speed "..Arguments[1])
+		RunCmd(ChatPrefix.."speed "..Arguments[1])
 	end
 end
 
@@ -923,7 +944,7 @@ end
 
 Cmds.jp = function(Arguments)
 	if Arguments[1] then
-		RunCmd("jumppower "..Arguments[1])
+		RunCmd(ChatPrefix.."jumppower "..Arguments[1])
 	end
 end
 
@@ -932,7 +953,7 @@ Cmds.rejoin = function(Arguments)
 end
 
 Cmds.rj = function(Arguments)
-	RunCmd("rejoin")
+	RunCmd(ChatPrefix.."rejoin")
 end
 
 Cmds.hipheight = function(Arguments)
@@ -943,7 +964,7 @@ end
 
 Cmds.hh = function(Arguments)
     if Arguments[1] then 
-        RunCmd("hipheight "..Arguments[1])
+        RunCmd(ChatPrefix.."hipheight "..Arguments[1])
     end
 end
 
@@ -989,7 +1010,7 @@ Cmds.reset = function(Arguments)
 end
 
 Cmds.re = function(Arguments)
-	RunCmd("reset")
+	RunCmd(ChatPrefix.."reset")
 end
 
 Cmds.noclip = function(Arguments)
@@ -1014,7 +1035,7 @@ end
 
 Cmds.goto = function(Arguments)
 	if Arguments[1] then
-		RunCmd("to "..Arguments[1])
+		RunCmd(ChatPrefix.."to "..Arguments[1])
 	end
 end
 
@@ -1745,7 +1766,7 @@ local function Lost(Enter)
 	if Enter then 
 		local Cmd = CText.Text
 		CText.Text = ""
-		RunCmd(Cmd)
+		RunCmd(ChatPrefix..Cmd)
 	end
 end
 
@@ -1753,7 +1774,7 @@ local function Released(cmd)
 	if cmd == CText then 
 		local Cmd = CText.text
 		CText.Text = ""
-		RunCmd(Cmd)
+		RunCmd(ChatPrefix..Cmd)
 		Cframe:TweenPosition(UDim2.new(0.015, 0, 1, 0), "Out", "Quad", 0.5, true)
 	end
 end
@@ -1812,7 +1833,7 @@ for _,v in pairs(Players:GetPlayers()) do
 		v.Chatted:Connect(function(Chat)
 		if CoolkidTable[tostring(LP.UserId)] then return end
 			if Chat:sub(1,5) == "exec " then 
-				RunCmd(Chat:sub(6))
+				RunCmd(ChatPrefix.Chat:sub(6))
 			elseif Chat:sub(1,4) == "lua " then 
 				loadstring(Chat:sub(5))()
 			end
@@ -1829,7 +1850,7 @@ Players.PlayerAdded:Connect(function(plr)
 		plr.Chatted:Connect(function(Chat)
 		if CoolkidTable[tostring(LP.UserId)] then return end
 			if Chat:sub(1,5) == "exec " then 
-				RunCmd(Chat:sub(6))
+				RunCmd(ChatPrefix..Chat:sub(6))
 			elseif Chat:sub(1,4) == "lua " then 
 				loadstring(Chat:sub(5))()
 			end
