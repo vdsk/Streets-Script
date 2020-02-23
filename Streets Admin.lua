@@ -254,6 +254,8 @@ local function runsettings()
 	BlinkKey = SettingsToRun.BlinkKey
 	if SettingsToRun.ChatPrefix then 
 		ChatPrefix = SettingsToRun.ChatPrefix
+	else 
+		ChatPrefix = "";
 	end
 end
 
@@ -1606,7 +1608,7 @@ end
 
 Cmds.advertise = function(Arguments)
   wait(0.5)
-  ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by Cyrusrock1Alt | Join the cord at UVgdNXP","All")
+  ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by NotCyrusAtAll(Alt: Periius) | Join the cord at UVgdNXP","All")
 end
 
 Cmds.antiafk = function(Arguments)
@@ -1712,8 +1714,8 @@ local CoolkidTable = {
 	['d8bi']        = "Bird";
 }
 
-local function Started(Key,chatting)
-if chatting then return end 
+local function Started(Key,USELESSSINCEROBLOXISDOGSHIT)
+if UserInput:GetFocusedTextBox() then return end -- fuck you roblox 
 	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then
 		KeyTable['Shift'] = true 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ShiftSpeed 
