@@ -11,7 +11,7 @@ local BlinkKey,ClickTpKey,ChatPrefix = "","",";"
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]","chatprefix [prefix/nil]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background/cmds] [rgb]","chatprefix [prefix/nil]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
@@ -19,6 +19,12 @@ ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welc
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText = Instance.new("TextBox",Cframe)
 local CmdFrame = Instance.new("Frame",Cframe)
+
+local Colours = {
+	Colour1;
+	Colour2;
+	Colour3;
+}
 
 if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") or LP.UserId == "1460654046" or LP.UserId == "1427672031" then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
@@ -1348,6 +1354,13 @@ Cmds.colour = function(Arguments)
 			CText.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1]:lower() == "background" then 
 			CmdFrame.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+		elseif Arguments[1]:lower() == "cmds" then 
+			local Child = CmdFrame:GetChildren() 
+			for i = 1,#Child do 
+				if Child[i]:IsA'TextLabel' then 
+					Child[i].BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+				end
+			end
 		end
 	else
 		notif("Command: Colour","Colour: [BackGround/Text/Outline] [rgb]",5,"rbxassetid://1281284684")
@@ -1582,16 +1595,16 @@ end
 Cmds.antiafk = function(Arguments)
 	AntiAfk = not AntiAfk
 	notif("Command: AntiAfk","has been set to "..tostring(AntiAfk),5,"rbxassetid://1281284684")
-end
+end 
 
-Cframe.BackgroundColor3 = Color3.new(0.666667, 0, 0)
+Cframe.BackgroundColor3 = Color3.new(0.666667,0,0)
 Cframe.BackgroundTransparency = 0.20000000298023
 Cframe.BorderSizePixel = 0
 Cframe.Position = UDim2.new(0, 0, 1, 0)
 Cframe.Size = UDim2.new(0, 270, 0, 35)
 Cframe.Name = math.random(1,3000000)
 
-CText.BackgroundColor3 = Color3.new(0, 0.000738177, 0.000738177)
+CText.BackgroundColor3 = Color3.new(0,0.000738177,0.000738177)
 CText.BorderSizePixel = 0
 CText.Position = UDim2.new(0, 5, 0, 5)
 CText.Size = UDim2.new(0, 260, 0, 25)
