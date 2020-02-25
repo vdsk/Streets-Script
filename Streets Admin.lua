@@ -4,14 +4,14 @@ local LP = Players.LocalPlayer
 repeat wait() until LP and LP.Character and LP.Character:FindFirstChild'Humanoid'
 local Mouse = LP:GetMouse()
 local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed,LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower,game.Players.LocalPlayer.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight
-local AirWalkOn,AntiFeKill,SpawnAtDeathPos,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local AirWalkOn,AntiFeKill,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil,nil,nil
 local speedfly = 2
 local BlinkKey,ClickTpKey,ChatPrefix = "","",";"
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background/cmds] [rgb]","chatprefix [prefix/nil]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets/Uzi/SawedOff/Machete/Spray/Pipe]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background/cmds] [rgb]","chatprefix [prefix/nil]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
@@ -35,7 +35,16 @@ if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP
 end 
 
 if workspace:FindFirstChild'Armoured Truck' then
-	PartTable = {['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);['Ammo'] = workspace:FindFirstChild'Buy Ammo | $25':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,1,0)}
+	PartTable = {
+		['Burger'] = workspace:FindFirstChild'Burger | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);
+		['Drink'] = workspace:FindFirstChild'Drink | $15':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);
+		['Ammo'] = workspace:FindFirstChild'Buy Ammo | $25':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,1,0);
+		['Pipe'] = workspace:FindFirstChild'Pipe | $100':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);
+		['Machete'] = workspace:FindFirstChild'Machete | $70':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);
+		['SawedOff'] = workspace:FindFirstChild'Sawed Off | $150':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,1,0);
+		['Spray'] = workspace:FindFirstChild'Spray | $20':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,1,0);
+		['Uzi'] = workspace:FindFirstChild'Uzi | $150':FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0);
+	}
     workspace["Armoured Truck"]:Destroy()
 elseif workspace:FindFirstChild'TPer' then 
     workspace['TPer']:Destroy()
@@ -128,7 +137,7 @@ end
 local function Heal()
 	if Debounce then return end
 	local CFRame = LP.Character.HumanoidRootPart.CFrame 
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(math.random(20,45),0,math.random(1,5))
+    LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(20,45),0,math.random(1,5))
     wait()
     repeat  
         LP.Character.HumanoidRootPart.CFrame = PartTable['Burger']
@@ -149,6 +158,45 @@ local function Heal()
 		Drink:Activate()
 	end
 	LP.Character.HumanoidRootPart.CFrame = CFRame
+end 
+
+local function GrabThing(Thing)
+local Anim = Instance.new'Animation'
+Anim.AnimationId = "rbxassetid://188632011"
+local Track = LP.Character:FindFirstChildOfClass'Humanoid':LoadAnimation(Anim)
+LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(20,45),0,math.random(1,5))
+wait()
+	if Thing == "Uzi" then 
+		repeat  
+			Track:play(.1,1,1)
+			LP.Character.HumanoidRootPart.CFrame = PartTable['Uzi']
+			game:GetService'RunService'.Heartbeat:wait()
+		until not workspace:FindFirstChild'Uzi | $150' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	elseif Thing == "SawedOff" then 
+		repeat  
+			Track:play(.1,1,1)
+			LP.Character.HumanoidRootPart.CFrame = PartTable['SawedOff']
+			game:GetService'RunService'.Heartbeat:wait()
+		until not workspace:FindFirstChild'Sawed Off | $150' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	elseif Thing == "Spray" then 
+		repeat  
+			Track:play(.1,1,1)
+			LP.Character.HumanoidRootPart.CFrame = PartTable['Spray']
+			game:GetService'RunService'.Heartbeat:wait()
+		until not workspace:FindFirstChild'Spray | $20' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	elseif Thing == "Machete" then 
+		repeat  
+			Track:play(.1,1,1)
+			LP.Character.HumanoidRootPart.CFrame = PartTable['Machete']
+			game:GetService'RunService'.Heartbeat:wait()
+		until not workspace:FindFirstChild'Machete | $70' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0
+	elseif Thing == "Pipe" then 
+		repeat  
+			Track:play(.1,1,1)
+			LP.Character.HumanoidRootPart.CFrame = PartTable['Pipe']
+			game:GetService'RunService'.Heartbeat:wait()
+		until not workspace:FindFirstChild'Pipe | $100' or LP.Character:FindFirstChild'KO' or LP.Character.Humanoid.Health <= 0		
+	end
 end 
 
 local function Ammo()
@@ -674,6 +722,7 @@ local function HotkeyHandler(Key)
 						end
 					elseif CMD == "noclip" then
 						Noclipping = not Noclipping
+						notif("Command: Noclip","has been set to "..tostring(Noclipping),5,"rbxassetid://1281284684")
 					elseif CMD == "airwalk" then
 						AirWalkOn = not AirWalkOn
 					else 
@@ -796,9 +845,6 @@ local function Added()
     LP.Character:FindFirstChildWhichIsA'Humanoid'.WalkSpeed = SpawnWS or NormalWS
     LP.Character:FindFirstChildWhichIsA'Humanoid'.JumpPower = SpawnJP or NormalJP
 	LP.Character:FindFirstChildWhichIsA'Humanoid'.HipHeight = SpawnHH or NormalHH
-	if SpawnAtDeathPos then
-        Teleport(DeathPos)
-	end
 	if PlayOnDeath then 
 		local Tool = LP.Backpack:FindFirstChild'BoomBox'
 		repeat wait() until Tool 
@@ -971,11 +1017,6 @@ Cmds.autodie = function(Arguments)
     notif("Command: AutoDie","has been set to "..tostring(AutoDie),5,"rbxassetid://1281284684")
 end 
 
-Cmds.deathspawn = function(Arguments)
-    SpawnAtDeathPos = not SpawnAtDeathPos
-    notif("Command: DeathSpawn","has been set to "..tostring(SpawnAtDeathPos),5,"rbxassetid://1281284684")
-end
-
 Cmds.reset = function(Arguments)
 	WaitingToRespawn = true 
 	WaitingToRespawnPos = LP.Character.HumanoidRootPart.CFrame
@@ -1068,6 +1109,16 @@ Cmds.tpto = function(Arguments)
 			game:GetService'TeleportService':Teleport(4669040)
 		elseif Arguments[1]:lower() == "normalstreets" then 
 			game:GetService'TeleportService':Teleport(455366377)
+		elseif Arguments[1]:lower() == "uzi" then 
+			GrabThing("Uzi")
+		elseif Arguments[1]:lower() == "machete" then 
+			GrabThing("Machete")
+		elseif Arguments[1]:lower() == "spray" then 
+			GrabThing("Spray")
+		elseif Arguments[1]:lower() == "sawed" or Arguments[1]:lower() == "sawedoff" then 
+			GrabThing("SawedOff")
+		elseif Arguments[1]:lower() == "pipe" then 
+			GrabThing("Pipe")
 		end
 	end
 end
