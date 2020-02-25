@@ -11,7 +11,7 @@ local BlinkKey,ClickTpKey,ChatPrefix = "","",";"
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background] [rgb]","chatprefix [prefix/nil]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
@@ -161,9 +161,16 @@ local function Ammo()
 	LP.Character.HumanoidRootPart.CFrame = CFRame
 end 
 
-local gamememe = getrawmetatable(game)
+local gamememe = getrawmetatable or getmetatable or debug.getmetatable
+gamememe = gamememe(game) -- did this for exploits that can't index nil values (Calamari for example/see setreadonly aswell)
 local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
-local writeable = setreadonly(gamememe,false) or make_writeable(gamememe)
+
+if setreadonly then
+	setreadonly(gamememe,false)
+elseif make_writeable then -- had to switch this for sentinel support since it can't index nil values (SAME WITH CALAMARI)
+	make_writeable(gamememe)
+end 
+
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
 
 gamememe.__newindex = Closure(function(self,Property,b)
@@ -182,9 +189,11 @@ end)
 
 gamememe.__namecall = Closure(function(self,...)
     if not Caller() then
-        local Arguments = {...}
-       	if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
-            return invalidfunctiongang(self,...)
+		local Arguments = {...}
+		if getnamecallmethod() == "Destroy" then 
+       		if tostring(self) == "BodyGyro" or tostring(self) == "BodyVelocity" then
+				return invalidfunctiongang(self,...)
+			end 
         end
         if getnamecallmethod() == "BreakJoints" and tostring(self) == game:GetService'Players'.LocalPlayer.Character.Name then
             return invalidfunctiongang(self,...)
@@ -195,27 +204,27 @@ gamememe.__namecall = Closure(function(self,...)
             end
             if Arguments[1] == "hey" then 
                 return wait(9e9)
-			end
-			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
-			end
-			if Arguments[1] == "play" then
-				local TempTable = {}
-					tostring(Arguments[2]):gsub('.',function(Char)
-						if UrlEncoder[Char] then 
-							table.insert(TempTable,UrlEncoder[Char])
-						else 
-							table.insert(TempTable,Char)
-						end
-					end)
-					Arguments[2] = table.concat(TempTable,"")
-					PlayOnDeath = Arguments[2]
-					return name(self,unpack(Arguments))
+            end
+		end
+		if Arguments[1] == "play" then
+		local TempTable = {}
+			tostring(Arguments[2]):gsub('.',function(Char)
+				if UrlEncoder[Char] then 
+					table.insert(TempTable,UrlEncoder[Char])
+				else 
+					table.insert(TempTable,Char)
 				end
-			if Arguments[1] == "stop" then 
-				PlayOnDeath = nil 
-			end
-        end
+			end)
+			Arguments[2] = table.concat(TempTable,"")
+			PlayOnDeath = Arguments[2]
+			return name(self,unpack(Arguments))
+		end
+		if Arguments[1] == "stop" then 
+			PlayOnDeath = nil 
+		end
+		if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
+			return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
+		end
     end
     return name(self,...)
 end)
@@ -268,114 +277,80 @@ else
 end
 
 local function RunCmd(Msg)
-	local Prefix = string.match(Msg,""..ChatPrefix)
-		if Prefix then
-		Msg = string.gsub(Msg,""..ChatPrefix,"",1)
-		local Arguments = string.split(Msg," ")
-			if Prefix and Cmds[Arguments[1]:lower()] then
-				local NCommand = Cmds[Arguments[1]:lower()]
-				table.remove(Arguments,1)
-				NCommand(Arguments)
-			end
-		end
+	local Arguments = string.split(Msg," ")
+	local NCommand = Cmds[table.remove(Arguments,1):lower()]
+	if string.match(Msg,ChatPrefix,1) and NCommand then
+		NCommand(Arguments)
 	end
+end
 
+local BChild,CChild = LP.Backpack:GetChildren(),LP.Character:GetChildren()
 local function Unequip()
-	for _,v in pairs(LP.Character:GetChildren()) do 
-		if v:IsA'Tool' then
-			v.Parent = LP.Backpack
-		end
+	for i = 1,#BChild do 
+		BChild[i].Parent = LP.Backpack
 	end
 end
 
 local function Style1(Amount)
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(0,0.6,Amount * i)
-			BfgOn = true 
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(0,0.6,Amount * i)
+	end 
 end
 
 local function Style2()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(1 * i,1.5,0)
-			BfgOn = true
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(1 * i,1.5,0)
+	end 
 end
 
 local function Style3()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(5,50*i,0) + Vector3.new(0,0,0.6)
-			BfgOn = true
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(5,50*i,0) + Vector3.new(0,0,0.6)
+	end 
 end
 
 local function Style4(Amount)
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(30,Amount*i,0) + Vector3.new(10,0.5,0.6)
-			BfgOn = true
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(30,Amount*i,0) + Vector3.new(10,0.5,0.6)
+	end 
 end
-
 local function Style5()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(5*i,2*i,7*i) + Vector3.new(0,5,0)
-			BfgOn = true
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(5*i,2*i,7*i) + Vector3.new(0,5,0)
+	end 
 end
 
 local function Style6()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then
-			v.Grip = CFrame.Angles(5*i,2040/i,2*i/i*10)
-			BfgOn = true
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(5*i,2040/i,2*i/i*10)
+	end 
 end
 
 local function Style7()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(5,200*i,2*i)
-			BfgOn = true 
-		end
-	end	
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(5,200*i,2*i)
+	end 
 end
 
 local function Style8()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(0.1/i*i,200*i,0) + Vector3.new(0,0,5)
-			BfgOn = true 
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(0.1/i*i,200*i,0) + Vector3.new(0,0,5)
+	end 
 end
 
 local function Style9()
 Unequip()
-	for i,v in pairs(LP.Backpack:GetChildren()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Fire' then 
-			v.Grip = CFrame.Angles(4/i*i,200*i,0) + Vector3.new(0,0,5)
-			BfgOn = true 
-		end
-	end
+	for i = 1,#BChild do 
+		Bchild[i].Grip = CFrame.Angles(4/i*i,200*i,0) + Vector3.new(0,0,5)
+	end 
 end
 
 local JustDoubleJumped = false 
@@ -411,12 +386,10 @@ local function notif(title,message,length,icon)
 end
 
 local function PlrFinder(Plr)
-local PlrTable = {}
-local NewPlr = Plr:lower() 
-	for _,v in pairs(Players:GetPlayers()) do 
-		if string.lower(v.Name):sub(1,#NewPlr) == string.lower(NewPlr) then 
-			table.insert(PlrTable,v)
-			return PlrTable 
+local NewPlr,Player = Plr:lower(),Players:GetPlayers()
+	for i = 1,#Player do 
+		if string.lower(Player[i].Name):sub(1,#NewPlr) == string.lower(NewPlr) then 
+			return Player[i]
 		end
 	end
 end
@@ -435,20 +408,21 @@ local function MultiUzif(Tool)
 	end
 end
 
+local WorkspaceChild = workspace:GetChildren()
 local function find(Item)
-  for i,v in pairs(workspace:GetChildren()) do 
-      if v.Name == "RandomSpawner" and v:FindFirstChild'Model' then
-      local Handle = v.Model.Handle
+  for i = 1,#WorkspaceChild do 
+      if WorkspaceChild[i].Name == "RandomSpawner" and v:FindFirstChild'Model' then
+      local Handle = WorkspaceChild[i].Model.Handle
         if Item == "Cash" and Handle:FindFirstChildOfClass'MeshPart' and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,"511726060") then
-          return v 
+          return WorkspaceChild[i] 
         elseif Item == "Shotty" and Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"142383762") then 
-          return v
+          return WorkspaceChild[i]
         elseif Item == "Sawed Off" and Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"219397110") then 
-          return v 
+          return WorkspaceChild[i] 
         elseif Item == "Uzi" and Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"328964620") then 
-          return v 
+          return WorkspaceChild[i] 
         elseif Item == "All" then 
-          return v 
+          return WorkspaceChild[i] 
       end
     end
   end
@@ -613,11 +587,10 @@ end
 local OnlyAimLock,AimDebounce = false,false
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
-		local Child = LP.Backpack:GetChildren()
-		for i = 1,#Child do 
-			if Child[i]:isA'Tool' and Child[i].Name == "Uzi" then
-				Child[i].Parent = LP.Character
-				fire(Child[i])
+		for i = 1,#BChild do 
+			if BChild[i]:isA'Tool' and BChild[i].Name == "Uzi" then
+				BChild[i].Parent = LP.Character
+				fire(BChild[i])
 				if MinigunMode then 
 					wait()
 				end
@@ -625,10 +598,9 @@ local function Modes()
 		end
   end
   if NormalBfg then 
-	local Child = LP.Character:GetChildren()
-		for i = 1,#Child do 
-			if Child[i]:FindFirstChild'Fire' then
-				fire(Child[i])
+		for i = 1,#CChild do 
+			if CChild[i]:FindFirstChild'Fire' then
+				fire(CChild[i])
 				if MinigunMode then 
 					wait()
 				end
@@ -737,9 +709,10 @@ local AntiAfk,TpBypass = false,false
 local function Looped()
 	pcall(function()
 		if Noclipping and LP.Character then 
-            for _,v in pairs(LP.Character:GetDescendants()) do 
-                if v:IsA'BasePart' then 
-                    v.CanCollide = false
+			local CDescendant = LP.Character:GetDescendants()
+          	for i = 1,#CDescendant do 
+                if CDescendant[i]:IsA'BasePart' then 
+                    CDescendant[i].CanCollide = false
 				end
 			end
 		end
@@ -827,11 +800,6 @@ local function Added()
 	if SpawnAtDeathPos then
         Teleport(DeathPos)
 	end
-	for _,v in pairs(LP.PlayerGui:GetChildren()) do 
-		if v:IsA'Tool' then 
-			v.Parent = LP.Backpack -- saves your tools if you die and don't have the gamepass 
-		end
-	end
 	if PlayOnDeath then 
 		local Tool = LP.Backpack:FindFirstChild'BoomBox'
 		repeat wait() until Tool 
@@ -851,6 +819,14 @@ Cmds.chatprefix = function(Arguments)
 	else 
 		ChatPrefix = ""
 		updateSettings()
+	end
+end
+
+Cmds.draggablegui = function(Arguments)
+local Children = LP.PlayerGui.HUD:GetChildren()
+	for i = 1,#Children do 
+		Children[i].Active = not Children[i].Active 
+		Children[i].Draggable = not Children[i].Draggable
 	end
 end
 
@@ -882,16 +858,12 @@ end
 
 Cmds.spamclick = function(Arguments)
 	if Arguments[1] then 
-		for _ = 1,Arguments[1] do 
-			for _,v in pairs(LP.Backpack:GetChildren()) do 
-				if v:IsA'Tool' and v:FindFirstChild'Click' then 
-					v.Click:FireServer()
-				end
-			end
-			for _,v in pairs(LP.Character:GetChildren()) do 
-				if v:IsA'Tool' and v:FindFirstChild'Click' then
-					v.Click:FireServer()
-				end
+		for _ = 1,Arguments[1] or 50 do
+			for i = 1,#BChild do 
+				BChild[i].Click:FireServer()
+			end 
+			for i =1,#CChild do 
+				CChild[i].Click:FireServer()
 			end
 			wait()
 		end
@@ -899,13 +871,13 @@ Cmds.spamclick = function(Arguments)
 end
 
 Cmds.muteallradios = function(Arguments)
-	for _,v in pairs(game:GetDescendants()) do 
-		if v:IsA'Tool' and v:FindFirstChild'Click' then 
+	for _,Child in pairs(game:GetDescendants()) do 
+		if Child:isA'Tool' and Child:FindFirstChild'Click' then
 			for i = 1,10 do 
-				v.Click:FireServer()
+				Child.Click:FireServer()
 			end
-		end
-	end
+		end 
+	end 
 end
 
 local Normalwalk = false  
@@ -1022,10 +994,8 @@ end
 
 Cmds.to = function(Arguments)
 	if Arguments[1] then
-	    for _,v in pairs(PlrFinder(Arguments[1])) do 
-            Teleport(v.Character.HumanoidRootPart.CFrame)
+        Teleport(PlrFinder(Arguments[1]).Character.HumanoidRootPart.CFrame)
         Noclipping,NeverSitting = false,false
-      end
 	end
 end
 
@@ -1051,26 +1021,25 @@ AntiKill.Size = Vector3.new(5,1,5)
 AntiKill.Transparency = 1
 AntiKill.Anchored = true 
 
-for _,v in pairs(LP.Backpack:GetChildren()) do 
-	if v:IsA'Tool' then 
-		table.insert(AntiKillTools,v)
+for i = 1,#BChild do 
+	if BChild[i]:IsA'Tool' then 
+		AntiKillTools[#AntiKillTools + 1] = BChild[i]
 	end
 end
 
 local function ToolAdded(h)
-  if h:IsA'Acessory' then h:Destroy() end
 	if h:IsA'Tool' then
-		for _,v in pairs(AntiKillTools) do if h == v then return end end 
+		for i = 1,#AntiKillTools do if h == AntiKillTools[i] then return end end 
 			AntiKill.Parent = workspace
 			AntiKill.CFrame = LP.Character.Head.CFrame + Vector3.new(0,-4,0)
 			LP.Character.HumanoidRootPart.CFrame = AntiKill.CFrame
 			LP.Character.Head.Anchored = true
 			AntiKill.Parent = nil 
-			repeat wait() until not LP.Character:FindFirstChild(h)
+			wait(1)
 			LP.Character.Head.Anchored = false
-			table.insert(AntiKillTools,h)
-	end
-end 
+			AntiKillTools[#AntiKillTools + 1] = h
+		end
+	end 
 	LP.Character.ChildAdded:Connect(ToolAdded)
 end
 
@@ -1193,15 +1162,14 @@ end
 
 Cmds.info = function(Arguments)
   if Arguments[1] then
-    for i,v in pairs(PlrFinder(Arguments[1])) do
-      if not Arguments[2] then 
-          notif(v.Name,"Is on "..v.OsPlatform.." and is "..v.AccountAge.." days old",5,nil)
+	  if not Arguments[2] then
+		local v = PlrFinder(Arguments[1])
+		notif(v.Name,"Is on "..v.OsPlatform.." and is "..v.AccountAge.." days old",5,nil)
       elseif Arguments[2] and Arguments[2]:lower() == "os" or Arguments[2]:lower() == "operatingsystem" then 
-          notif(v.Name,"is on "..v.OsPlatform,5,nil)
+		notif(v.Name,"is on "..v.OsPlatform,5,nil)
       elseif Arguments[2] and Arguments[2]:lower() == "age" or Arguments[2]:lower() == "accountage" or Arguments[2]:lower() == "accage" then 
-          notif(v.Name,"has the account age of "..v.AccountAge,5,nil)
+        notif(v.Name,"has the account age of "..v.AccountAge,5,nil)
       end
-    end
   else
       notif(LP.Name,"you are on "..LP.OsPlatform.."(duh) and your Account Age is "..LP.AccountAge,5,nil)
   end
@@ -1250,7 +1218,7 @@ end
 
 Cmds.aimlock = function(Arguments)
 	if Arguments[1] then 
-		for _,v in pairs(PlrFinder(Arguments[1])) do
+			local v = PlrFinder(Arguments[1])
 			AimLock = true
 			OnlyAimLock = true 
 			AimlockTarget = v.Character
@@ -1263,8 +1231,7 @@ Cmds.aimlock = function(Arguments)
 					OnlyAimLock = false
 				end
 			end)
-			notif("Command: AimLock","has been set to "..tostring(AimLock).." target is "..v.Name,5,"rbxassetid://1281284684")
-		end
+		notif("Command: AimLock","has been set to "..tostring(AimLock).." target is "..v.Name,5,"rbxassetid://1281284684")
 	else
 		OnlyAimLock = false
 		AimLock = not AimLock
@@ -1402,9 +1369,7 @@ end
 
 Cmds.view = function(Arguments)
 	if Arguments[1] then
-		for _,v in pairs(PlrFinder(Arguments[1])) do
-			View(v)
-		end
+		View(PlrFinder(Arguments[1]))
 	end
 end
 
@@ -1501,6 +1466,12 @@ Cmds.farm = function(Arguments)
 			if not AutoFarm then
 				farm("Cash")
 			end
+			local WChild = workspace:GetDescendants() 
+			for i = 1,#WChild do
+				if WChild[i]:IsA'Seat' then 
+					WChild[i]:Destroy()
+				end
+			end
 			AutoFarm = not AutoFarm
       	end
     end
@@ -1512,7 +1483,6 @@ workspace.ChildAdded:Connect(function(Part)
 	end 
 end)
 
-
 Cmds.fspeed = function(Arguments)
 	if Arguments[1] then
 		speedfly = Arguments[1]
@@ -1521,8 +1491,7 @@ end
 
 Cmds.esp = function(Arguments)
 	if Arguments[1] then
-		for i,v in pairs(PlrFinder(Arguments[1])) do
-			local espPlayer = v
+			local espPlayer = PlrFinder(Arguments[1])
 			for i,createESP in pairs(espPlayer.Character:GetDescendants()) do
 				if createESP.Name == "Torso" or createESP.Name == "Left Leg" or createESP.Name == "Right Leg" or createESP.Name == "UpperTorso" or createESP.Name == "LowerTorso" or createESP.Name == "RightLowerLeg" or createESP.Name == "RightUpperLeg" or createESP.Name == "RightFoot"or createESP.Name == "UpperTorso" or createESP.Name == "LeftFoot" or createESP.Name == "LeftLowerLeg" or createESP.Name == "LeftUpperLeg" or createESP.Name == "Left Arm" or createESP.Name == "Right Arm" then
 					if createESP.Name ~= "HumanoidRootPart" and createESP.Name ~= "Handle" then
@@ -1560,20 +1529,19 @@ Cmds.esp = function(Arguments)
 								Info.Text = espPlayer.Name.." (".. math.floor((LP.Character.HumanoidRootPart.Position - espPlayer.Character.HumanoidRootPart.Position).magnitude)..")"
 							end
 						end)
-						end)
-						espPlayer.CharacterRemoving:Connect(function()
+					end)
+					espPlayer.CharacterRemoving:Connect(function()
+						current = false
+						espBOX:Destroy()
+						AboveHead:Destroy()
+					end)
+					Players.PlayerRemoving:Connect(function(plr)
+						if plr == espPlayer then
 							current = false
 							espBOX:Destroy()
 							AboveHead:Destroy()
-						end)
-						Players.PlayerRemoving:Connect(function(plr)
-							if plr == espPlayer then
-								current = false
-								espBOX:Destroy()
-								AboveHead:Destroy()
-							end
-						end)
-					end
+						end
+					end)
 				end
 			end
 		end
@@ -1722,7 +1690,7 @@ if UserInput:GetFocusedTextBox() then return end -- fuck you roblox
 	end
 	if Key.KeyCode == Enum.KeyCode.LeftControl and not Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = ControlSpeed 
-	end 
+	end
 	if Key.KeyCode == Enum.KeyCode.Quote then
 		CText:CaptureFocus()
 		Cframe:TweenPosition(UDim2.new(0.015, 0, 0.95, 0), "Out", "Elastic", 0.5, true)
@@ -1753,18 +1721,18 @@ if UserInput:GetFocusedTextBox() then return end -- fuck you roblox
 end
 
 local function Ended(Key,Chatting)
-	if Chatting then return end -- used now lol 
+if UserInput:GetFocusedTextBox() then return end -- fuck you roblox [2]
 	if Key.KeyCode == Enum.KeyCode.LeftShift and not Normalwalk then
 		KeyTable['Shift'] = false 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
 	end
 	if Key.KeyCode == Enum.KeyCode.LeftControl and not Normalwalk then 
 		LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = WalkSpeed
-	end 
+	end
 end
 
 local function Lost(Enter)
-	Cframe:TweenPosition(UDim2.new(0.015, 0, 1, 0), "Out", "Quad", 0.5, true)
+	Cframe:TweenPosition(UDim2.new(0.015, 0, 1, 0),"Out","Quad",0.5,true)
 	if Enter then 
 		local Cmd = CText.Text
 		CText.Text = ""
@@ -1777,7 +1745,7 @@ local function Released(cmd)
 		local Cmd = CText.text
 		CText.Text = ""
 		RunCmd(ChatPrefix..Cmd)
-		Cframe:TweenPosition(UDim2.new(0.015, 0, 1, 0), "Out", "Quad", 0.5, true)
+		Cframe:TweenPosition(UDim2.new(0.015, 0, 1, 0),"Out","Quad",0.5,true)
 	end
 end
 
