@@ -414,30 +414,28 @@ local function MultiUzif(Tool)
 	end
 end
 
-local WorkspaceChild = workspace:GetChildren()
 local function find(Item)
-  for i = 1,#WorkspaceChild do 
-      if WorkspaceChild[i].Name == "RandomSpawner" and v:FindFirstChild'Model' then
-      local Handle = WorkspaceChild[i].Model.Handle
+  for i,v in pairs(workspace:GetChildren()) do 
+      if v.Name == "RandomSpawner" and v:FindFirstChild'Model' then
+      local Handle = v.Model.Handle
         if Item == "Cash" and Handle:FindFirstChildOfClass'MeshPart' and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,"511726060") then
-          return WorkspaceChild[i] 
+          return v
         elseif Item == "Shotty" and Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"142383762") then 
-          return WorkspaceChild[i]
+          return v
         elseif Item == "Sawed Off" and Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"219397110") then 
-          return WorkspaceChild[i] 
+          return v 
         elseif Item == "Uzi" and Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"328964620") then 
-          return WorkspaceChild[i] 
+          return v 
         elseif Item == "All" then 
-          return WorkspaceChild[i] 
+          return v
       end
     end
   end
 end
 
 local function farm(Item)
-local Children = workspace:GetChildren()
-  for i = 1,#Children do
-    if Children[i].Name == "RandomSpawner" then 
+  for i,v in pairs(workspace:GetChildren()) do 
+    if v.Name == "RandomSpawner" then 
 		if find(Item) and type(find(Item)) == "userdata" then 
 			Teleport(find(Item).CFrame)
 			if not _G.DoYouHaveBfgBypass then 
@@ -1363,7 +1361,7 @@ Cmds.colour = function(Arguments)
 			end
 		end
 	else
-		notif("Command: Colour","Colour: [BackGround/Text/Outline] [rgb]",5,"rbxassetid://1281284684")
+		notif("Command: Colour","Colour: [BackGround/Text/Outline/cmds] [rgb]",5,"rbxassetid://1281284684")
 	end
 end
 
