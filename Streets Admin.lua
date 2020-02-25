@@ -587,7 +587,6 @@ local function fire(Tool,Part)
 	end
 end
 
-
 local OnlyAimLock,AimDebounce = false,false
 local function Modes()
 	if BfgOn and LP.Character:FindFirstChild'Uzi' then
@@ -674,11 +673,7 @@ local function HotkeyHandler(Key)
 							RunCmd(ChatPrefix..CMD)
 						end
 					elseif CMD == "noclip" then
-						if Noclipping then 
-						RunCmd(ChatPrefix.."noclip off")
-					else
-						RunCmd(ChatPrefix.."noclip on")
-					end
+						Noclipping = not Noclipping
 					elseif CMD == "airwalk" then
 						AirWalkOn = not AirWalkOn
 					else 
