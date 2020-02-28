@@ -20,6 +20,12 @@ local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText = Instance.new("TextBox",Cframe)
 local CmdFrame = Instance.new("Frame",Cframe)
 
+local Colours = {
+	Colour1;
+	Colour2;
+	Colour3;
+}
+
 if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") or LP.UserId == "1460654046" or LP.UserId == "1427672031" then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
 	wait(5)
@@ -686,6 +692,9 @@ local function Modes()
 		wait(3)
 		AimDebounce = false 
 	end
+	if Mouse.Target and LP.Character:FindFirstChild'Zetox Btools' then
+        Mouse.Target:Destroy()
+    end 
 end
 
 local function unesp()
@@ -860,6 +869,11 @@ Cmds.chatprefix = function(Arguments)
 		updateSettings()
 	end
 end
+
+Cmds.btools = function(Arguments)
+	local DeleteTool = Instance.new('Tool',LP.Backpack)
+	DeleteTool.Name = "Zetox Btools"
+end 
 
 Cmds.draggablegui = function(Arguments)
 local Children = LP.PlayerGui.HUD:GetChildren()
