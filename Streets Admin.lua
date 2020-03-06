@@ -278,7 +278,7 @@ gamememe.__namecall = Closure(function(self,...)
 			PlayOnDeath = nil 
 		end
 		if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-			return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity/5)
+			return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity/5)
 		end
     end
     return name(self,...)
@@ -1576,7 +1576,7 @@ Cmds.esp = function(Arguments)
 						RunService.Stepped:connect(function()
 						pcall(function() 
 							if current and LP.Character:FindFirstChildOfClass'Humanoid' and espPlayer.Character:FindFirstChild("Torso") then
-								Info.Text = espPlayer.Name.." (".. math.floor((LP.Character.HumanoidRootPart.Position - espPlayer.Character.HumanoidRootPart.Position).magnitude)..")"
+								Info.Text = espPlayer.Name.." (".. math.floor((LP.Character.HumanoidRootPart.Position - espPlayer.Character.Torso.Position).magnitude)..")"
 							end
 						end)
 					end)
