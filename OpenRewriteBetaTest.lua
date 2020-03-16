@@ -349,14 +349,16 @@ local MTarget = Mouse.Target
 			end
 		end)
 		AimlockTarget.ChildAdded:Connect(function(T)
-			if T.Name == "KO" and not LoopAimLock then
+			if T.Name == "KO" and not LoopAimLock and AimlockTarget.Name == T.Parent.Name then
 				AimlockTarget = nil
 				OnlyAimLock = false 
 			end
 		end)
-		Player.CharacterAdded:Connect(function(a)
+		A = Player.CharacterAdded:Connect(function(a)
 			if AimlockTarget.Name == Player.Name then 
 				AimlockTarget = a
+			else 
+				A:Disconnect()
 			end
 		end)
 		notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
