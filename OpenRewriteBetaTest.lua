@@ -1204,7 +1204,7 @@ AddCommand(function()
 end,"aimlockloop",{},"Loops/Unloops Aimlock")
 
 AddCommand(function(Arguments)
-	if Arguments[1] == "all" then 
+	if Arguments[1] Arguments[1] == "all" then 
 		local Players_ = Players:GetPlayers() 
 		for i = 1,#Players_ do 
 			if Players_[i] ~= LP then
@@ -1342,15 +1342,10 @@ local function Stepped()
 	if AutoStomp then
 		local Players = Players:GetPlayers()
 		for i = 1,#Players do
-			if Players[i] ~= LP and Players[i].Character and Players[i].Character.Head and not Players[i]:IsFriendsWith(LP.UserId) then
+			if Players[i] ~= LP and Players[i].Character and Players[i].Character:FindFirstChild'Head' and Players[i].Character:FindFirstChild'Torso' and not Players[i]:IsFriendsWith(LP.UserId) then
 				if (GetChar().HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not GetChar():FindFirstChild'KO' and GetChar().Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' then
-					local CurrentTool = GetChar():FindFirstChild'Punch'
-					if not CurrentTool then 
-						CurrentTool = LP.Backpack.Punch
-						CurrentTool.Parent = GetChar()
-					end
 					GetChar().HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
-					LP.Backpack.ServerTraits.Finish:FireServer(CurrentTool)
+					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch')
 				end
 			end
 		end
