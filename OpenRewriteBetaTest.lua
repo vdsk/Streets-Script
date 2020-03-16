@@ -666,26 +666,13 @@ end,"spamclick",{},"spams the Click remote and makes annoying sounds")
 AddCommand(function()
 local WChild = workspace:GetChildren()
 	for i = 1,#WChild do 
-		if WChild[i].Name == "Door" then
-			if not WChild[i].Locker.Value then 
-				WChild[i].Click.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
-				WChild[i].Lock.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
-			end
+		if WChild[i].Name == "Door" and WChild[i]:FindFirstChild'Click' and WChild[i]:FindFirstChild'Lock' then
+			WChild[i].Lock.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
+			WChild[i].Click.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer(
+			wait()
 		end
 	end
-end,"doorlock",{},"unlocks doors")
-
-AddCommand(function()
-local WChild = workspace:GetChildren()
-	for i = 1,#WChild do 
-		if WChild[i].Name == "Door" then
-			if WChild[i].Locker.Value then 
-				WChild[i].Lock.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
-				WChild[i].Click.ClickDetector:FindFirstChildOfClass'RemoteEvent':FireServer()
-			end
-		end
-	end
-end,"doorunlock",{},"locks doors")
+end,"doors",{},"locks/unlocks doors")
 
 local SpamDelay,SpamMessage,Spamming = 1,"Cyrus' Admin Or No Admin",false 
 AddCommand(function(Arguments)
@@ -1204,27 +1191,29 @@ AddCommand(function()
 end,"aimlockloop",{},"Loops/Unloops Aimlock")
 
 AddCommand(function(Arguments)
-	if Arguments[1] Arguments[1] == "all" then 
-		local Players_ = Players:GetPlayers() 
-		for i = 1,#Players_ do 
-			if Players_[i] ~= LP then
-				table.insert(EspTable,Players_[i].UserId)
-				if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
-					espPlayer(Players_[i],"Legacy")
-				else 
-					espPlayer(Players_[i])
+	if Arguments[1] then 
+		if Arguments[1] == "all" then 
+			local Players_ = Players:GetPlayers() 
+			for i = 1,#Players_ do 
+				if Players_[i] ~= LP then
+					table.insert(EspTable,Players_[i].UserId)
+					if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
+						espPlayer(Players_[i],"Legacy")
+					else 
+						espPlayer(Players_[i])
+					end
 				end
 			end
-		end
-	else 
-		local Player = PlrFinder(Arguments[1])
-		if not Player then return end 
-		if Player ~= LP then
-			table.insert(EspTable,Player.UserId)
-			if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
-				espPlayer(Player,"Legacy")
-			else
-				espPlayer(Player)
+		else 
+			local Player = PlrFinder(Arguments[1])
+			if not Player then return end 
+			if Player ~= LP then
+				table.insert(EspTable,Player.UserId)
+				if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
+					espPlayer(Player,"Legacy")
+				else
+					espPlayer(Player)
+				end
 			end
 		end
 	end
