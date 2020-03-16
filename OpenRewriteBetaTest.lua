@@ -1568,6 +1568,7 @@ LP.CharacterAdded:Connect(function()
 		if Tool then 
 			Tool.Parent = GetChar() 
 			Tool:FindFirstChildOfClass'RemoteEvent':FireServer("play",PlayOnDeath)
+			wait()
 			Tool.Parent = LP.Backpack
 		end
 	end
