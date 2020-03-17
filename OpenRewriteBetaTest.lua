@@ -235,13 +235,11 @@ if not Player.Character or not Player.Character:FindFirstChild'Head' then return
 	Text.TextSize = 15
 	local PCChild = Player.Character:GetChildren()
 	RunService.Stepped:Connect(function()
-		pcall(function()
-			if Player.Character:FindFirstChild'Head' and GetChar():FindFirstChild'Head' then 
-				Text.Text = Player.Name.." Position: "..math.floor((GetChar().Head.Position - Player.Character.Head.Position).magnitude)
-				Text.TextStrokeColor3 = EspColour
-				Text.TextColor3 = EspColour
-			end
-		end)
+		if Player and Player.Character and Player.Character:FindFirstChild'Head' and GetChar():FindFirstChild'Head' then 
+			Text.Text = Player.Name.." Position: "..math.floor((GetChar().Head.Position - Player.Character.Head.Position).magnitude)
+			Text.TextStrokeColor3 = EspColour
+			Text.TextColor3 = EspColour
+		end
 	end)
 	return Esp1
 end 
@@ -1371,8 +1369,10 @@ local function Stepped()
                 PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((GetChar().Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform
 			end
 		else 
-			PlayerTable[i][1].Visible = false 
-			PlayerTable[i][3].Visible = false 
+			if PlayerTable[i] then -- dumb fucking error that sometimes happens!
+				PlayerTable[i][1].Visible = false 
+				PlayerTable[i][3].Visible = false
+			end
         end
     end
 end
