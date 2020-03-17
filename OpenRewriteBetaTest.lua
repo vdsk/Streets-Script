@@ -946,7 +946,7 @@ math.randomseed(os.time())
 end,"bringcar",{},"Brings a car (Streets only)")
 
 AddCommand(function(Arguments)
-	if Arguments[1] and Arguments[2] then
+	if Arguments[1] and Arguments[2] and Keys then
 		for Index,Key in pairs(Keys) do
 		if Key:match("[%a%d]+$") == Arguments[1]:lower() then
 				table.remove(Keys,Index)
@@ -1636,9 +1636,11 @@ if UserInput:GetFocusedTextBox() then return end
 			Teleport(CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0)))
 		end
 	end
-	for _,v in pairs(Keys) do 
-		if Enum.KeyCode[v:match'[%a%d]+$':upper()] == Key.KeyCode then 
-			CheckCommand(v:match'^[%w%s]+')
+	if Keys then 
+		for _,v in pairs(Keys) do 
+			if v and Enum.KeyCode[v:match'[%a%d]+$':upper()] == Key.KeyCode then 
+				CheckCommand(v:match'^[%w%s]+')
+			end
 		end
 	end
 end)
