@@ -1251,10 +1251,12 @@ AddCommand(function(Arguments)
 			end
 		end
 		for i = 1,#PlayerTable do
-			PlayerTable[i][1]:Remove()
-			PlayerTable[i][3]:Remove()
-			PlayerTable[i][2] = nil 
-			PlayerTable[i] = nil 
+			if PlayerTable[i] and PlayerTable[i][1] and PlayerTable[i][2] and PlayerTable[i][3] then 
+				PlayerTable[i][1]:Remove()
+				PlayerTable[i][3]:Remove()
+				PlayerTable[i][2] = nil 
+				PlayerTable[i] = nil
+			end
 		end
 	end
 end,"unesp",{},"Removes the esp on the player")
