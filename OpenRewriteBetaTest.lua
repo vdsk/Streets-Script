@@ -1332,6 +1332,9 @@ local function Stepped()
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
+	if GodMode and GetChar():FindFirstChild'Right Leg' then 
+		GetChar()['Right Leg']:Destroy()
+	end
 	if AutoStomp then
 		local Players = Players:GetPlayers()
 		for i = 1,#Players do
@@ -1573,9 +1576,6 @@ LP.CharacterAdded:Connect(function()
 			wait()
 			Tool.Parent = LP.Backpack
 		end
-	end
-	if GodMode and GetChar():FindFirstChild'Right Leg' then 
-		GetChar()['Right Leg']:Destroy()
 	end
 end)
 
