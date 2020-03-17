@@ -492,7 +492,6 @@ local function HumanoidState(Old,New)
 		JustDoubleJumped = false
 	elseif New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh or flying then
       	GetChar().Humanoid.PlatformStand = false
-     	GetChar().Humanoid.Sit = false
 		GetChar().Humanoid:ChangeState(10)
   	end
 end
