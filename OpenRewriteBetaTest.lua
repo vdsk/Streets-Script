@@ -1713,7 +1713,7 @@ spawn(function()
 		if GetChar():FindFirstChildOfClass'Humanoid' and UseDraw then 
 			DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 		end
-		if flying then
+		if flying and PartTable then
 			GetChar().Humanoid:ChangeState(3)
 		end
 		if Blinking then 
