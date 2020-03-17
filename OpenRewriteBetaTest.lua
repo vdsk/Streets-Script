@@ -1,4 +1,5 @@
 assert(readfile,"You need atleast readfile to use this script my god")
+local Tick = tick()
 getgenv().Players = game:GetService'Players'
 getgenv().TeleportService = game:GetService'TeleportService'
 getgenv().ReplicatedStorage = game:GetService'ReplicatedStorage' 
@@ -1179,7 +1180,7 @@ AddCommand(function(Arguments)
 	else 
 		OnlyAimLock = false 
 		AimLock = not AimLock
-		notif("Aimlock","has been set to "..tostring(AimLock),5,"rbxassetid://1281284684")
+		notif("Aimlock","has been set to "..tostring(AimLock).." click on a player to lock on them",5,"rbxassetid://1281284684")
 	end
 end,"aimlock",{"aim"},"Shoots your gun that is titled 75 degrees at the selected person (Aimlock [Player/nil/loop] - if nil click players to set the aimlock target to them (loop makes it so when they respawn it still locks on)")
 
@@ -1568,11 +1569,11 @@ LP.CharacterAdded:Connect(function()
     GetChar().Humanoid.JumpPower = SpawnJP or NormalJP
 	GetChar().Humanoid.HipHeight = SpawnHH or NormalHH
 	if PlayOnDeath then
+		wait()
 		local Tool = LP.Backpack:WaitForChild('BoomBox',10)
 		if Tool then 
 			Tool.Parent = GetChar() 
 			Tool:FindFirstChildOfClass'RemoteEvent':FireServer("play",PlayOnDeath)
-			wait()
 			Tool.Parent = LP.Backpack
 		end
 	end
@@ -1712,6 +1713,9 @@ spawn(function()
 		if GetChar():FindFirstChildOfClass'Humanoid' and UseDraw then 
 			DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 		end
+		if flying then
+			GetChar().Humanoid:ChangeState(3)
+		end
 		if Blinking then 
 			if KeyTable['w'] then 
 				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame + GetChar().HumanoidRootPart.CFrame.lookVector * BlinkSpeed
@@ -1727,7 +1731,7 @@ end)
 if PartTable then 
 	spawn(function()
 		while wait() do 
-			if GetChar().Humanoid.HipHeight > 0 or AirWalkOn and GetChar().Humanoid.FloorMaterial == Enum.Material.Neon and not GetChar().Humanoid.Sit or flying then 
+			if GetChar():FindFirstChildOfClass'Humanoid' and GetChar().Humanoid.HipHeight > 0 or AirWalkOn and GetChar().Humanoid.FloorMaterial == Enum.Material.Neon and not GetChar().Humanoid.Sit then 
 				local JP = GetChar().Humanoid.JumpPower
 				GetChar().Humanoid.JumpPower = 1.5
 				GetChar().Humanoid:ChangeState(3)
@@ -1774,6 +1778,13 @@ if FileDir and isFolder and makeFolder then
 end 
 
 for i = 1,#Commands do
-	Create(Commands[i].Name.." "..Commands[i].Help)
+local Alias = Commands[i].Alias
+	Create(Commands[i].Name)
+	for i = 1,#Alias do
+		Create(Alias[i])
+	end
 	CreateCommand(UDim2.new(0.0150422715,0,0.0127776451,0 + (i * 20)),Commands[i].Name.." "..Commands[i].Help)
 end
+
+notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: UVgdNXP",10,"rbxassetid://2474242690") 
+notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
