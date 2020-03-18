@@ -458,25 +458,27 @@ local function Style(Style,Amount)
 local CChild,BChild = GetChar():GetChildren(),LP.Backpack:GetChildren()
 for i = 1,#CChild do if CChild[i]:IsA'Tool' then CChild[i].Parent = LP.Backpack end end 
 	for i = 1,#BChild do
-		if Style == "void" then
-			Amount = Amount or 0.6
-			BChild[i].Grip = CFrame.Angles(0,0.6,Amount * i)
-		elseif Style == "shield1" then 
-			BChild[i].Grip = CFrame.Angles(1 * i,1.5,0)
-		elseif Style == "wormhole" then 
-			BChild[i].Grip = CFrame.Angles(5,50*i,0) + Vector3.new(0,0,0.6)
-		elseif Style == "circle" then
-			Amount = Amount or 100
-			BChild[i].Grip = CFrame.Angles(30,Amount*i,0) + Vector3.new(10,0.5,0.6)
-		elseif Style == "sphere" then 
-			BChild[i].Grip = CFrame.Angles(5*i,2*i,7*i) + Vector3.new(0,5,0)
-		elseif Style == "storm" then 
-			BChild[i].Grip = CFrame.Angles(5*i,2040/i,2*i/i*10)
-		elseif Style == "shield2" then 
-			BChild[i].Grip = CFrame.Angles(5,200*i,2*i)
-		elseif Style == "deathcircle" then 
-			BChild[i].Grip = CFrame.Angles(0.1/i*i,200*i,0) + Vector3.new(0,0,5)
-		end 
+		if BChild[i]:IsA'Tool' then 
+			if Style == "void" then
+				Amount = Amount or 0.6
+				BChild[i].Grip = CFrame.Angles(0,0.6,Amount * i)
+			elseif Style == "shield1" then 
+				BChild[i].Grip = CFrame.Angles(1 * i,1.5,0)
+			elseif Style == "wormhole" then 
+				BChild[i].Grip = CFrame.Angles(5,50*i,0) + Vector3.new(0,0,0.6)
+			elseif Style == "circle" then
+				Amount = Amount or 100
+				BChild[i].Grip = CFrame.Angles(30,Amount*i,0) + Vector3.new(10,0.5,0.6)
+			elseif Style == "sphere" then 
+				BChild[i].Grip = CFrame.Angles(5*i,2*i,7*i) + Vector3.new(0,5,0)
+			elseif Style == "storm" then 
+				BChild[i].Grip = CFrame.Angles(5*i,2040/i,2*i/i*10)
+			elseif Style == "shield2" then 
+				BChild[i].Grip = CFrame.Angles(5,200*i,2*i)
+			elseif Style == "deathcircle" then 
+				BChild[i].Grip = CFrame.Angles(0.1/i*i,200*i,0) + Vector3.new(0,0,5)
+			end
+		end
 	end 
 end
 
