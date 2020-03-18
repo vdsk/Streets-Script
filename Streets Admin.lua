@@ -1786,7 +1786,6 @@ local CoolkidTable = {
 }
 
 local function espcool(Plr)
-if CoolkidTable[tostring(Plr.UserId)] == "!fishgang Slays (I bitch about the tag in 3rd person)" then return end 
 	local Esp1 = Instance.new('BillboardGui',Plr.Character.Head)
 	Esp1.Adornee = Plr.Character.Head
 	Esp1.Size = UDim2.new(0,100,0,100)
