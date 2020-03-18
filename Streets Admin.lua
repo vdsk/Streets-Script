@@ -1782,7 +1782,8 @@ local CoolkidTable = {
 	['164282612']   = "wk1r";
 	['548617338']   = "Cool Person";
 	['1275692258']  = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
-    ['612618136']   = "Bird (Donator)";
+	['612618136']   = "Bird (Donator)";
+	['284761493']   = "[Strafe] gzt";
 }
 
 local function espcool(Plr)
