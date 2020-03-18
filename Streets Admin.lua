@@ -773,7 +773,7 @@ end,"autodie",{"autoreset"},"When Ko'ed auto kills you")
 
 AddCommand(function()
 	Noclipping = not Noclipping
-	notif("Command: Noclip: on","Noclip has been set to "..tostring(Noclipping),5,"rbxassetid://1281284684")
+	notif("Command: Noclip: ","Noclip has been set to "..tostring(Noclipping),5,"rbxassetid://1281284684")
 end,"noclip",{},"Allows you to walk through walls")
 
 AddCommand(function(Arguments)
@@ -1276,6 +1276,7 @@ end,"luacode",{"lua"},"Allows you to execute the Lua code you input")
 
 AddCommand(function()
 	AutoStomp = not AutoStomp
+	notif("Command: AutoStomp","AutoStomp has been set to "..tostring(AutoStomp),5,"rbxassetid://1281284684")
 end,"autostomp",{},"Turns On/Off AutoStomp")
 
 AddCommand(function()
