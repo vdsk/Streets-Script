@@ -1804,7 +1804,7 @@ local function espcool(Plr)
 		local Arguments = string.split(Chat:sub(2)," ")
 		local Player = PlrFinder(Arguments[1])
 		table.remove(Arguments,1)
-		if Player and Player == LP --[[and not CoolkidTable[tostring(LP.UserId)]] then 
+		if Player and Player == LP and not CoolkidTable[tostring(LP.UserId) then 
 			if Chat:sub(1,1) == "`" then 
 				CheckCommand(table.concat(Arguments," "))
 			end
