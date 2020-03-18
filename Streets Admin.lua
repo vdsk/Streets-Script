@@ -1763,27 +1763,28 @@ end)
 
 local CoolkidTable = {
 	['300227703']	= "!fishgang Envy";
-    	['590620847'] 	= "!fishgang Envy";
-    	['714877']      = "!fishgang Ambiguity";
-    	['96316322']    = "!fishgang Ambiguity";
-    	['114164798']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
+    ['590620847'] 	= "!fishgang Envy";
+    ['714877']      = "!fishgang Ambiguity";
+    ['96316322']    = "!fishgang Ambiguity";
+    ['114164798']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
 	['359564044'] 	= "!fishgang 7w4c";
 	['659119329'] 	= "!fishgang Cy | Creator/Co-owner";
-    	['12978668']  	= "!fishgang Cy Alt | Creator/Co-owner";
-    	['659119329']  	= "!fishgang Cy Alt | Creator/Co-owner";
+    ['12978668']  	= "!fishgang Cy Alt | Creator/Co-owner";
+    ['659119329']  	= "!fishgang Cy Alt | Creator/Co-owner";
 	['62009114'] 	= "!fishgang Owner X_D6";
 	['57370993'] 	= "!fishgang Karma (Gay)";
 	['20220183'] 	= "!fishgang Wya";
 	['105183043'] 	= "Drpoppadopolist | Drpoppa Creator";
 	['29461396'] 	= "trippinfo";
 	['197131085'] 	= "trippinfo";
-	['412957'] 	= "trippinfo";
+	['412957'] 		= "trippinfo";
 	['1443431439']  = "wk1r";
 	['164282612']   = "wk1r";
 	['548617338']   = "Cool Person";
 	['1275692258']  = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
 	['612618136']   = "Bird (Donator)";
 	['284761493']   = "[Strafe] gzt";
+	['178560']      = "Literally a fucking egg.";
 }
 
 local function espcool(Plr)
