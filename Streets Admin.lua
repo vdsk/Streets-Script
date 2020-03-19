@@ -245,7 +245,7 @@ local EspTable = {}
 local function espPlayer(Player,Method,IsUser)
 if not Player.Character or not Player.Character:FindFirstChild'Head' then return end
 if not IsUser then IsUser = "false" else IsUser = "true" end 
-if table.find(AdminUsers,Player) then IsUser = "true" end 
+if table.find(AdminUsers,Player.UserId) then IsUser = "true" end 
 	if not UseDraw or Method == "Legacy" then
 		local Esp1 = LegacyEsp(Player)
 		local CAdded;
@@ -1815,8 +1815,8 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(215,19,19);
 	};
 	['1477162063']  = {
-		['Name'] = "!fishgang Wya (YFRWK)"
-		['Colour'] = Color3.fromRGB(192,6,6)
+		['Name'] = "!fishgang Wya (YFRWK)";
+		['Colour'] = Color3.fromRGB(192,6,6);
 	}
 	['105183043'] 	= {
 		['Name']   = "Drpoppadopolist | Drpoppa Creator";
@@ -1910,7 +1910,7 @@ for i = 1,#PlayersX do
 						abc123 = true
 					end
 				end
-				table.insert(AdminUsers,Plr)
+				table.insert(AdminUsers,Plr.UserId)
 				if not abc123 then 
 					espPlayer(Plr,nil,true)
 				end
@@ -1940,6 +1940,7 @@ Players.PlayerAdded:Connect(function(Plr)
 					abc123 = true
 				end
 			end
+			table.insert(AdminUsers,Plr.UserId)
 			if not abc123 then 
 				espPlayer(Plr,nil,true)
 			end
