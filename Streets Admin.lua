@@ -1236,7 +1236,7 @@ AddCommand(function(Arguments)
 			end
 		end
 		for i = 1,#PlayerTable do 
-			if PlayerTable[i][2].Name == Player.Name then 
+			if PlayerTable[i] and PlayerTable[i][2].Name == Player.Name then 
 				PlayerTable[i][1]:Remove()
 				PlayerTable[i][3]:Remove()
 				PlayerTable[i][2] = nil 
