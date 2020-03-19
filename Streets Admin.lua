@@ -15,7 +15,7 @@ getgenv().LP = Players.LocalPlayer or Players.PlayerAdded:Wait()
 getgenv().Mouse = LP:GetMouse()
 getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() end
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
-local PlayerTable,Commands,KeyTable,UrlEncoder = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";}
+local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
 local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp = false,false,false,true,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget
@@ -26,6 +26,7 @@ local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.new(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
+Players:Chat("Hey I'm a cyrus' streets admin user")
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -241,8 +242,10 @@ if not Player.Character or not Player.Character:FindFirstChild'Head' then return
 end 
 
 local EspTable = {} 
-local function espPlayer(Player,Method)
+local function espPlayer(Player,Method,IsUser)
 if not Player.Character or not Player.Character:FindFirstChild'Head' then return end
+if not IsUser then IsUser = "false" else IsUser = "true" end 
+if table.find(AdminUsers,Player) then IsUser = "true" end 
 	if not UseDraw or Method == "Legacy" then
 		local Esp1 = LegacyEsp(Player)
 		local CAdded;
@@ -264,7 +267,7 @@ if not Player.Character or not Player.Character:FindFirstChild'Head' then return
 		Square.Color = Color3.new(125,0,0)
 		Text.Position = Square.Position + Vector2.new(0,10)
 		Text.Visible = true
-		PlayerTable[#PlayerTable + 1] = {Square,Player,Text}
+		PlayerTable[#PlayerTable + 1] = {Square,Player,Text,IsUser}
 	end 
 end
 
@@ -1206,7 +1209,7 @@ AddCommand(function(Arguments)
 			end
 		else 
 			local Player = PlrFinder(Arguments[1])
-			if not Player then return end 
+			if not Player or Playerthen return end 
 			if Player ~= LP then
 				table.insert(EspTable,Player.UserId)
 				if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
@@ -1369,9 +1372,9 @@ local Character = GetChar()
 			PlayerTable[i][3].Position = PlayerTable[i][1].Position + Vector2.new(0,10)
 			PlayerTable[i][3].Color = EspColour
             if (Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude <= 100 then 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true)
+                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true).."\nCy Admin User: "..PlayerTable[i][4]
             else 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform
+                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nCy Admin User: "..PlayerTable[i][4]
 			end
 		else 
 			if PlayerTable[i] then -- dumb fucking error that sometimes happens!
@@ -1891,6 +1894,26 @@ for i = 1,#PlayersX do
 			end
 		end)
 	end
+	if Plr ~= LP then 
+		local Chatted;
+		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
+			if A == "Hey I'm a cyrus' streets admin user" then
+				Players:Chat("Hey I'm a cyrus' streets admin user")
+				local abc123;
+				for i = 1,#PlayerTable do 
+					if PlayerTable[i][2] == Plr then 
+						PlayerTable[i][4] = "true"
+						abc123 = true
+					end
+				end
+				table.insert(AdminUsers,Plr)
+				if not abc123 then 
+					espPlayer(Plr,nil,true)
+				end
+				Chatted:Disconnect()
+			end
+		end)
+	end
 end
 
 Players.PlayerAdded:Connect(function(Plr)
@@ -1902,6 +1925,23 @@ Players.PlayerAdded:Connect(function(Plr)
 			end
 		end)
 	end
+	local p;
+	P = Plr.Chatted:Connect(function(A)
+		if A == "Hey I'm a cyrus' streets admin user" then 
+			Players:Chat("Hey I'm a cyrus' streets admin user")
+			local abc123;
+			for i = 1,#PlayerTable do 
+				if PlayerTable[i][2] == Plr then 
+					PlayerTable[i][4] = "true"
+					abc123 = true
+				end
+			end
+			if not abc123 then 
+				espPlayer(Plr,nil,true)
+			end
+			P:Disconnect()
+		end
+	end)
 end)
 
 local FileDir,isFolder,makeFolder = syn_io_listdir or list_files,syn_io_isfolder or isfolder,syn_io_makefolder or makefolder
