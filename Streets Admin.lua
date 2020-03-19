@@ -243,7 +243,7 @@ end
 
 local EspTable = {} 
 local function espPlayer(Player,Method,IsUser)
-if not Player.Character or not Player.Character:FindFirstChild'Head' or not useDraw then return end
+if not Player.Character or not Player.Character:FindFirstChild'Head' then return end
 if not IsUser then IsUser = "false" else IsUser = "true" end 
 if table.find(AdminUsers,Player) then IsUser = "true" end 
 	if not UseDraw or Method == "Legacy" then
@@ -1209,7 +1209,7 @@ AddCommand(function(Arguments)
 			end
 		else 
 			local Player = PlrFinder(Arguments[1])
-			if not Player or Player then return end 
+			if not Player then return end 
 			if Player ~= LP then
 				table.insert(EspTable,Player.UserId)
 				if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
