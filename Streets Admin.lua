@@ -243,7 +243,7 @@ end
 
 local EspTable = {} 
 local function espPlayer(Player,Method,IsUser)
-if not Player.Character or not Player.Character:FindFirstChild'Head' then return end
+if not Player.Character or not Player.Character:FindFirstChild'Head' or not useDraw then return end
 if not IsUser then IsUser = "false" else IsUser = "true" end 
 if table.find(AdminUsers,Player) then IsUser = "true" end 
 	if not UseDraw or Method == "Legacy" then
