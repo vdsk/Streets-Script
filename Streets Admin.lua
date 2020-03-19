@@ -1820,15 +1820,15 @@ local CoolkidTable = {
 	};
 	['29461396'] 	= {
 		['Name']   = "trippinfo";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.new(12,4,134);
 	};
 	['197131085'] 	= {
 		['Name']   = "trippinfo";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.new(12,4,134);
 	};
 	['412957'] 		= { 
 		['Name']   = "trippinfo";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.new(12,4,134);
 	};
 	['1443431439']  = {
 		['Name']   = "wk1r";
