@@ -23,7 +23,7 @@ local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
-local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.new(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
+local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 Players:Chat("Hey I'm a cyrus' streets admin user")
@@ -34,7 +34,7 @@ if UseDraw then
 	DrawingT.Center = true 
 	DrawingT.Size = 15
 	DrawingT.Position = Vector2.new((workspace.CurrentCamera.ViewportSize.X / 2) - 450, (workspace.CurrentCamera.ViewportSize.Y - 125))
-	DrawingT.Color = Color3.new(144,144,144)
+	DrawingT.Color = Color3.fromRGB(255,255,255)
 	DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 end 
 
@@ -264,7 +264,7 @@ if table.find(AdminUsers,Player) then IsUser = "true" end
 		Square.Size = Vector2.new(5,5)
 		Square.Visible = true
 		Square.Filled = true
-		Square.Color = Color3.new(125,0,0)
+		Square.Color = Color3.fromRGB(125,0,0)
 		Text.Position = Square.Position + Vector2.new(0,10)
 		Text.Visible = true
 		PlayerTable[#PlayerTable + 1] = {Square,Player,Text,IsUser}
@@ -1010,28 +1010,28 @@ AddCommand(function(Arguments)
 	if Arguments[1] then
 		Arguments[1] = Arguments[1]:lower()
 		if Arguments[1] == "outline" then 
-			Cframe.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			Cframe.BackgroundColor3 = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1] == "text" then 
-			CText.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			CText.BackgroundColor3 = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1] == "background" then 
-			CmdFrame.BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			CmdFrame.BackgroundColor3 = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1] == "damageindicator" then 
-			DmgIndicator.TextColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			DmgIndicator.TextColor3 = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1] == "cmds" then 
 			local Child = CmdFrame:GetChildren() 
 			for i = 1,#Child do 
 				if Child[i]:IsA'TextLabel' then 
-					Child[i].BackgroundColor3 = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+					Child[i].BackgroundColor3 = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 				end
 			end
 		elseif Arguments[1] == "bullet" then
-			BulletColour = ColorSequence.new(Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0))
+			BulletColour = ColorSequence.new(Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0))
 		elseif Arguments[1] == "values" then 
-			DrawingT.Color = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			DrawingT.Color = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1] == "itemesp" then
-			ItemEspColour = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			ItemEspColour = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		elseif Arguments[1] == "esp" then 
-			EspColour = Color3.new(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
+			EspColour = Color3.fromRGB(Arguments[2] or 0,Arguments[3] or 0,Arguments[4] or 0)
 		else
 			notif("Command: Colour","Colour: [BackGround/Text/Outline/cmds/damageindicator/bullet/values/itemesp/esp] [rgb]",5,"rbxassetid://1281284684")
 		end
@@ -1768,87 +1768,91 @@ end)
 local CoolkidTable = {
 	['300227703']	= {
 		['Name'] = "!fishgang Envy";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
     ['590620847'] 	= {
 		['Name']  = "!fishgang Envy";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
     ['714877']      = {
 		['Name']   = "!fishgang Ambiguity";
-		['Colour'] = Color3.new(57,52,52);
+		['Colour'] = Color3.fromRGB(57,52,52);
 	};
     ['96316322']    = {
 		['Name']   = "!fishgang Ambiguity";
-		['Colour'] = Color3.new(57,52,52);
+		['Colour'] = Color3.fromRGB(57,52,52);
 	};
     ['114164798']   = {
 		['Name']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
-		['Colour'] = Color3.new(63,0,0);
+		['Colour'] = Color3.fromRGB(63,0,0);
 	};
 	['359564044'] 	= {
 		['Name']   = "!fishgang 7w4c";
-		['Colour'] = Color3.new(255,255,255);
+		['Colour'] = Color3.fromRGB(255,255,255);
 	};
 	['659119329'] 	= {
 		['Name']   = "!fishgang Cy | Creator/Co-owner";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
     ['12978668']  	= {
 		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
     ['659119329']   = {
 		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
 	['62009114'] 	= {
 		['Name']   = "!fishgang Owner X_D6";
-		['Colour'] = Color3.new(176,16,16);
+		['Colour'] = Color3.fromRGB(176,16,16);
 	};
 	['57370993'] 	= {
 		['Name']   = "!fishgang Karma (Gay)";
-		['Colour'] = Color3.new(255,0,127);
+		['Colour'] = Color3.fromRGB(255,0,127);
 	};
 	['20220183'] 	= {
 		['Name']   = "!fishgang Wya";
-		['Colour'] = Color3.new(215,19,19);
+		['Colour'] = Color3.fromRGB(215,19,19);
 	};
+	['1477162063']  = {
+		['Name'] = "!fishgang Wya (YFRWK)"
+		['Colour'] = Color3.fromRGB(192,6,6)
+	}
 	['105183043'] 	= {
 		['Name']   = "Drpoppadopolist | Drpoppa Creator";
-		['Colour'] = Color3.new(107,50,124);
+		['Colour'] = Color3.fromRGB(107,50,124);
 	};
 	['1190936'] 	= {
 		['Name']   = "trippinfo";
-		['Colour'] = Color3.new(12,4,134);
+		['Colour'] = Color3.fromRGB(12,4,134);
 	};
 	['1443431439']  = {
 		['Name']   = "wk1r";
-		['Colour'] = Color3.new(194,23,255);
+		['Colour'] = Color3.fromRGB(194,23,255);
 	};
 	['164282612']   = {
 		['Name']   = "wk1r";
-		['Colour'] = Color3.new(194,23,255);
+		['Colour'] = Color3.fromRGB(194,23,255);
 	};
 	['548617338']   = {
 		['Name']   = "Cool Person";
-		['Colour'] = Color3.new(73,77,90);
+		['Colour'] = Color3.fromRGB(73,77,90);
 	};
 	['1275692258']  = { 
 		['Name']   = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
 	['612618136']   = { 
 		['Name']   = "Bird (Donator)";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.fromRGB(125,0,0);
 	};
 	['284761493']   = {
 		['Name'] = "[Strafe] gzt";
-		['Colour'] = Color3.new(102,0,0);
+		['Colour'] = Color3.fromRGB(102,0,0);
 	};
 	['178560']      = {
 		['Name'] = "Literally a fucking egg.";
-		['Colour'] =  Color3.new(255,248,11);
+		['Colour'] =  Color3.fromRGB(255,248,11);
 	};
 }
 
