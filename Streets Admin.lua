@@ -1267,7 +1267,9 @@ AddCommand(function()
 end,"advertise",{},"Advertises my discord lol")
 
 AddCommand(function()
-	GetChar():FindFirstChildOfClass'Tool'.Parent = workspace.Terrain
+	if GetChar():FindFirstChildOfClass'Tool' then 
+		GetChar():FindFirstChildOfClass'Tool'.Parent = workspace.Terrain
+	end
 end,"droptool",{"drop"},"Drops your current tool")
 
 AddCommand(function(Arguments)
@@ -1762,29 +1764,98 @@ spawn(function()
 end)
 
 local CoolkidTable = {
-	['300227703']	= "!fishgang Envy";
-    ['590620847'] 	= "!fishgang Envy";
-    ['714877']      = "!fishgang Ambiguity";
-    ['96316322']    = "!fishgang Ambiguity";
-    ['114164798']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
-	['359564044'] 	= "!fishgang 7w4c";
-	['659119329'] 	= "!fishgang Cy | Creator/Co-owner";
-    ['12978668']  	= "!fishgang Cy Alt | Creator/Co-owner";
-    ['659119329']  	= "!fishgang Cy Alt | Creator/Co-owner";
-	['62009114'] 	= "!fishgang Owner X_D6";
-	['57370993'] 	= "!fishgang Karma (Gay)";
-	['20220183'] 	= "!fishgang Wya";
-	['105183043'] 	= "Drpoppadopolist | Drpoppa Creator";
-	['29461396'] 	= "trippinfo";
-	['197131085'] 	= "trippinfo";
-	['412957'] 		= "trippinfo";
-	['1443431439']  = "wk1r";
-	['164282612']   = "wk1r";
-	['548617338']   = "Cool Person";
-	['1275692258']  = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
-	['612618136']   = "Bird (Donator)";
-	['284761493']   = "[Strafe] gzt";
-	['178560']      = "Literally a fucking egg.";
+	['300227703']	= {
+		['Name'] = "!fishgang Envy";
+		['Colour'] = Color3.new(125,0,0);
+	};
+    ['590620847'] 	= {
+		['Name']  = "!fishgang Envy";
+		['Colour'] = Color3.new(125,0,0);
+	};
+    ['714877']      = {
+		['Name']   = "!fishgang Ambiguity";
+		['Colour'] = Color3.new(57,52,52);
+	};
+    ['96316322']    = {
+		['Name']   = "!fishgang Ambiguity";
+		['Colour'] = Color3.new(57,52,52);
+	};
+    ['114164798']   = {
+		['Name']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
+		['Colour'] = Color3.new(63,0,0);
+	};
+	['359564044'] 	= {
+		['Name']   = "!fishgang 7w4c";
+		['Colour'] = Color3.new(255,255,255);
+	};
+	['659119329'] 	= {
+		['Name']   = "!fishgang Cy | Creator/Co-owner";
+		['Colour'] = Color3.new(125,0,0);
+	};
+    ['12978668']  	= {
+		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
+		['Colour'] = Color3.new(125,0,0);
+	};
+    ['659119329']   = {
+		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['62009114'] 	= {
+		['Name']   = "!fishgang Owner X_D6";
+		['Colour'] = Color3.new(176,16,16);
+	};
+	['57370993'] 	= {
+		['Name']   = "!fishgang Karma (Gay)";
+		['Colour'] = Color3.new(255,0,127);
+	};
+	['20220183'] 	= {
+		['Name']   = "!fishgang Wya";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['105183043'] 	= {
+		['Name']   = "Drpoppadopolist | Drpoppa Creator";
+		['Colour'] = Color3.new(107,50,124);
+	};
+	['29461396'] 	= {
+		['Name']   = "trippinfo";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['197131085'] 	= {
+		['Name']   = "trippinfo";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['412957'] 		= { 
+		['Name']   = "trippinfo";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['1443431439']  = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.new(194,23,255);
+	};
+	['164282612']   = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.new(194,23,255);
+	};
+	['548617338']   = {
+		['Name']   = "Cool Person";
+		['Colour'] = Color3.new(73,77,90);
+	};
+	['1275692258']  = { 
+		['Name']   = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['612618136']   = { 
+		['Name']   = "Bird (Donator)";
+		['Colour'] = Color3.new(125,0,0);
+	};
+	['284761493']   = {
+		['Name'] = "[Strafe] gzt";
+		['Colour'] = Color3.new(102,0,0);
+	};
+	['178560']      = {
+		['Name'] = "Literally a fucking egg.";
+		['Colour'] =  Color3.new(255,248,11);
+	};
 }
 
 local function espcool(Plr)
@@ -1795,13 +1866,13 @@ local function espcool(Plr)
 	Esp1.AlwaysOnTop = true 
 	local Esp2 = Instance.new('TextLabel',Esp1)
 	Esp2.BackgroundTransparency = 1
-	Esp2.Text = CoolkidTable[tostring(Plr.UserId)]
+	Esp2.Text = CoolkidTable[tostring(Plr.UserId)].Name
 	Esp2.Position = UDim2.new(0,0,0,0)
 	Esp2.Size = UDim2.new(1,0,0,40)
-	Esp2.TextColor3 = Color3.fromRGB(125,0,0)
+	Esp2.TextColor3 = CoolkidTable[tostring(Plr.UserId)].Colour
 	Esp2.TextStrokeTransparency = 0.5
 	Esp2.TextSize = 15
-	Esp2.TextStrokeColor3 = Color3.fromRGB(125,0,0)
+	Esp2.TextStrokeColor3 = CoolkidTable[tostring(Plr.UserId)].Colour
 	Plr.Chatted:Connect(function(Chat)
 		local Arguments = string.split(Chat:sub(2)," ")
 		local Player = PlrFinder(Arguments[1])
