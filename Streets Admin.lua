@@ -335,7 +335,7 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	local Player = Players:GetPlayerFromCharacter(MTarget.Parent) or Players:GetPlayerFromCharacter(MTarget.Parent.Parent)
+	local Player = Players:GetPlayerFromCharacter(MTarget.Parent) 
 	if Mouse.Target and Player and Player.Character and Player.Character:FindFirstChild'Humanoid' and AimLock and not OnlyAimLock and not AimDebounce then 
 		AimDebounce = true 
 		AimlockTarget = Player.Character
@@ -346,7 +346,7 @@ local MTarget = Mouse.Target
 			end
 		end)
 		AimlockTarget.ChildAdded:Connect(function(T)
-			if T.Name == "KO" and not LoopAimLock and AimlockTarget.Name == T.Parent.Name then
+			if T:IsA'BoolValue' and T.Name == "KO" and not LoopAimLock and AimlockTarget.Name == T.Parent.Name then
 				AimlockTarget = nil
 				OnlyAimLock = false 
 			end
@@ -389,7 +389,7 @@ if not GetChar():FindFirstChild'Head' then return end
 	local FreecamPart = Instance.new('Part',workspace)
 	FreecamPart.Name = "FreecamPart"
 	FreecamPart.Position = GetChar().Head.Position + Vector3.new(0,5,0)
-	FreecamPart.Transparency = 0
+	FreecamPart.Transparency = 1
 	FreecamPart.CanCollide = false
 	FreecamPart.Anchored = true
 	workspace.CurrentCamera.CameraSubject = FreecamPart
@@ -1217,7 +1217,7 @@ AddCommand(function(Arguments)
 				end
 			end)
 			Plr.Character.ChildAdded:Connect(function(T)
-				if T.Name == "KO" and not LoopAimLock then
+				if T:IsA'BoolValue' and T.Name == "KO" and not LoopAimLock then
 					AimlockTarget = nil
 					OnlyAimLock = false 
 				end
@@ -1278,10 +1278,8 @@ AddCommand(function(Arguments)
 	local A = workspace:GetDescendants()
 	table.remove(EspTable,Player.UserId)
 		for i = 1,#A do
-			if string.sub(A[i].Name, 1, 5) == "[ESP]" then
-				if string.sub(A[i].Name, 6) == Player.Name then
-					A[i]:Destroy()
-				end
+			if string.sub(A[i].Name, 1, 5) == "[ESP]" and string.sub(A[i].Name, 6) == Player.Name then
+				A[i]:Destroy()
 			end
 		end
 		for i = 1,#PlayerTable do 
@@ -1729,9 +1727,6 @@ if UserInput:GetFocusedTextBox() then return end
 end)
 
 Players.PlayerRemoving:Connect(function(Plr)
-	if AimlockTarget and Plr == Players:GetPlayerFromCharacter(AimlockTarget) then
-		AimlockTarget = nil
-	end 
     for i = 1,#PlayerTable do 
         if PlayerTable[i] and PlayerTable[i][2] == Plr then 
             PlayerTable[i][1]:Remove()
