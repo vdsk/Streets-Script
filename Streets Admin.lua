@@ -1818,15 +1818,7 @@ local CoolkidTable = {
 		['Name']   = "Drpoppadopolist | Drpoppa Creator";
 		['Colour'] = Color3.new(107,50,124);
 	};
-	['29461396'] 	= {
-		['Name']   = "trippinfo";
-		['Colour'] = Color3.new(12,4,134);
-	};
-	['197131085'] 	= {
-		['Name']   = "trippinfo";
-		['Colour'] = Color3.new(12,4,134);
-	};
-	['412957'] 		= { 
+	['1190936'] 	= {
 		['Name']   = "trippinfo";
 		['Colour'] = Color3.new(12,4,134);
 	};
