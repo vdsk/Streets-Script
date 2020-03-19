@@ -17,7 +17,7 @@ getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() e
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
 local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
-local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp = false,false,false,true,false,false,false,false,false,false
+local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam = false,false,false,true,false,false,false,false,false,false,Freecam
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget
 local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
@@ -379,6 +379,46 @@ if Mouse.Target then
 	end
 end
 
+
+local function FreeCam()
+if not GetChar():FindFirstChild'Head' then return end 
+	if workspace:FindFirstChild'FreecamPart' then 
+		workspace.FreecamPart:Destroy()
+	end
+	GetChar().Head.Anchored = true 
+	local FreecamPart = Instance.new('Part',workspace)
+	FreecamPart.Name = "FreecamPart"
+	FreecamPart.Position = GetChar().Head.Position + Vector3.new(0,5,0)
+	FreecamPart.Transparency = 0
+	FreecamPart.CanCollide = false
+	FreecamPart.Anchored = true
+	workspace.CurrentCamera.CameraSubject = FreecamPart
+	repeat wait()
+		local Pos = Vector3.new()
+		local Look = (workspace.CurrentCamera.Focus.p - workspace.CurrentCamera.CoordinateFrame.p).unit
+		local PartPos = FreecamPart.Position
+		if KeyTable['w'] then
+			Pos = Pos + Vector3.new(0,0,-1)
+		elseif KeyTable['a'] then
+			Pos = Pos + Vector3.new(-1,0,0)
+		elseif KeyTable['s'] then
+			Pos = Pos + Vector3.new(0,0,1)
+		elseif KeyTable['d'] then
+			Pos = Pos + Vector3.new(1,0,0)
+		elseif KeyTable['Space'] then
+			Pos = Pos + Vector3.new(0,1,0)
+		elseif KeyTable['Control'] then
+			Pos = Pos + Vector3.new(0,-1,0)
+		end 
+		FreecamPart.CFrame = CFrame.new(PartPos,PartPos + Look) * CFrame.new(Pos * 35)
+	until not Freecam or GetChar().Humanoid.Health == 0
+	workspace.CurrentCamera.CameraSubject = GetChar()
+	GetChar().Head.Anchored = false 
+	if workspace:FindFirstChild'FreecamPart' then 
+		workspace.FreecamPart:Destroy()
+	end
+end
+
 local function b(Text)
 	DmgIndicator.Visible = true 
 	DmgIndicator.Text = Text
@@ -537,7 +577,7 @@ if Model then
 			return "Sawed Off"
 		elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"328964620") then 
 			return "Uzi"
-		elseif Handle:FindFirstChild'Blade' and string.find(Handle.Blade.TextureId,"12177251") then 
+		elseif Handle:FindFirstChild'Blade' and string.find(Handle.Blade.TextureID,"12177251") then 
 			return "Katana"
 		end
 	end
@@ -1104,6 +1144,15 @@ AddCommand(function(Arguments)
 		HR.CFrame = old
 	end
 end,"fblink",{},"Allows you to \"blink\" around the map")
+
+AddCommand(function(Arguments)
+	if not Freecam then
+		Freecam = true 
+		FreeCam()
+	else
+		Freecam = false
+	end 
+end,"freecam",{},"Allows you to \"free\" view the map")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
