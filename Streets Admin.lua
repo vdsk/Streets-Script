@@ -1817,7 +1817,7 @@ local CoolkidTable = {
 	['1477162063']  = {
 		['Name'] = "!fishgang Wya (YFRWK)";
 		['Colour'] = Color3.fromRGB(192,6,6);
-	}
+	};
 	['105183043'] 	= {
 		['Name']   = "Drpoppadopolist | Drpoppa Creator";
 		['Colour'] = Color3.fromRGB(107,50,124);
