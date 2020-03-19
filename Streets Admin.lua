@@ -528,7 +528,7 @@ getgenv().find = function(Item)
 end
 
 local function uselessfunction(Thing)
-if not Thing:FindFirstChild'Model' then return end 
+if not Thing:FindFirstChild'Model' or not Thing:FindFirstChild'Handle' then return end 
 local Handle = Thing.Model.Handle
 	if Handle:FindFirstChildOfClass'MeshPart' and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,"511726060") then
 		return "Cash"
@@ -538,6 +538,8 @@ local Handle = Thing.Model.Handle
 		return "Sawed Off"
 	elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"328964620") then 
 		return "Uzi"
+	elseif Handle:FindFirstChild'Blade' and string.find(Handle.Blade.TextureId,"12177251") then 
+		return "Katana"
 	end
 end
 
