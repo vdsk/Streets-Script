@@ -97,77 +97,72 @@ end
 
 -- Bypass Start
 
-local gamememe = getrawmetatable or getmetatable or debug.getmetatable
-gamememe = gamememe(game) -- did this for exploits that can't index nil values (Calamari for example/see setreadonly aswell)
-local Closure,Caller = hide_me or newcclosure or function(Function) return Function end,checkcaller or is_protosmasher_caller or Cer.isCerus
+local gamememe = getrawmetatable(game)
+local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
+local writeable = setreadonly or make_writeable
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
-
-if setreadonly then
-	setreadonly(gamememe,false)
-elseif make_writeable then -- had to switch this for sentinel support since it can't index nil values (SAME WITH CALAMARI)
-	make_writeable(gamememe)
-end 
+writeable(gamememe,false)
 
 gamememe.__newindex = Closure(function(self,Property,b)
+    if Caller() then return nindex(self,Property,b) end 
 	if not Caller() then
-		if self == GetChar():WaitForChild('Humanoid',10) then 
-			StarterGui:SetCore('ResetButtonCallback',true)
-			if Property == "WalkSpeed" then 
+        if self:IsA'Humanoid' then 
+            game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
+			if Property == "WalkSpeed" then
 				if WalkShoot then 
-					return 
-				end 
-			end 
-			if Property == "Health" or Property == "JumpPower" or Property == "HipHeight" then 
+					return
+				end
+            end
+            if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
 				return 
 			end
 		end
 		if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
-	       	return 
-	    end
+       		return 
+        end
+        return nindex(self,Property,b)
 	end
-	return nindex(self,Property,b)
 end)
 
 gamememe.__namecall = Closure(function(self,...)
-	if not Caller() then
-		local Arguments = {...}
-		if getnamecallmethod() == "Destroy" then 
-	       	if tostring(self) == 'BodyGyro' or tostring(self) == 'BodyVelocity' then
-				return invalidfunctiongang(self,...)
-			end 
-		end
-		if getnamecallmethod() == "BreakJoints" and self == GetChar() then
-			return invalidfunctiongang(self,...)
-		end
-		if getnamecallmethod() == "FireServer" then 
-	    	if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
-				return wait(9e9)
-			end
-			if Arguments[1] == "hey" then 
-					return wait(9e9)
-				end
-			end
-			if Arguments[1] == "play" then
-			local TempTable = {}
-			tostring(Arguments[2]):gsub('.',function(Char)
-					if UrlEncoder[Char] then 
-						table.insert(TempTable,UrlEncoder[Char])
-					else 
-					table.insert(TempTable,Char)
-				end
-			end)
-			Arguments[2] = table.concat(TempTable,"")
-			PlayOnDeath = Arguments[2]
-			return name(self,unpack(Arguments))
-		end
-		if Arguments[1] == "stop" then 
-			PlayOnDeath = nil 
-		end
-		if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-			return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 5)
-		end
-	end
-	return name(self,...)
+    if Caller() then return name(self,...) end 
+    if not Caller() then
+        local Arguments = {...}
+       	if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
+            return invalidfunctiongang(self,...)
+        end
+        if getnamecallmethod() == "BreakJoints" and tostring(self) == game:GetService'Players'.LocalPlayer.Character.Name then
+            return invalidfunctiongang(self,...)
+        end
+        if getnamecallmethod() == "FireServer" then 
+            if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
+                return wait(9e9)
+            end
+            if Arguments[1] == "hey" then 
+                return wait(9e9)
+            end
+            if Arguments[1] == "play" then
+                local TempTable = {}
+                tostring(Arguments[2]):gsub('.',function(Char)
+                        if UrlEncoder[Char] then 
+                            table.insert(TempTable,UrlEncoder[Char])
+                        else 
+                        table.insert(TempTable,Char)
+                    end
+                end)
+                Arguments[2] = table.concat(TempTable,"")
+                PlayOnDeath = Arguments[2]
+                return name(self,unpack(Arguments))
+            end
+            if Arguments[1] == "stop" then 
+                PlayOnDeath = nil 
+            end
+            if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
+                return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 5)
+            end
+        end
+        return name(self,...)
+    end
 end)
 
 -- Bypass End
@@ -528,18 +523,20 @@ getgenv().find = function(Item)
 end
 
 local function uselessfunction(Thing)
-if not Thing:FindFirstChild'Model' or not Thing:FindFirstChild'Handle' then return end 
-local Handle = Thing.Model.Handle
-	if Handle:FindFirstChildOfClass'MeshPart' and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,"511726060") then
-		return "Cash"
-	elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"142383762") then 
-		return "Shotty"
-	elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"219397110") then 
-		return "Sawed Off"
-	elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"328964620") then 
-		return "Uzi"
-	elseif Handle:FindFirstChild'Blade' and string.find(Handle.Blade.TextureId,"12177251") then 
-		return "Katana"
+local Model = Thing:WaitForChild('Model',10)
+if Model then 
+	local Handle = Thing.Model.Handle
+		if Handle:FindFirstChildOfClass'MeshPart' and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,"511726060") then
+			return "Cash"
+		elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"142383762") then 
+			return "Shotty"
+		elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"219397110") then 
+			return "Sawed Off"
+		elseif Handle:FindFirstChild'Fire' and string.find(Handle.Fire.SoundId,"328964620") then 
+			return "Uzi"
+		elseif Handle:FindFirstChild'Blade' and string.find(Handle.Blade.TextureId,"12177251") then 
+			return "Katana"
+		end
 	end
 end
 
@@ -549,7 +546,6 @@ local function addBillBoardGui(Item)
 	local Esp1 = Instance.new("BillboardGui",Item)
 	local Text = Instance.new("TextLabel",Esp1)
 	Esp1.Adornee = Item
-	Esp1.Name = "ItemEsp"..Itemx
 	Esp1.Size = UDim2.new(0,100,0,100)
 	Esp1.StudsOffset = Vector3.new(0,1,0)
 	Esp1.AlwaysOnTop = true
@@ -1813,7 +1809,7 @@ local CoolkidTable = {
 	};
 	['20220183'] 	= {
 		['Name']   = "!fishgang Wya";
-		['Colour'] = Color3.new(125,0,0);
+		['Colour'] = Color3.new(215,19,19);
 	};
 	['105183043'] 	= {
 		['Name']   = "Drpoppadopolist | Drpoppa Creator";
