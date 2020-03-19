@@ -1326,8 +1326,9 @@ local function checkHp(Plr)
 end
 
 local function Stepped()
+local Character = GetChar()
 	if Noclipping then 
-		local CDescendant = GetChar():GetDescendants() 
+		local CDescendant = Character:GetDescendants() 
 		for i = 1,#CDescendant do 
 			if CDescendant[i]:IsA'Part' then 
 				CDescendant[i].CanCollide = false
@@ -1337,15 +1338,15 @@ local function Stepped()
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
-	if GodMode and GetChar():FindFirstChild'Right Leg' then 
-		GetChar()['Right Leg']:Destroy()
+	if GodMode and Character:FindFirstChild'Right Leg' then 
+		Character['Right Leg']:Destroy()
 	end
 	if AutoStomp then
 		local Players = Players:GetPlayers()
 		for i = 1,#Players do
 			if Players[i] ~= LP and Players[i].Character and Players[i].Character:FindFirstChild'Head' and Players[i].Character:FindFirstChild'Torso' and not Players[i]:IsFriendsWith(LP.UserId) then
-				if (GetChar().HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not GetChar():FindFirstChild'KO' and GetChar().Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' then
-					GetChar().HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
+				if (Character.HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not Character:FindFirstChild'KO' and Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' then
+					Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
 					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch')
 				end
 			end
@@ -1355,26 +1356,26 @@ local function Stepped()
 		local BChild = LP.Backpack:GetChildren()
 		for i = 1,#BChild do 
 			if BChild[i]:FindFirstChild'Fire' then 
-				BChild[i].Parent = GetChar() 
+				BChild[i].Parent = Character
 			end
 		end
 	end
 	if AirWalkOn then 
-		GetChar().Humanoid.HipHeight = 0
-		AirWalk.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(0,-3.5,0)
+		Character.Humanoid.HipHeight = 0
+		AirWalk.CFrame = Character.HumanoidRootPart.CFrame * CFrame.new(0,-3.5,0)
 	end
 	for i = 1,#PlayerTable do
-        if PlayerTable[i] and PlayerTable[i][2] and PlayerTable[i][2].Character and PlayerTable[i][2].Character:FindFirstChild'Head' and GetChar():FindFirstChild'Head' then 
+        if PlayerTable[i] and PlayerTable[i][2] and PlayerTable[i][2].Character and PlayerTable[i][2].Character:FindFirstChild'Head' and Character:FindFirstChild'Head' then 
             local RelativePos,OnScreen = workspace.CurrentCamera:WorldToViewportPoint(PlayerTable[i][2].Character.Head.Position)
             PlayerTable[i][1].Visible = OnScreen
             PlayerTable[i][1].Position = Vector2.new(RelativePos.X,RelativePos.Y)
             PlayerTable[i][3].Visible = OnScreen
 			PlayerTable[i][3].Position = PlayerTable[i][1].Position + Vector2.new(0,10)
 			PlayerTable[i][3].Color = EspColour
-            if (GetChar().Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude <= 100 then 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((GetChar().Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true)
+            if (Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude <= 100 then 
+                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true)
             else 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((GetChar().Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform
+                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform
 			end
 		else 
 			if PlayerTable[i] then -- dumb fucking error that sometimes happens!
