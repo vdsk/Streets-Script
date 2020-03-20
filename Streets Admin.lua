@@ -1811,11 +1811,11 @@ end)
 
 local CoolkidTable = {
 	['300227703']	= {
-		['Name'] = "!fishgang Envy";
+		['Name']   = "!fishgang Envy";
 		['Colour'] = Color3.fromRGB(125,0,0);
 	};
     ['590620847'] 	= {
-		['Name']  = "!fishgang Envy";
+		['Name']   = "!fishgang Envy";
 		['Colour'] = Color3.fromRGB(125,0,0);
 	};
     ['714877']      = {
@@ -1878,6 +1878,10 @@ local CoolkidTable = {
 		['Name']   = "wk1r";
 		['Colour'] = Color3.fromRGB(194,23,255);
 	};
+	['1299915133']  = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+	}
 	['548617338']   = {
 		['Name']   = "Cool Person";
 		['Colour'] = Color3.fromRGB(73,77,90);
@@ -1891,12 +1895,20 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(125,0,0);
 	};
 	['284761493']   = {
-		['Name'] = "[Strafe] gzt";
+		['Name']   = "[Strafe] gzt";
 		['Colour'] = Color3.fromRGB(102,0,0);
 	};
 	['178560']      = {
 		['Name'] = "Literally a fucking egg.";
 		['Colour'] =  Color3.fromRGB(255,248,11);
+	};
+	['120476167']   = {
+		['Name']   = "Pawels Owner";
+		['Colour'] = Color3.fromRGB(52,152,219);
+	};
+	['120476167']   = {
+		['Name']   = "Pawels Owner";
+		['Colour'] = Color3.fromRGB(52,152,219);
 	};
 }
 
