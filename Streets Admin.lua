@@ -1881,7 +1881,7 @@ local CoolkidTable = {
 	['1299915133']  = {
 		['Name']   = "wk1r";
 		['Colour'] = Color3.fromRGB(194,23,255);
-	}
+	};
 	['548617338']   = {
 		['Name']   = "Cool Person";
 		['Colour'] = Color3.fromRGB(73,77,90);
