@@ -1331,7 +1331,7 @@ AddCommand(function()
 end,"autostomp",{},"Turns On/Off AutoStomp")
 
 AddCommand(function()
-	if GetChar()['Right Arm'] then 
+	if GetChar():FindFirstChild'Right Arm' then 
 		GetChar()['Right Arm']:Destroy()
 	end
 end,"antikill",{},"Turns on Anti FE kill for your current life")
