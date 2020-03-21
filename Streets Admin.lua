@@ -17,7 +17,7 @@ getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() e
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
 local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
-local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam = false,false,false,true,false,false,false,false,false,false,Freecam
+local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam = false,false,false,true,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget
 local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
@@ -335,24 +335,23 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	local Player = Players:GetPlayerFromCharacter(MTarget.Parent) 
-	if Mouse.Target and Player and Player.Character and Player.Character:FindFirstChild'Humanoid' and AimLock and not OnlyAimLock and not AimDebounce then 
-		AimDebounce = true 
-		AimlockTarget = Player.Character
-		Player.CharacterRemoving:Connect(function()
+	if MTarget and MTarget.Parent:FindFirstChild'Humanoid' and AimLock and not OnlyAimLock and not AimDebounce then 
+		AimDebounce = true
+		AimlockTarget = MTarget.Parent
+		Players:GetPlayerFromCharacter(MTarget.Parent).CharacterRemoving:Connect(function()
 			if not LoopAimLock then 
 				AimlockTarget = nil
 				OnlyAimLock = false
 			end
 		end)
-		AimlockTarget.ChildAdded:Connect(function(T)
+		Players:GetPlayerFromCharacter(MTarget.Parent).ChildAdded:Connect(function(T)
 			if T:IsA'BoolValue' and T.Name == "KO" and not LoopAimLock and AimlockTarget.Name == T.Parent.Name then
 				AimlockTarget = nil
 				OnlyAimLock = false 
 			end
 		end)
-		A = Player.CharacterAdded:Connect(function(a)
-			if AimlockTarget.Name == Player.Name then 
+		A = Players:GetPlayerFromCharacter(MTarget.Parent).CharacterAdded:Connect(function(a)
+			if AimlockTarget.Name == a.Name then 
 				AimlockTarget = a
 			else 
 				A:Disconnect()
