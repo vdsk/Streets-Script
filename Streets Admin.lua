@@ -379,11 +379,12 @@ if Mouse.Target then
 end
 
 
-local function FreeCam()
+local function FreeCam(Speed)
 if not GetChar():FindFirstChild'Head' then return end 
 	if workspace:FindFirstChild'FreecamPart' then 
 		workspace.FreecamPart:Destroy()
 	end
+	Speed = Speed or 35
 	GetChar().Head.Anchored = true 
 	local FreecamPart = Instance.new('Part',workspace)
 	FreecamPart.Name = "FreecamPart"
@@ -409,7 +410,7 @@ if not GetChar():FindFirstChild'Head' then return end
 		elseif KeyTable['Control'] then
 			Pos = Pos + Vector3.new(0,-1,0)
 		end 
-		FreecamPart.CFrame = CFrame.new(PartPos,PartPos + Look) * CFrame.new(Pos * 35)
+		FreecamPart.CFrame = CFrame.new(PartPos,PartPos + Look) * CFrame.new(Pos * Speed)
 	until not Freecam or GetChar().Humanoid.Health == 0
 	workspace.CurrentCamera.CameraSubject = GetChar()
 	GetChar().Head.Anchored = false 
@@ -1147,7 +1148,7 @@ end,"fblink",{},"Allows you to \"blink\" around the map")
 AddCommand(function(Arguments)
 	if not Freecam then
 		Freecam = true 
-		FreeCam()
+		FreeCam(Arguments[1])
 	else
 		Freecam = false
 	end 
