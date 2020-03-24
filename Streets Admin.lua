@@ -2073,7 +2073,7 @@ if game.PlaceId == 455366377 then
 			for i = 1,#PlayerC do 
 				local Player = PlayerC[i]
 				local Infected = false
-				if not InfectedTable[Player] then 
+				if not InfectedTable[Player] and Player ~= LP then 
 				repeat wait()
 					if Player.Character and Player.Character:FindFirstChild'Torso' and GetChar():FindFirstChild'HumanoidRootPart' then 
 						GetChar().HumanoidRootPart.CFrame = Player.Character.Torso.CFrame
