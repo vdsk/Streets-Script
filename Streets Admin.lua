@@ -2063,30 +2063,32 @@ end
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: UVgdNXP",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
 
-local InfectedTable = {} 
+if game.PlaceId == 455366377 then 
+	local InfectedTable = {} 
 
-while wait() do
-if not LP.PlayerGui.HUD.INFEC then LP:Kick'NICE TRY! YOU WILL BE FORCED TO INFECT PEOPLE.' end
-    if LP.PlayerGui.HUD.INFEC.Visible then 
-        local PlayerC = Players:GetPlayers()
-        for i = 1,#PlayerC do 
-            local Player = PlayerC[i]
-            local Infected = false
-            if not InfectedTable[Player] then 
-            repeat wait()
-	            if Player.Character and Player.Character:FindFirstChild'Torso' and GetChar():FindFirstChild'HumanoidRootPart' then 
-                    GetChar().HumanoidRootPart.CFrame = Player.Character.Torso.CFrame
-                    for i,v in pairs(Player.Character.Humanoid:GetPlayingAnimationTracks()) do 
-                        if string.find(v.Animation.AnimationId,"4812408744") then 
-                            Infected = true
-                            table.insert(InfectedTable,Player)
-                        end 
-                    end
-                    game:GetService'RunService'.Heartbeat:wait()
-	            end
-             until Infected 
-             Infected = false
-            end
-        end
-    end
-end 
+	while wait() do
+	if not LP.PlayerGui.HUD.INFEC then LP:Kick'NICE TRY! YOU WILL BE FORCED TO INFECT PEOPLE.' end
+		if LP.PlayerGui.HUD.INFEC.Visible then 
+			local PlayerC = Players:GetPlayers()
+			for i = 1,#PlayerC do 
+				local Player = PlayerC[i]
+				local Infected = false
+				if not InfectedTable[Player] then 
+				repeat wait()
+					if Player.Character and Player.Character:FindFirstChild'Torso' and GetChar():FindFirstChild'HumanoidRootPart' then 
+						GetChar().HumanoidRootPart.CFrame = Player.Character.Torso.CFrame
+						for i,v in pairs(Player.Character.Humanoid:GetPlayingAnimationTracks()) do 
+							if string.find(v.Animation.AnimationId,"4812408744") then 
+								Infected = true
+								table.insert(InfectedTable,Player)
+							end 
+						end
+						game:GetService'RunService'.Heartbeat:wait()
+					end
+				until Infected 
+				Infected = false
+				end
+			end
+		end
+	end 
+end
