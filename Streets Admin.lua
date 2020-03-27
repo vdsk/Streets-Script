@@ -1223,7 +1223,7 @@ AddCommand(function(Arguments)
 				end
 			end)
 			Plr.CharacterAdded:Connect(function(a)
-				if AimlockTarget.Name == Plr.Name then 
+				if AimlockTarget and AimlockTarget.Name == Plr.Name then 
 					AimlockTarget = Plr.Character 
 				end
 			end)
@@ -2063,6 +2063,7 @@ end
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: UVgdNXP",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
 
+--[[
 if game.PlaceId == 455366377 then 
 	local InfectedTable = {} 
 
@@ -2092,3 +2093,4 @@ if game.PlaceId == 455366377 then
 		end
 	end 
 end
+]]
