@@ -158,8 +158,9 @@ gamememe.__namecall = Closure(function(self,...)
             if Arguments[1] == "stop" then 
                 PlayOnDeath = nil 
             end
-            if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-                return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 5)
+			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
+				local Target = AimlockTarget:FindFirstChild'HumanoidRootPart' or AimlockTarget.Torso
+                return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
             end
         end
         return name(self,...)
