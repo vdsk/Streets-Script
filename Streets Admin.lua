@@ -23,7 +23,7 @@ local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
-local BulletColour,ItemEspColour,EspColour = (Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
+local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 Players:Chat("Hey I'm a cyrus' streets admin user")
@@ -159,7 +159,7 @@ gamememe.__namecall = Closure(function(self,...)
                 PlayOnDeath = nil 
             end
 			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-				local Target = AimlockTarget:FindFirstChild'HumanoidRootPart' or AimlockTarget.Torso
+				local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
                 return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
             end
         end
