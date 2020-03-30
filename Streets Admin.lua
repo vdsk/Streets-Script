@@ -26,7 +26,9 @@ local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-Players:Chat("Hey I'm a cyrus' streets admin user")
+if game.PlaceId ~= 4816211628 then 
+	Players:Chat("Hey I'm a cyrus' streets admin user")
+end 
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -128,12 +130,15 @@ end)
 gamememe.__namecall = Closure(function(self,...)
 	if Caller() then return name(self,...) end 
 		local Arguments = {...}
-			if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
-				return invalidfunctiongang(self,...)
-			end
-			if getnamecallmethod() == "BreakJoints" and tostring(self) == game:GetService'Players'.LocalPlayer.Character.Name then
-				return invalidfunctiongang(self,...)
-			end
+		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
+			return invalidfunctiongang(self,...)
+		end
+		if getnamecallmethod() == "BreakJoints" and self.Name == LP.Character.Name then
+			return invalidfunctiongang(self,...)
+		end
+		if getnamecallmethod() == "Kick" or getnamecallmethod() == "Destroy" and self == LP.Character then 
+			return
+		end 
 		if getnamecallmethod() == "FireServer" then
 				if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
 					return wait(9e9)
@@ -505,6 +510,7 @@ local WhitelistedCommands = {
 	['noclip'] = true;
 	['to'] = true;
 	['goto'] = true;
+	['btools'] = true;
 }
 getgenv().CheckCommand = function(Chat)
 	local Arguments = string.split(Chat," ")
@@ -861,6 +867,7 @@ AddCommand(function()
 end,"autodie",{"autoreset"},"When Ko'ed auto kills you")
 
 AddCommand(function()
+	if game.PlaceId == 4816211628 then CheckCommand("btools") return end 
 	Noclipping = not Noclipping
 	notif("Command: Noclip: ","Noclip has been set to "..tostring(Noclipping),5,"rbxassetid://1281284684")
 end,"noclip",{},"Allows you to walk through walls")
@@ -1667,7 +1674,9 @@ LP.CharacterAdded:Connect(function()
 	PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
 	BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
 	HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
-	MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
+	if game.PlaceId ~= 4816211628 then 
+		MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
+	end 
 	HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
 	GetChar().Humanoid.WalkSpeed = SpawnWS or NormalWS
     GetChar().Humanoid.JumpPower = SpawnJP or NormalJP
@@ -1688,7 +1697,9 @@ LP.CharacterRemoving:Connect(function()
 	PlayerGuiChildAddedEvent:Disconnect()
 	BackpackAddedEvent:Disconnect()
 	HumanoidStateChangedEvent:Disconnect()
-	MultiUziReload:Disconnect()
+	if game.PlaceId ~= 4816211628 then 
+		MultiUziReload:Disconnect()
+	end
 	HumanoidCAdded:Disconnect()
 	HR = nil
 	flying = false
@@ -1809,7 +1820,9 @@ BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
 PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
 HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
 HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
-MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
+if game.PlaceId ~= 4816211628 then 
+	MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
+end 
 Mouse.Button1Down:Connect(Button1Down)
 Mouse.Button2Down:Connect(Button2Down)
 LP.Chatted:Connect(CheckCommand)
@@ -2030,7 +2043,7 @@ end
 local PlayersX = Players:GetPlayers()
 for i = 1,#PlayersX do
 	local Plr = PlayersX[i]
-	if CoolkidTable[tostring(Plr.UserId)] and Plr.Character:FindFirstChild'Head' then 
+	if game.PlaceId ~= 4816211628 and CoolkidTable[tostring(Plr.UserId)] and Plr.Character:FindFirstChild'Head' then 
 		espcool(Plr)
 		Plr.CharacterAdded:Connect(function()
 			local Head = Plr.Character:WaitForChild('Head',10)
@@ -2039,7 +2052,7 @@ for i = 1,#PlayersX do
 			end
 		end)
 	end
-	if Plr ~= LP then 
+	if Plr ~= LP and game.PlaceId ~= 4816211628 then 
 		local Chatted;
 		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
 			if A == "Hey I'm a cyrus' streets admin user" then
@@ -2062,7 +2075,7 @@ for i = 1,#PlayersX do
 end
 
 Players.PlayerAdded:Connect(function(Plr)
-	if CoolkidTable[tostring(Plr.UserId)] then
+	if game.PlaceId ~= 4816211628 and CoolkidTable[tostring(Plr.UserId)] then
 		Plr.CharacterAdded:Connect(function()
 			local Head = Plr.Character:WaitForChild('Head',10)
 			if Head then 
@@ -2070,24 +2083,26 @@ Players.PlayerAdded:Connect(function(Plr)
 			end
 		end)
 	end
-	local p;
-	P = Plr.Chatted:Connect(function(A)
-		if A == "Hey I'm a cyrus' streets admin user" then 
-			Players:Chat("Hey I'm a cyrus' streets admin user")
-			local abc123;
-			for i = 1,#PlayerTable do 
-				if PlayerTable[i][2] == Plr then 
-					PlayerTable[i][4] = "true"
-					abc123 = true
+	if game.PlaceId ~= 4816211628 then 
+		local p;
+		P = Plr.Chatted:Connect(function(A)
+			if A == "Hey I'm a cyrus' streets admin user" then 
+				Players:Chat("Hey I'm a cyrus' streets admin user")
+				local abc123;
+				for i = 1,#PlayerTable do 
+					if PlayerTable[i][2] == Plr then 
+						PlayerTable[i][4] = "true"
+						abc123 = true
+					end
 				end
+				table.insert(AdminUsers,Plr.UserId)
+				if not abc123 then 
+					espPlayer(Plr,nil,true)
+				end
+				P:Disconnect()
 			end
-			table.insert(AdminUsers,Plr.UserId)
-			if not abc123 then 
-				espPlayer(Plr,nil,true)
-			end
-			P:Disconnect()
-		end
-	end)
+		end)
+	end
 end)
 
 local FileDir,isFolder,makeFolder = syn_io_listdir or list_files,syn_io_isfolder or isfolder,syn_io_makefolder or makefolder
