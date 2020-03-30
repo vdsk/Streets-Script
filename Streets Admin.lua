@@ -162,7 +162,7 @@ gamememe.__namecall = Closure(function(self,...)
 			end
 		end
 	end
-	if self.Name == "Fire" or self.Name == "cr" or self.Name == "crr" then 
+	if self.Name == "Fire" or LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[1]) == "CFrame" then  -- fuck you charlie LOL 
 		if AimlockTarget and AimLock then
 			local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
 			return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
