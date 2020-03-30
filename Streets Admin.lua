@@ -340,7 +340,7 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	if MTarget and Players:GetPlayerFromCharacter(MTarget.Parent) and MTarget.Parent:FindFirstChildOfClass'Humanoid' and AimLock and not OnlyAimLock and not AimDebounce then 
+	if MTarget and MTarget.Parent:FindFirstChildOfClass'Humanoid' and MTarget.Parent.Name ~= "Dummy" and AimLock and not OnlyAimLock and not AimDebounce then 
 		AimDebounce = true
 		AimlockTarget = MTarget.Parent
 		Players:GetPlayerFromCharacter(MTarget.Parent).CharacterRemoving:Connect(function()
