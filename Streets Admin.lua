@@ -106,9 +106,9 @@ writeable(gamememe,false)
 
 gamememe.__newindex = Closure(function(self,Property,b)
 if Caller() then return nindex(self,Property,b) end
+	if game.PlaceId ~= 4816211628 then 
 	if self:IsA'Humanoid' then 
-	game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
-	if game.PlaceId ~= 4816211628 then
+		game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
 		if Property == "WalkSpeed" then
 				if WalkShoot then 
 					return
@@ -128,16 +128,13 @@ end)
 gamememe.__namecall = Closure(function(self,...)
 	if Caller() then return name(self,...) end 
 		local Arguments = {...}
-		if game.PlaceId ~= 4816211628 then 
 			if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
 				return invalidfunctiongang(self,...)
 			end
 			if getnamecallmethod() == "BreakJoints" and tostring(self) == game:GetService'Players'.LocalPlayer.Character.Name then
 				return invalidfunctiongang(self,...)
 			end
-		end 
 		if getnamecallmethod() == "FireServer" then
-			if game.PlaceId ~= 4816211628 then 
 				if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
 					return wait(9e9)
 				end
@@ -157,9 +154,8 @@ gamememe.__namecall = Closure(function(self,...)
 					PlayOnDeath = Arguments[2]
 					return name(self,unpack(Arguments))
 				end
-			if Arguments[1] == "stop" then 
-				PlayOnDeath = nil 
-			end
+		if Arguments[1] == "stop" then 
+			PlayOnDeath = nil 
 		end
 	end
 	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[1]) == "CFrame" then  -- fuck you charlie LOL 
