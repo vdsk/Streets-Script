@@ -104,33 +104,31 @@ local writeable = setreadonly or make_writeable
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
 writeable(gamememe,false)
 
-if game.PlaceId ~= 4816211628 then 
-	gamememe.__newindex = Closure(function(self,Property,b)
-		if Caller() then return nindex(self,Property,b) end 
-		if not Caller() then
-			if self:IsA'Humanoid' then 
-				game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
-				if Property == "WalkSpeed" then
-					if WalkShoot then 
-						return
-					end
-				end
-				if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
-					return 
+gamememe.__newindex = Closure(function(self,Property,b)
+if Caller() then return nindex(self,Property,b) end
+	if self:IsA'Humanoid' then 
+	game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
+	if game.PlaceId ~= 4816211628 then
+		if Property == "WalkSpeed" then
+				if WalkShoot then 
+					return
 				end
 			end
-			if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
+			if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
 				return 
 			end
-			return nindex(self,Property,b)
 		end
-	end)
-end 
+		if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
+			return 
+		end
+	end
+	return nindex(self,Property,b)
+end)
 
 gamememe.__namecall = Closure(function(self,...)
 	if Caller() then return name(self,...) end 
 		local Arguments = {...}
-		if not game.PlaceId == 4816211628 then 
+		if game.PlaceId ~= 4816211628 then 
 			if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
 				return invalidfunctiongang(self,...)
 			end
@@ -139,7 +137,7 @@ gamememe.__namecall = Closure(function(self,...)
 			end
 		end 
 		if getnamecallmethod() == "FireServer" then
-			if not game.PlaceId == 4816211628 then 
+			if game.PlaceId ~= 4816211628 then 
 				if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
 					return wait(9e9)
 				end
