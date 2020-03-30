@@ -165,15 +165,17 @@ gamememe.__namecall = Closure(function(self,...)
 			PlayOnDeath = nil 
 		end
 	end
-	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[2]) == "CFrame" then  -- fuck you charlie LOL 
-		if AimlockTarget and AimLock then
-		    local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
-		    if game.PlaceId == 4816211628 then 
-                Arguments[2] = AimlockTarget.Head.CFrame + Target.Velocity / 10
-                return name(self,unpack(Arguments))
-            else
-                return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
-            end
+	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") then  -- fuck you charlie LOL
+		if typeof(Arguments[1]) == "CFrame" or typeof(Arguments[2]) == "CFrame" then 
+			if AimlockTarget and AimLock then
+				local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
+				if game.PlaceId == 4816211628 then 
+					Arguments[2] = AimlockTarget.Head.CFrame + Target.Velocity / 10
+					return name(self,unpack(Arguments))
+				else
+					return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
+				end
+			end
 		end
 	end
     return name(self,...)
