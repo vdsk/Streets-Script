@@ -21,7 +21,8 @@ local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkSho
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget
 local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
-local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
+local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel')
+if game.PlaceId ~= 4816211628 then DmgIndicator.Parent = LP.PlayerGui.Chat.Frame end 
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
@@ -59,6 +60,7 @@ end
 
 LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
 LP.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(),LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Size.Y)
+
 --^ Ty to Jayy#0648 for this "Hack" for bringing back normal chat 
 local SettingsTable = {
    Keys = {};
