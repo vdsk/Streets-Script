@@ -512,7 +512,7 @@ local WhitelistedCommands = {
 }
 getgenv().CheckCommand = function(Chat)
 	local Arguments = string.split(Chat," ")
-	if game.PlaceId == 4816211628 and not WhitelistedCommands[Arguments[1]:lower()] then notif("Not a whitelisted command","Sorry",5,"rbxassetid://1281284684") return end 
+	if game.PlaceId == 4816211628 and not WhitelistedCommands[Arguments[1]:lower()] and FindCommand(Arguments[1]:lower()) then notif("Not a whitelisted command","Sorry",5,"rbxassetid://1281284684") return end 
 	local NCommand = FindCommand(table.remove(Arguments,1):lower())
 	if NCommand then 
 		local Work,Error = pcall(NCommand,Arguments)
