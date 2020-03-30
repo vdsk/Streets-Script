@@ -104,67 +104,73 @@ local writeable = setreadonly or make_writeable
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
 writeable(gamememe,false)
 
-gamememe.__newindex = Closure(function(self,Property,b)
-    if Caller() then return nindex(self,Property,b) end 
-	if not Caller() then
-        if self:IsA'Humanoid' then 
-            game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
-			if Property == "WalkSpeed" then
-				if WalkShoot then 
-					return
+if game.PlaceId ~= 4816211628 then 
+	gamememe.__newindex = Closure(function(self,Property,b)
+		if Caller() then return nindex(self,Property,b) end 
+		if not Caller() then
+			if self:IsA'Humanoid' then 
+				game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
+				if Property == "WalkSpeed" then
+					if WalkShoot then 
+						return
+					end
 				end
-            end
-            if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
+				if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
+					return 
+				end
+			end
+			if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
 				return 
 			end
+			return nindex(self,Property,b)
 		end
-		if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
-       		return 
-        end
-        return nindex(self,Property,b)
-	end
-end)
+	end)
+end 
 
 gamememe.__namecall = Closure(function(self,...)
-    if Caller() then return name(self,...) end 
-    if not Caller() then
-        local Arguments = {...}
-       	if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
-            return invalidfunctiongang(self,...)
-        end
-        if getnamecallmethod() == "BreakJoints" and tostring(self) == game:GetService'Players'.LocalPlayer.Character.Name then
-            return invalidfunctiongang(self,...)
-        end
-        if getnamecallmethod() == "FireServer" then 
-            if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
-                return wait(9e9)
-            end
-            if Arguments[1] == "hey" then 
-                return wait(9e9)
-            end
-            if Arguments[1] == "play" then
-                local TempTable = {}
-                tostring(Arguments[2]):gsub('.',function(Char)
-                        if UrlEncoder[Char] then 
-                            table.insert(TempTable,UrlEncoder[Char])
-                        else 
-                        table.insert(TempTable,Char)
-                    end
-                end)
-                Arguments[2] = table.concat(TempTable,"")
-                PlayOnDeath = Arguments[2]
-                return name(self,unpack(Arguments))
-            end
-            if Arguments[1] == "stop" then 
-                PlayOnDeath = nil 
-            end
-			if tostring(self.Name) == "Fire" and AimlockTarget and AimLock then
-				local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
-                return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
-            end
-        end
-        return name(self,...)
-    end
+	if Caller() then return name(self,...) end 
+		local Arguments = {...}
+		if not game.PlaceId == 4816211628 then 
+			if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
+				return invalidfunctiongang(self,...)
+			end
+			if getnamecallmethod() == "BreakJoints" and tostring(self) == game:GetService'Players'.LocalPlayer.Character.Name then
+				return invalidfunctiongang(self,...)
+			end
+		end 
+		if getnamecallmethod() == "FireServer" then
+			if not game.PlaceId == 4816211628 then 
+				if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
+					return wait(9e9)
+				end
+				if Arguments[1] == "hey" then 
+					return wait(9e9)
+				end
+				if Arguments[1] == "play" then
+					local TempTable = {}
+					tostring(Arguments[2]):gsub('.',function(Char)
+							if UrlEncoder[Char] then 
+								table.insert(TempTable,UrlEncoder[Char])
+							else 
+							table.insert(TempTable,Char)
+						end
+					end)
+					Arguments[2] = table.concat(TempTable,"")
+					PlayOnDeath = Arguments[2]
+					return name(self,unpack(Arguments))
+				end
+			if Arguments[1] == "stop" then 
+				PlayOnDeath = nil 
+			end
+		end
+	end
+	if self.Name == "Fire" or self.Name == "cr" or self.Name == "crr" then 
+		if AimlockTarget and AimLock then
+			local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
+			return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
+		end
+	end
+    return name(self,...)
 end)
 
 -- Bypass End
@@ -179,7 +185,7 @@ if not GetChar():FindFirstChild'HumanoidRootPart' then
 	notif("STOP USING AIDEZ YOU DUMB BITCH","fuck you!",5,"rbxassetid://1281284684") 
 	return 
 end 
-	if _G.DoYouHaveBfgBypass then 
+	if _G.DoYouHaveBfgBypass or game.PlaceId == 4816211628 then 
 		GetChar().HumanoidRootPart.CFrame = Part
 	else
 		local Play = TweenService:Create(GetChar().HumanoidRootPart, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
@@ -465,8 +471,50 @@ getgenv().FindCommand = function(Command,Help)
 	end
 end
 
+local WhitelistedCommands = {
+	['airwalk'] = true;
+	['ws'] = true; 
+	['speed'] = true;
+	['aim'] = true;
+	['aimlock'] = true;
+	['aimlockloop'] = true;
+	['esp'] = true;
+	['unesp'] = true;
+	['steal'] = true;
+	['antiafk'] = true;
+	['luacode'] = true;
+	['lua'] = true;
+	['freecam'] = true;
+	['view'] = true;
+	['unview'] = true;
+	['colour'] = true;
+	['color'] = true;
+	['removekey'] = true;
+	['rkey'] = true;
+	['doublejump'] = true;
+	['hotkey'] = true;
+	['key'] = true;
+	['antiaim'] = true;
+	['playerinfo'] = true;
+	['info'] = true;
+	['blink'] = true;
+	['time'] = true;
+	['rejoin'] = true;
+	['rj'] = true;
+	['spam'] = true;
+	['spamdelay'] = true;
+	['help'] = true;
+	['commands'] = true;
+	['cmds'] = true;
+	['usealias'] = true;
+	['clicktp'] = true;
+	['noclip'] = true;
+	['to'] = true;
+	['goto'] = true;
+}
 getgenv().CheckCommand = function(Chat)
 	local Arguments = string.split(Chat," ")
+	if game.PlaceId == 4816211628 and not WhitelistedCommands[Arguments[1]:lower()] then notif("Not a whitelisted command","Sorry",5,"rbxassetid://1281284684") return end 
 	local NCommand = FindCommand(table.remove(Arguments,1):lower())
 	if NCommand then 
 		local Work,Error = pcall(NCommand,Arguments)
@@ -742,10 +790,13 @@ local GDesc = game:GetDescendants()
 end,"muteallradios",{"muteradios"},"Mutes all radios (does not loop)")
 
 AddCommand(function(Arguments)
-	Normalwalk = true
-	WalkShoot = true 
-	GetChar().Humanoid.WalkSpeed = Arguments[1]
-	WalkSpeed = Arguments[1]
+	if Arguments[1] then 
+		if game.PlaceId == 4816211628 then CheckCommand("blink "..Arguments[1]) end 
+		Normalwalk = true
+		WalkShoot = true 
+		GetChar().Humanoid.WalkSpeed = Arguments[1]
+		WalkSpeed = Arguments[1]
+	end
 end,"speed",{"ws"},"Changes your Humanoids WalkSpeed")
 
 AddCommand(function()
@@ -836,7 +887,11 @@ end,"time",{},"Changes the time to the number you set")
 AddCommand(function(Arguments)
 	Blinking = not Blinking
 	if Blinking then 
-		BlinkSpeed = Arguments[1] or 3
+		if not Arguments[1] or tonumber(Arguments[1]) > 2 then 
+			BlinkSpeed = 2
+		else 
+			BlinkSpeed = Arguments[1]
+		end
 	end 
 end,"blink",{"blinkspeed"},"Another form of speed, Uses CFrame")
 
@@ -1344,7 +1399,7 @@ AddCommand(function(Arguments)
 		local PlayerChild = Player.Character:GetDescendants() 
 		for i = 1,#PlayerChild do
 			local v = PlayerChild[i]
-			if v:IsA'Sound' and v.Name == "SoundX" then
+			if v:IsA'Sound' and v.Name == "SoundX" or v.Name == "son" then
 				notif("Stole the Audio","From "..Player.Name.." check your exploits workspace folder",5,nil)
 				writefile("AudioLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen ID: "..v.SoundId:match"%d+".." From: "..Player.Name)
 			end
@@ -1651,12 +1706,16 @@ if UserInput:GetFocusedTextBox() then return end
 		if AirWalkOn then 
 			AirWalk.Size = Vector3.new(0,-1,0)
 		end
-		if Normalwalk and ControlSpeed == 8 then return end
-		GetChar().Humanoid.WalkSpeed = ControlSpeed
+		if game.PlaceId ~= 4816211628 then 
+			if Normalwalk and ControlSpeed == 8 then return end
+			GetChar().Humanoid.WalkSpeed = ControlSpeed
+		end
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftShift then 
-		if Normalwalk and ShiftSpeed == 25 then return end 
-		GetChar().Humanoid.WalkSpeed = ShiftSpeed
+	if game.PlaceId ~= 4816211628 then 
+		if Key.KeyCode == Enum.KeyCode.LeftShift then 
+			if Normalwalk and ShiftSpeed == 25 then return end 
+			GetChar().Humanoid.WalkSpeed = ShiftSpeed
+		end
 	end
 	if Key.KeyCode == Enum.KeyCode.W then 
 		KeyTable['w'] = true 
@@ -1706,8 +1765,10 @@ if UserInput:GetFocusedTextBox() then return end
 		if AirWalkOn then
 			AirWalk.Size = Vector3.new(5,1,5)
 		end 
-		if Normalwalk and ControlSpeed == 8 then return end
-		GetChar().Humanoid.WalkSpeed = WalkSpeed
+		if game.PlaceId ~= 4816211628 then 
+			if Normalwalk and ControlSpeed == 8 then return end
+			GetChar().Humanoid.WalkSpeed = WalkSpeed
+		end
 	end
 	if Key.KeyCode == Enum.KeyCode.W then 
 		KeyTable['w'] = false
@@ -1721,10 +1782,12 @@ if UserInput:GetFocusedTextBox() then return end
 	if Key.KeyCode == Enum.KeyCode.D then 
 		KeyTable['d'] = false 
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
-		if Normalwalk and ShiftSpeed == 25 then return end 
-		GetChar().Humanoid.WalkSpeed = WalkSpeed
-	end
+	if game.PlaceId ~= 4816211628 then 
+		if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
+			if Normalwalk and ShiftSpeed == 25 then return end 
+			GetChar().Humanoid.WalkSpeed = WalkSpeed
+		end
+	end 
 end)
 
 Players.PlayerRemoving:Connect(function(Plr)
