@@ -1,4 +1,3 @@
-assert(readfile,"You need atleast readfile to use this script my god")
 local Tick = tick()
 getgenv().Players = game:GetService'Players'
 getgenv().TeleportService = game:GetService'TeleportService'
@@ -90,13 +89,14 @@ local function runsettings()
     ClickTpKey = SettingsToRun.ClickTpKey
 end
 
-local Work,Error = pcall(readfile,"CyrusStreetsAdminSettings")
-
-if not Work then 
-    savesettings()
-else
-    runsettings()
-end
+if readfile and writefile then 
+	local Work,Error = pcall(readfile,"CyrusStreetsAdminSettings")
+	if not Work then 
+		savesettings()
+	else
+		runsettings()
+	end
+end 
 
 -- Hotkey end 
 
