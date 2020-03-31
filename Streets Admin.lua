@@ -480,7 +480,6 @@ getgenv().FindCommand = function(Command,Help)
 end
 
 local WhitelistedCommands = {
-	['airwalk'] = true;
 	['ws'] = true; 
 	['speed'] = true;
 	['aim'] = true;
@@ -896,7 +895,7 @@ end,"time",{},"Changes the time to the number you set")
 AddCommand(function(Arguments)
 	Blinking = not Blinking
 	if Blinking then 
-		if not Arguments[1] or tonumber(Arguments[1]) > 2 then 
+		if not Arguments[1] or tonumber(Arguments[1]) and tonumber(Arguments[1]) > 2 then 
 			BlinkSpeed = 2
 		else 
 			BlinkSpeed = Arguments[1]
