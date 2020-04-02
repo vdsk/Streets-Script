@@ -26,7 +26,6 @@ local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-LP.Kick(LP,'Sorry but this script has been discontinued for this day only, okay? yeah okay cool KEKW')
 if game.PlaceId ~= 4816211628 then 
 	Players:Chat("Hey I'm a cyrus' streets admin user")
 end 
