@@ -16,19 +16,16 @@ getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() e
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
 local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
-local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam = false,false,false,true,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,SpawnSprint,SpawnCrouch,ClockTime,PlayOnDeath,AimlockTarget
+local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking = false,false,false,true,false,false,false,false,false,false,false,false
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer
 local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
-local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel')
-if game.PlaceId ~= 4816211628 then DmgIndicator.Parent = LP.PlayerGui.Chat.Frame end 
+local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
-local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-if game.PlaceId ~= 4816211628 then 
-	Players:Chat("Hey I'm a cyrus' streets admin user aidezyou'reaskid")
-end 
+local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
+Players:Chat("Hey I'm a cyrus' streets admin user1")
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -64,6 +61,9 @@ LP.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = LP.PlayerGui.Chat.Frame.Ch
 local SettingsTable = {
    Keys = {};
    ClickTpKey = "";
+   ShiftSpeed = 25;
+   ControlSpeed = 8;
+   WalkSpeed = 16;
 }
 
 -- Hotkey start
@@ -71,14 +71,20 @@ local SettingsTable = {
 local function savesettings()
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(SettingsTable))
     local SettingsToSave = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
-    Keys = SettingsToSave.Keys
-    ClickTpKey = SettingsToSave.ClickTpKey
+    Keys = SettingsToSave.Keys;
+	ClickTpKey = SettingsToSave.ClickTpKey;
+	ShiftSpeed = SettingsToSave.ShiftSpeed;
+	ControlSpeed = SettingsToSave.ControlSpeed;
+	WalkSpeed = SettingsToSave.WalkSpeed;
 end 
 
 getgenv().updateSettings = function()
     local New = { 
         Keys = Keys;
 		ClickTpKey = ClickTpKey;
+		ShiftSpeed = ShiftSpeed;
+		ControlSpeed = ControlSpeed;
+		WalkSpeed = WalkSpeed;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -86,7 +92,12 @@ end
 local function runsettings()
     local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
     Keys = SettingsToRun.Keys
-    ClickTpKey = SettingsToRun.ClickTpKey
+	ClickTpKey = SettingsToRun.ClickTpKey
+	if SettingsToRun.ShiftSpeed and SettingsToRun.ControlSpeed and SettingsToRun.WalkSpeed then 
+		ShiftSpeed = SettingsToRun.ShiftSpeed;
+		ControlSpeed = SettingsToRun.ControlSpeed;
+		WalkSpeed = SettingsToRun.WalkSpeed;
+	end
 end
 
 if readfile and writefile then 
@@ -110,21 +121,19 @@ writeable(gamememe,false)
 
 gamememe.__newindex = Closure(function(self,Property,b)
 if Caller() then return nindex(self,Property,b) end
-	if game.PlaceId ~= 4816211628 then 
 	if self:IsA'Humanoid' then 
-		game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
+	game:GetService'StarterGui':SetCore('ResetButtonCallback',true)
 		if Property == "WalkSpeed" then
-				if WalkShoot then 
-					return
-				end
-			end
-			if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
-				return 
+			if WalkShoot then 
+				return
 			end
 		end
-		if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
+		if Property == "Health" or Property == "JumpPower" or Property == "HipHeight"  then 
 			return 
 		end
+	end
+	if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
+		return 
 	end
 	return nindex(self,Property,b)
 end)
@@ -165,16 +174,13 @@ gamememe.__namecall = Closure(function(self,...)
 			PlayOnDeath = nil 
 		end
 	end
-	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") then  -- fuck you charlie LOL
-		if typeof(Arguments[1]) == "CFrame" or typeof(Arguments[2]) == "CFrame" then 
+	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") then 
+		if typeof(Arguments[1]) == "CFrame" then 
 			if AimlockTarget and AimLock then
-				local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
-				if game.PlaceId == 4816211628 then 
-					Arguments[2] = AimlockTarget.Head.CFrame + Target.Velocity / 10
-					return name(self,unpack(Arguments))
-				else
+				local Target = AimlockTarget:FindFirstChild'HumanoidRootPart' or AimlockTarget.Torso
+				if Target then 
 					return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
-				end
+				end 
 			end
 		end
 	end
@@ -188,12 +194,8 @@ getgenv().notif = function(title,message,length,icon)
 end
 
 getgenv().Teleport = function(Part)
-if not type(Part) == "CFrame" then return end 
-if not GetChar():FindFirstChild'HumanoidRootPart' then 
-	notif("STOP USING AIDEZ YOU DUMB BITCH","fuck you!",5,"rbxassetid://1281284684") 
-	return 
-end 
-	if _G.DoYouHaveBfgBypass or game.PlaceId == 4816211628 then 
+if not typeof(Part) == "CFrame" then return end 
+	if _G.DoYouHaveBfgBypass then 
 		GetChar().HumanoidRootPart.CFrame = Part
 	else
 		local Play = TweenService:Create(GetChar().HumanoidRootPart, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
@@ -479,49 +481,8 @@ getgenv().FindCommand = function(Command,Help)
 	end
 end
 
-local WhitelistedCommands = {
-	['ws'] = true; 
-	['speed'] = true;
-	['aim'] = true;
-	['aimlock'] = true;
-	['aimlockloop'] = true;
-	['esp'] = true;
-	['unesp'] = true;
-	['steal'] = true;
-	['antiafk'] = true;
-	['luacode'] = true;
-	['lua'] = true;
-	['freecam'] = true;
-	['view'] = true;
-	['unview'] = true;
-	['colour'] = true;
-	['color'] = true;
-	['removekey'] = true;
-	['rkey'] = true;
-	['doublejump'] = true;
-	['hotkey'] = true;
-	['key'] = true;
-	['playerinfo'] = true;
-	['info'] = true;
-	['blink'] = true;
-	['time'] = true;
-	['rejoin'] = true;
-	['rj'] = true;
-	['spam'] = true;
-	['spamdelay'] = true;
-	['help'] = true;
-	['commands'] = true;
-	['cmds'] = true;
-	['usealias'] = true;
-	['clicktp'] = true;
-	['noclip'] = true;
-	['to'] = true;
-	['goto'] = true;
-	['btools'] = true;
-}
 getgenv().CheckCommand = function(Chat)
 	local Arguments = string.split(Chat," ")
-	if game.PlaceId == 4816211628 and not WhitelistedCommands[Arguments[1]:lower()] and FindCommand(Arguments[1]:lower()) then notif("Not a whitelisted command","Sorry",5,"rbxassetid://1281284684") return end 
 	local NCommand = FindCommand(table.remove(Arguments,1):lower())
 	if NCommand then 
 		local Work,Error = pcall(NCommand,Arguments)
@@ -798,7 +759,6 @@ end,"muteallradios",{"muteradios"},"Mutes all radios (does not loop)")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
-		if game.PlaceId == 4816211628 then CheckCommand("blink "..Arguments[1]) end 
 		Normalwalk = true
 		WalkShoot = true 
 		GetChar().Humanoid.WalkSpeed = Arguments[1]
@@ -813,11 +773,13 @@ end,"walkshoot",{},"Allows you to turn on / off walk shooting")
 AddCommand(function(Arguments)
 	Normalwalk = false
 	ControlSpeed = Arguments[1]
+	updateSettings()
 end,"crouchspeed",{"cspeed"},"Changes your Crouching speed")
 
 AddCommand(function(Arguments)
 	Normalwalk = false
 	ShiftSpeed = Arguments[1]
+	updateSettings()
 end,"sprintspeed",{"sspeed"},"Changes your sprinting speed")
 
 AddCommand(function(Arguments)
@@ -874,7 +836,6 @@ AddCommand(function()
 end,"autodie",{"autoreset"},"When Ko'ed auto kills you")
 
 AddCommand(function()
-	if game.PlaceId == 4816211628 then CheckCommand("btools") return end 
 	Noclipping = not Noclipping
 	notif("Command: Noclip: ","Noclip has been set to "..tostring(Noclipping),5,"rbxassetid://1281284684")
 end,"noclip",{},"Allows you to walk through walls")
@@ -1435,6 +1396,29 @@ AddCommand(function()
 	notif("Command: AntiAfk","has been set to "..tostring(AntiAfk),5,"rbxassetid://1281284684")
 end,"antiafk",{},"Stops you from being kicked from \"AFK\"")
 
+AddCommand(function(Arguments)
+	CamLocking = not CamLocking
+	if Arguments[1] then
+		local Player = PlrFinder(Arguments[1])
+		if Player then 
+			CamlockPlayer = Player
+		end
+	end 
+end,"camlock",{"lockcam"},"Different type of aimbot (Uses camera instead of the remote)")
+
+local RainbowTable1,RainbowTable2;
+AddCommand(function()
+	if game.PlaceId ~= 455366377 then notif("Wont work","you need to be on streets",5,nil) return end 
+	RainbowHats = not RainbowHats
+	RainbowTable1,RainbowTable2 = LP.PlayerGui.HUD.Clan.Group.cs:GetChildren(),{}
+	local a = LP.PlayerGui.HUD.Clan.Group.Reps:GetChildren()
+	for i = 1,#a do 
+		if a[i]:IsA'TextButton' then 
+			RainbowTable2[#RainbowTable2 + 1] = a[i]
+		end 
+	end 
+end,"rainbowhats",{},"complete autism lol")
+
 local function checkHp(Plr)
 	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
 end
@@ -1448,6 +1432,10 @@ local Character = GetChar()
 				CDescendant[i].CanCollide = false
 			end
 		end
+	end
+	if RainbowHats and LP.Backpack:FindFirstChild'Stank' then 
+		LP.Backpack.Stank:FireServer("rep",RainbowTable2[math.random(1,#RainbowTable2)])
+		LP.Backpack.Stank:FireServer("color",RainbowTable1[math.random(1,#RainbowTable1)])
 	end
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
@@ -1477,6 +1465,9 @@ local Character = GetChar()
 	if AirWalkOn then 
 		Character.Humanoid.HipHeight = 0
 		AirWalk.CFrame = Character.HumanoidRootPart.CFrame * CFrame.new(0,-3.5,0)
+	end
+	if CamLocking and CamlockPlayer and CamlockPlayer.Character and CamlockPlayer.Character:FindFirstChild'Torso' then 
+		workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
 	end
 	for i = 1,#PlayerTable do
         if PlayerTable[i] and PlayerTable[i][2] and PlayerTable[i][2].Character and PlayerTable[i][2].Character:FindFirstChild'Head' and Character:FindFirstChild'Head' then 
@@ -1706,9 +1697,7 @@ LP.CharacterRemoving:Connect(function()
 	PlayerGuiChildAddedEvent:Disconnect()
 	BackpackAddedEvent:Disconnect()
 	HumanoidStateChangedEvent:Disconnect()
-	if game.PlaceId ~= 4816211628 then 
-		MultiUziReload:Disconnect()
-	end
+	MultiUziReload:Disconnect()
 	HumanoidCAdded:Disconnect()
 	HR = nil
 	flying = false
@@ -1720,16 +1709,12 @@ if UserInput:GetFocusedTextBox() then return end
 		if AirWalkOn then 
 			AirWalk.Size = Vector3.new(0,-1,0)
 		end
-		if game.PlaceId ~= 4816211628 then 
-			if Normalwalk and ControlSpeed == 8 then return end
-			GetChar().Humanoid.WalkSpeed = ControlSpeed
-		end
+		if Normalwalk and ControlSpeed == 8 then return end
+		GetChar().Humanoid.WalkSpeed = ControlSpeed
 	end
-	if game.PlaceId ~= 4816211628 then 
-		if Key.KeyCode == Enum.KeyCode.LeftShift then 
-			if Normalwalk and ShiftSpeed == 25 then return end 
-			GetChar().Humanoid.WalkSpeed = ShiftSpeed
-		end
+	if Key.KeyCode == Enum.KeyCode.LeftShift then 
+		if Normalwalk and ShiftSpeed == 25 then return end 
+		GetChar().Humanoid.WalkSpeed = ShiftSpeed
 	end
 	if Key.KeyCode == Enum.KeyCode.W then 
 		KeyTable['w'] = true 
@@ -1779,10 +1764,8 @@ if UserInput:GetFocusedTextBox() then return end
 		if AirWalkOn then
 			AirWalk.Size = Vector3.new(5,1,5)
 		end 
-		if game.PlaceId ~= 4816211628 then 
-			if Normalwalk and ControlSpeed == 8 then return end
-			GetChar().Humanoid.WalkSpeed = WalkSpeed
-		end
+		if Normalwalk and ControlSpeed == 8 then return end
+		GetChar().Humanoid.WalkSpeed = WalkSpeed
 	end
 	if Key.KeyCode == Enum.KeyCode.W then 
 		KeyTable['w'] = false
@@ -1796,11 +1779,9 @@ if UserInput:GetFocusedTextBox() then return end
 	if Key.KeyCode == Enum.KeyCode.D then 
 		KeyTable['d'] = false 
 	end
-	if game.PlaceId ~= 4816211628 then 
-		if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
-			if Normalwalk and ShiftSpeed == 25 then return end 
-			GetChar().Humanoid.WalkSpeed = WalkSpeed
-		end
+	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
+		if Normalwalk and ShiftSpeed == 25 then return end 
+		GetChar().Humanoid.WalkSpeed = WalkSpeed
 	end 
 end)
 
@@ -2050,7 +2031,7 @@ end
 local PlayersX = Players:GetPlayers()
 for i = 1,#PlayersX do
 	local Plr = PlayersX[i]
-	if game.PlaceId ~= 4816211628 and CoolkidTable[tostring(Plr.UserId)] and Plr.Character:FindFirstChild'Head' then 
+	if CoolkidTable[tostring(Plr.UserId)] and Plr.Character:FindFirstChild'Head' then 
 		espcool(Plr)
 		Plr.CharacterAdded:Connect(function()
 			local Head = Plr.Character:WaitForChild('Head',10)
@@ -2059,12 +2040,12 @@ for i = 1,#PlayersX do
 			end
 		end)
 	end
-	if Plr ~= LP and game.PlaceId ~= 4816211628 then 
+	if Plr ~= LP then 
 		local Chatted;
 		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
-			if A == "Hey I'm a cyrus' streets admin user aidezyou'reaskid" then
+			if A == "Hey I'm a cyrus' streets admin user1" then
 				Chatted:Disconnect()
-				Players:Chat("Hey I'm a cyrus' streets admin user aidezyou'reaskid")
+				Players:Chat("Hey I'm a cyrus' streets admin user1")
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i][2] == Plr then 
@@ -2082,7 +2063,7 @@ for i = 1,#PlayersX do
 end
 
 Players.PlayerAdded:Connect(function(Plr)
-	if game.PlaceId ~= 4816211628 and CoolkidTable[tostring(Plr.UserId)] then
+	if CoolkidTable[tostring(Plr.UserId)] then
 		Plr.CharacterAdded:Connect(function()
 			local Head = Plr.Character:WaitForChild('Head',10)
 			if Head then 
@@ -2090,26 +2071,24 @@ Players.PlayerAdded:Connect(function(Plr)
 			end
 		end)
 	end
-	if game.PlaceId ~= 4816211628 then 
-		local p;
-		P = Plr.Chatted:Connect(function(A)
-			if A == "Hey I'm a cyrus' streets admin user aidezyou'reaskid" then 
-				Players:Chat("Hey I'm a cyrus' streets admin user aidezyou'reaskid")
-				local abc123;
-				for i = 1,#PlayerTable do 
-					if PlayerTable[i][2] == Plr then 
-						PlayerTable[i][4] = "true"
-						abc123 = true
-					end
+	local p;
+	P = Plr.Chatted:Connect(function(A)
+		if A == "Hey I'm a cyrus' streets admin user1" then 
+			Players:Chat("Hey I'm a cyrus' streets admin user1")
+			local abc123;
+			for i = 1,#PlayerTable do 
+				if PlayerTable[i][2] == Plr then 
+					PlayerTable[i][4] = "true"
+					abc123 = true
 				end
-				table.insert(AdminUsers,Plr.UserId)
-				if not abc123 then 
-					espPlayer(Plr,nil,true)
-				end
-				P:Disconnect()
 			end
-		end)
-	end
+			table.insert(AdminUsers,Plr.UserId)
+			if not abc123 then 
+				espPlayer(Plr,nil,true)
+			end
+			P:Disconnect()
+		end
+	end)
 end)
 
 local FileDir,isFolder,makeFolder = syn_io_listdir or list_files,syn_io_isfolder or isfolder,syn_io_makefolder or makefolder
