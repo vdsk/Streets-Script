@@ -27,7 +27,7 @@ local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(14
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 if game.PlaceId ~= 4816211628 then 
-	Players:Chat("Hey I'm a cyrus' streets admin user")
+	Players:Chat("Hey I'm a cyrus' streets admin user aidezyou'reaskid")
 end 
 
 if UseDraw then 
@@ -1061,7 +1061,9 @@ AddCommand(function(Arguments)
 		table.remove(Arguments, 1)
 		local hotkeyCMD = table.concat(Arguments, " ")
 		table.insert(Keys, hotkeyCMD.."||"..hotkeyKEY)
-		updateSettings()
+		if writefile and readfile then 
+			updateSettings()
+		end
 	end
 end,"hotkey",{"key"},"Hotkeys a command to a key")
 
@@ -1145,7 +1147,9 @@ end,"colour",{"color"},"Changes elements colours Colour [BackGround/Text/Outline
 AddCommand(function(Arguments)
 	if Arguments[1] then
 		ClickTpKey = string.sub(Arguments[1],1,1)
-		updateSettings()
+		if readfile and writefile then 
+			updateSettings()
+		end
 	end
 end,"clicktp",{"ctp"},"Allows you to teleport around the map with a Key")
 
@@ -1681,9 +1685,7 @@ LP.CharacterAdded:Connect(function()
 	PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
 	BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
 	HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
-	if game.PlaceId ~= 4816211628 then 
-		MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
-	end 
+	MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
 	HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
 	GetChar().Humanoid.WalkSpeed = SpawnWS or NormalWS
     GetChar().Humanoid.JumpPower = SpawnJP or NormalJP
@@ -1827,9 +1829,7 @@ BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
 PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
 HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
 HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
-if game.PlaceId ~= 4816211628 then 
-	MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
-end 
+MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
 Mouse.Button1Down:Connect(Button1Down)
 Mouse.Button2Down:Connect(Button2Down)
 LP.Chatted:Connect(CheckCommand)
@@ -2062,8 +2062,9 @@ for i = 1,#PlayersX do
 	if Plr ~= LP and game.PlaceId ~= 4816211628 then 
 		local Chatted;
 		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
-			if A == "Hey I'm a cyrus' streets admin user" then
-				Players:Chat("Hey I'm a cyrus' streets admin user")
+			if A == "Hey I'm a cyrus' streets admin user aidezyou'reaskid" then
+				Chatted:Disconnect()
+				Players:Chat("Hey I'm a cyrus' streets admin user aidezyou'reaskid")
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i][2] == Plr then 
@@ -2075,7 +2076,6 @@ for i = 1,#PlayersX do
 				if not abc123 then 
 					espPlayer(Plr,nil,true)
 				end
-				Chatted:Disconnect()
 			end
 		end)
 	end
@@ -2093,8 +2093,8 @@ Players.PlayerAdded:Connect(function(Plr)
 	if game.PlaceId ~= 4816211628 then 
 		local p;
 		P = Plr.Chatted:Connect(function(A)
-			if A == "Hey I'm a cyrus' streets admin user" then 
-				Players:Chat("Hey I'm a cyrus' streets admin user")
+			if A == "Hey I'm a cyrus' streets admin user aidezyou'reaskid" then 
+				Players:Chat("Hey I'm a cyrus' streets admin user aidezyou'reaskid")
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i][2] == Plr then 
