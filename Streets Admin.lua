@@ -25,7 +25,7 @@ local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
-Players:Chat("Hey I'm a cyrus' streets admin user1")
+game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -1458,7 +1458,7 @@ local Character = GetChar()
 			end
 		end
 	end
-	if AirWalkOn then 
+	if AirWalkOn and Character:FindFirstChild'Humanoid' and Character:FindFirstChild'HumanoidRootPart' then 
 		Character.Humanoid.HipHeight = 0
 		AirWalk.CFrame = Character.HumanoidRootPart.CFrame * CFrame.new(0,-3.5,0)
 	end
@@ -2041,7 +2041,7 @@ for i = 1,#PlayersX do
 		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
 			if A == "Hey I'm a cyrus' streets admin user1" then
 				Chatted:Disconnect()
-				Players:Chat("Hey I'm a cyrus' streets admin user1")
+				game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i][2] == Plr then 
@@ -2070,7 +2070,7 @@ Players.PlayerAdded:Connect(function(Plr)
 	local p;
 	P = Plr.Chatted:Connect(function(A)
 		if A == "Hey I'm a cyrus' streets admin user1" then 
-			Players:Chat("Hey I'm a cyrus' streets admin user1")
+			game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
 			local abc123;
 			for i = 1,#PlayerTable do 
 				if PlayerTable[i][2] == Plr then 
