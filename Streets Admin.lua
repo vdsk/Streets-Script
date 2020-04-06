@@ -63,7 +63,6 @@ local SettingsTable = {
    ClickTpKey = "";
    ShiftSpeed = 25;
    ControlSpeed = 8;
-   WalkSpeed = 16;
 }
 
 -- Hotkey start
@@ -75,7 +74,6 @@ local function savesettings()
 	ClickTpKey = SettingsToSave.ClickTpKey;
 	ShiftSpeed = SettingsToSave.ShiftSpeed;
 	ControlSpeed = SettingsToSave.ControlSpeed;
-	WalkSpeed = SettingsToSave.WalkSpeed;
 end 
 
 getgenv().updateSettings = function()
@@ -84,7 +82,6 @@ getgenv().updateSettings = function()
 		ClickTpKey = ClickTpKey;
 		ShiftSpeed = ShiftSpeed;
 		ControlSpeed = ControlSpeed;
-		WalkSpeed = WalkSpeed;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -93,10 +90,9 @@ local function runsettings()
     local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
     Keys = SettingsToRun.Keys
 	ClickTpKey = SettingsToRun.ClickTpKey
-	if SettingsToRun.ShiftSpeed and SettingsToRun.ControlSpeed and SettingsToRun.WalkSpeed then 
+	if SettingsToRun.ShiftSpeed and SettingsToRun.ControlSpeed then 
 		ShiftSpeed = SettingsToRun.ShiftSpeed;
 		ControlSpeed = SettingsToRun.ControlSpeed;
-		WalkSpeed = SettingsToRun.WalkSpeed;
 	end
 end
 
@@ -177,7 +173,7 @@ gamememe.__namecall = Closure(function(self,...)
 	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") then 
 		if typeof(Arguments[1]) == "CFrame" then 
 			if AimlockTarget and AimLock then
-				local Target = AimlockTarget:FindFirstChild'HumanoidRootPart' or AimlockTarget.Torso
+				local Target = AimlockTarget.HumanoidRootPart or AimlockTarget.Torso
 				if Target then 
 					return name(self,AimlockTarget.Head.CFrame + Target.Velocity / 10)
 				end 
