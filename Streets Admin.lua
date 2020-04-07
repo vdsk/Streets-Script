@@ -349,38 +349,31 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	local MTarget = MTarget.Parent
-	if not Players:GetPlayerFromCharacter(MTarget) then MTarget = MTarget.Parent end 
-	if not Players:GetPlayerFromCharacter(MTarget) then return end 
-	if MTarget and AimLock and not OnlyAimLock and not AimDebounce then
+	if MTarget and MTarget.Parent:FindFirstChildOfClass'Humanoid' and MTarget.Parent.Name ~= "Dummy" and AimLock and not OnlyAimLock and not AimDebounce then 
 		AimDebounce = true
-		if MTarget ~= AimlockTarget and MTarget:FindFirstChild'Humanoid'then 
-			AimlockTarget = MTarget 
-			local Player = Players:GetPlayerFromCharacter(MTarget)
-			Player.CharacterRemoving:Connect(function(T)
-				if tostring(AimlockTarget) == tostring(T) and not LoopAimLock then 
-					AimlockTarget = nil
-					OnlyAimLock = false 
-				end 
-			end)
-			AimlockTarget.ChildAdded:Connect(function(T)
-				if T.name == "KO" and tostring(AimlockTarget) == tostring(T.Parent) and not LoopAimLock then 
-					AimlockTarget = nil 
-					OnlyAimLock = false 
-				end 
-			end)
-			local A;
-			A = Player.CharacterAdded:Connect(function(T)
-				if AimlockTarget and T and tostring(AimlockTarget) == tostring(T) then
-					AimlockTarget = a
-				else 
-					A:Disconnect()
-				end 
-			end)
-			notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
-			wait(3)
-			AimDebounce = false
-		end
+		AimlockTarget = MTarget.Parent
+		Players:GetPlayerFromCharacter(MTarget.Parent).CharacterRemoving:Connect(function()
+			if not LoopAimLock then 
+				AimlockTarget = nil
+				OnlyAimLock = false
+			end
+		end)
+		Players:GetPlayerFromCharacter(MTarget.Parent).ChildAdded:Connect(function(T)
+			if T:IsA'BoolValue' and T.Name == "KO" and not LoopAimLock and AimlockTarget.Name == T.Parent.Name then
+				AimlockTarget = nil
+				OnlyAimLock = false 
+			end
+		end)
+		A = Players:GetPlayerFromCharacter(MTarget.Parent).CharacterAdded:Connect(function(a)
+			if AimlockTarget and a and AimlockTarget.Name == a.Name then 
+				AimlockTarget = a
+			else 
+				A:Disconnect()
+			end
+		end)
+		notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
+		wait(3)
+		AimDebounce = false 
 	end
 end
 
