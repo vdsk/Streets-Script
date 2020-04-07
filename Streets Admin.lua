@@ -176,7 +176,7 @@ gamememe.__namecall = Closure(function(self,...)
 				if AimlockTarget.FindFirstChild(AimlockTarget,'HumanoidRootPart') then 
 					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
 				else  -- had to switch to this to fix the issue with people removing their humanoidrootpart and breaking the aimlock completely
-					return name(self,AimlockTarget.Head.CFrame + Aimlocktarget.Torso.Velocity / 10)
+					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 10)
 				end 
 			end
 		end
