@@ -39,15 +39,15 @@ end
 
 if workspace:FindFirstChild'Armoured Truck' then
 	PartTable = {
-		['Burger'] = workspace:FindFirstChild'Burger | $15';
-		['Drink'] = workspace:FindFirstChild'Drink | $15';
-		['Ammo'] = workspace:FindFirstChild'Buy Ammo | $25';
-		['Pipe'] = workspace:FindFirstChild'Pipe | $100';
-		['Machete'] = workspace:FindFirstChild'Machete | $70';
-		['SawedOff'] = workspace:FindFirstChild'Sawed Off | $150';
-		['Spray'] = workspace:FindFirstChild'Spray | $20';
-		['Uzi'] = workspace:FindFirstChild'Uzi | $150';
-		['Glock'] = workspace:FindFirstChild'Glock | $200';
+		['Burger'] = workspace:WaitForChild'Burger | $15';
+		['Drink'] = workspace:WaitForChild'Drink | $15';
+		['Ammo'] = workspace:WaitForChild'Buy Ammo | $25';
+		['Pipe'] = workspace:WaitForChild'Pipe | $100';
+		['Machete'] = workspace:WaitForChild'Machete | $70';
+		['SawedOff'] = workspace:WaitForChild'Sawed Off | $150';
+		['Spray'] = workspace:WaitForChild'Spray | $20';
+		['Uzi'] = workspace:WaitForChild'Uzi | $150';
+		['Glock'] = workspace:WaitForChild'Glock | $200';
 	}
     workspace["Armoured Truck"]:Destroy()
 elseif workspace:FindFirstChild'TPer' then 
@@ -1357,10 +1357,29 @@ AddCommand(function()
 	notif("Command: AutoStomp","AutoStomp has been set to "..tostring(AutoStomp),5,"rbxassetid://1281284684")
 end,"autostomp",{},"Turns On/Off AutoStomp")
 
-AddCommand(function()
-	if GetChar():FindFirstChild'Right Arm' then 
-		GetChar()['Right Arm']:Destroy()
-	end
+AddCommand(function(Arguments)
+	if Arguments[1] and Arguments[1] == "legacy" then 
+		if GetChar():FindFirstChild'Right Arm' then 
+			GetChar()['Right Arm']:Destroy()
+		end
+	else 
+		local ToolTable,CurrentTools = {},LP.Backpack:GetChildren() 
+		for i = 1,#CurrentTools do
+			local Tool = CurrentTools[i]
+			if Tool:IsA'Tool' then
+				ToolTable[#ToolTable + 1] = Tool 
+			end
+		end 
+		GetChar().ChildAdded:Connect(function(T)
+		local TempTable;
+			if T:IsA'Tool' then 
+				if table.find(ToolTable,T) then return end
+				wait()
+				T.Parent = LP.Backpack 
+				table.insert(ToolTable,T)
+			end
+		end)	
+	end 
 end,"antikill",{},"Turns on Anti FE kill for your current life")
 
 AddCommand(function(Arguments)
