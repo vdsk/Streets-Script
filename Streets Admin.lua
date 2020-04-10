@@ -838,10 +838,12 @@ AddCommand(function()
 end,"noclip",{},"Allows you to walk through walls")
 
 AddCommand(function(Arguments)
-	local Player = PlrFinder(Arguments[1])
-	if Player and Player.Character and Player.Character:FindFirstChild'Head' and Player ~= LP then 
-		Teleport(Player.Character.Head.CFrame)
-	end 
+	if Arguments[1] then 
+		local Player = PlrFinder(Arguments[1])
+		if Player and Player.Character and Player.Character:FindFirstChild'Head' and Player ~= LP then 
+			Teleport(Player.Character.Head.CFrame)
+		end
+	end
 end,"goto",{"to"},"Teleports you to the selected player")
 
 AddCommand(function(Arguments)
@@ -1337,7 +1339,7 @@ end,"unesp",{},"Removes the esp on the player")
 
 AddCommand(function()
 	wait(0.5)
-	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by NotCyrusAtAll(Alt: Periius) | Join the cord at UVgdNXP","All")
+	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by NotCyrusAtAll(Alt: Periius) | Join the cord at xB3mTC","All")
 end,"advertise",{},"Advertises my discord lol")
 
 AddCommand(function()
@@ -2135,8 +2137,9 @@ local Alias = Commands[i].Alias
 	CreateCommand(UDim2.new(0.0150422715,0,0.0127776451,0 + (i * 20)),Commands[i].Name.." "..Commands[i].Help)
 end
 
-notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: UVgdNXP",10,"rbxassetid://2474242690") 
+notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: xB3mTC",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
+notif("Newest Update:","Added new antikill - use \"antikill legacy\" to use the old method",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
