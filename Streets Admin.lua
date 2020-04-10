@@ -2012,6 +2012,11 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(52,152,219);
 		['Access'] = true;
 	};
+	['1066524308']   = {
+		['Name']   = "\"A dumb bitch\" (Kylee)";
+		['Colour'] = Color3.fromRGB(210,168,243);
+		['Access'] = true;
+	};
 }
 
 local function espcool(Plr)
