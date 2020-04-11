@@ -179,7 +179,6 @@ gamememe.__namecall = Closure(function(self,...)
 	end
 	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[1]) == "CFrame" and AimlockTarget and AimLock then
 		if TargetPart == "Prediction" then
-			print'Prediction' 
 			if AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") then
 				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
 			else 
@@ -187,14 +186,11 @@ gamememe.__namecall = Closure(function(self,...)
 			end 
 		else
 			if AimlockTarget.FindFirstChild(AimlockTarget,TargetPart) then 
-				print'test'
 				return name(self,AimlockTarget[TargetPart].CFrame) 
 			else
 				--notif(tostring(AimlockTarget).." doesn't have that part in their character.","I recommend switching. to something else.",5,nil)
 			end
-			print'not prediction'
 		end
-		print'done'
 	end
     return name(self,...)
 end)
