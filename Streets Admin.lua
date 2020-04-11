@@ -25,6 +25,7 @@ local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
+local TargetPart = "Prediction"
 game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
 
 if UseDraw then 
@@ -56,13 +57,14 @@ end
 
 LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
 LP.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(),LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Size.Y)
-
 --^ Ty to Jayy#0648 for this "Hack" for bringing back normal chat 
+
 local SettingsTable = {
    Keys = {};
    ClickTpKey = "";
    ShiftSpeed = 25;
    ControlSpeed = 8;
+   TargetPart = "Prediction"
 }
 
 -- Hotkey start
@@ -74,6 +76,7 @@ local function savesettings()
 	ClickTpKey = SettingsToSave.ClickTpKey;
 	ShiftSpeed = SettingsToSave.ShiftSpeed;
 	ControlSpeed = SettingsToSave.ControlSpeed;
+	TargetPart = SettingsToSave.TargetPart;
 end 
 
 getgenv().updateSettings = function()
@@ -82,6 +85,7 @@ getgenv().updateSettings = function()
 		ClickTpKey = ClickTpKey;
 		ShiftSpeed = ShiftSpeed;
 		ControlSpeed = ControlSpeed;
+		TargetPart = TargetPart;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -90,6 +94,9 @@ local function runsettings()
     local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
     Keys = SettingsToRun.Keys
 	ClickTpKey = SettingsToRun.ClickTpKey
+	if SettingsToRun.TargetPart then 
+		TargetPart = SettingsToRun.TargetPart
+	end
 	if SettingsToRun.ShiftSpeed and SettingsToRun.ControlSpeed then 
 		ShiftSpeed = SettingsToRun.ShiftSpeed;
 		ControlSpeed = SettingsToRun.ControlSpeed;
@@ -170,16 +177,24 @@ gamememe.__namecall = Closure(function(self,...)
 			PlayOnDeath = nil 
 		end
 	end
-	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") then 
-		if typeof(Arguments[1]) == "CFrame" then 
-			if AimlockTarget and AimLock then
-				if AimlockTarget.FindFirstChild(AimlockTarget,'HumanoidRootPart') then 
-					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
-				else  -- had to switch to this to fix the issue with people removing their humanoidrootpart and breaking the aimlock completely
-					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 10)
-				end 
+	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[1]) == "CFrame" and AimlockTarget and AimLock then
+		if TargetPart == "Prediction" then
+			print'Prediction' 
+			if AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") then
+				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
+			else 
+				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 10)
+			end 
+		else
+			if AimlockTarget.FindFirstChild(AimlockTarget,TargetPart) then 
+				print'test'
+				return name(self,AimlockTarget[TargetPart].CFrame) 
+			else
+				--notif(tostring(AimlockTarget).." doesn't have that part in their character.","I recommend switching. to something else.",5,nil)
 			end
+			print'not prediction'
 		end
+		print'done'
 	end
     return name(self,...)
 end)
@@ -310,7 +325,6 @@ getgenv().FireGun = function(Tool)
 	end
 end
 
-local OnlyAimLock,AimDebounce,LoopAimLock = false,false,false 
 local function Button1Down()
 local MTarget = Mouse.Target
 	if GetChar():FindFirstChild'Zetox Btools' then 
@@ -349,32 +363,21 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	if MTarget and MTarget.Parent:FindFirstChildOfClass'Humanoid' and MTarget.Parent.Name ~= "Dummy" and AimLock and not OnlyAimLock and not AimDebounce then 
-		AimDebounce = true
-		AimlockTarget = MTarget.Parent
-		Players:GetPlayerFromCharacter(MTarget.Parent).CharacterRemoving:Connect(function()
-			if not LoopAimLock then 
-				AimlockTarget = nil
-				OnlyAimLock = false
-			end
+	local NTarget = MTarget.Parent 
+	if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
+	if not Players:GetPlayerFromCharacter(NTarget) then return end 
+	if NTarget ~= AimlockTarget then 
+		AimlockTarget = NTarget
+		local Connection;
+		Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
+			if tostring(AimlockTarget) == tostring(C) then 
+				AimlockTarget = C 
+			else
+				Connection:Disconnect()
+			end 
 		end)
-		Players:GetPlayerFromCharacter(MTarget.Parent).ChildAdded:Connect(function(T)
-			if T:IsA'BoolValue' and T.Name == "KO" and not LoopAimLock and AimlockTarget.Name == T.Parent.Name then
-				AimlockTarget = nil
-				OnlyAimLock = false 
-			end
-		end)
-		A = Players:GetPlayerFromCharacter(MTarget.Parent).CharacterAdded:Connect(function(a)
-			if AimlockTarget and a and AimlockTarget.Name == a.Name then 
-				AimlockTarget = a
-			else 
-				A:Disconnect()
-			end
-		end)
-		notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
-		wait(3)
-		AimDebounce = false 
-	end
+		notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
+	end 
 end
 
 local function Button2Down()
@@ -765,7 +768,7 @@ end,"speed",{"ws"},"Changes your Humanoids WalkSpeed")
 
 AddCommand(function()
 	WalkShoot = not WalkShoot
-end,"walkshoot",{},"Allows you to turn on / off walk shooting")
+end,"walkshoot",{"noslow"},"Allows you to turn on / off walk shooting")
 
 AddCommand(function(Arguments)
 	Normalwalk = false
@@ -898,56 +901,90 @@ AddCommand(function(Arguments)
 	end
 end,"tpto",{"tp"},"Teleports to places [banland/normalstreets/uzi/machete/spray/sawed/sawedoff/pipe/sand/prison/gas/court/beach/bank]")
 
+
 AddCommand(function(Arguments)
 local function fly(Speed)
-local Head = GetChar():WaitForChild('Head',10)
-if not Head then return end 
-	flying = true
-	local HadAirwalk = AirWalkOn
-    local BodyGyro,BodyPos = Instance.new('BodyGyro',Head),Instance.new('BodyPosition',Head)
-    BodyPos.maxForce = Vector3.new(9e9,9e9,9e9)
-    BodyPos.Position = Head.Position
-    BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
-    BodyGyro.CFrame = Head.CFrame
-    pcall(function()
-      repeat wait()
-		GetChar().Humanoid.PlatformStand = true
-        local Pos = BodyGyro.CFrame - BodyGyro.CFrame.p + BodyPos.Position
-        if not KeyTable['w'] and not KeyTable['a'] and not KeyTable['s'] and not KeyTable['d'] then 
-          Speed = Speed
-        elseif KeyTable['w'] then
-          Pos = Pos + workspace.Camera.CoordinateFrame.lookVector * Speed
-        elseif KeyTable['a'] then 
-          Pos = Pos * CFrame.new(-Speed, 0, 0)
-        elseif KeyTable['s'] then 
-          Pos = Pos - workspace.Camera.CoordinateFrame.lookVector * Speed 
-        elseif KeyTable['d'] then 
-          Pos = Pos * CFrame.new(Speed, 0, 0)
-        end 
-        BodyPos.Position = Pos.p
-        BodyGyro.CFrame = workspace.Camera.CoordinateFrame
-		GetChar().Humanoid.PlatformStand = false
-		GetChar().Humanoid:ChangeState(10)
-		if not AirWalkOn then 
-			CheckCommand("airwalk")
-		end
-		until not flying or GetChar().Humanoid.Health == 0
-		if not HadAirwalk then 
-			CheckCommand("airwalk")
-		end
-		if BodyGyro and BodyPos then 
-			BodyGyro:Destroy()
-			BodyPos:Destroy()
-		end
-        GetChar().Humanoid.PlatformStand = false 
-      end)
-  end
+	local Head = GetChar():WaitForChild('Head',10)
+	if not Head then return end 
+		flying = true
+		local HadAirwalk = AirWalkOn
+		local BodyGyro,BodyPos = Instance.new('BodyGyro',Head),Instance.new('BodyPosition',Head)
+		BodyPos.maxForce = Vector3.new(9e9,9e9,9e9)
+		BodyPos.Position = Head.Position
+		BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
+		BodyGyro.CFrame = Head.CFrame
+		pcall(function()
+		  repeat wait()
+			GetChar().Humanoid.PlatformStand = true
+			local Pos = BodyGyro.CFrame - BodyGyro.CFrame.p + BodyPos.Position
+			if not KeyTable['w'] and not KeyTable['a'] and not KeyTable['s'] and not KeyTable['d'] then 
+			  Speed = Speed
+			elseif KeyTable['w'] then
+			  Pos = Pos + workspace.Camera.CoordinateFrame.lookVector * Speed
+			elseif KeyTable['a'] then 
+			  Pos = Pos * CFrame.new(-Speed, 0, 0)
+			elseif KeyTable['s'] then 
+			  Pos = Pos - workspace.Camera.CoordinateFrame.lookVector * Speed 
+			elseif KeyTable['d'] then 
+			  Pos = Pos * CFrame.new(Speed, 0, 0)
+			end 
+			BodyPos.Position = Pos.p
+			BodyGyro.CFrame = workspace.Camera.CoordinateFrame
+			GetChar().Humanoid.PlatformStand = false
+			GetChar().Humanoid:ChangeState(10)
+			if not AirWalkOn then 
+				CheckCommand("airwalk")
+			end
+			until not flying or GetChar().Humanoid.Health == 0
+			if not HadAirwalk then 
+				CheckCommand("airwalk")
+			end
+			if BodyGyro and BodyPos then 
+				BodyGyro:Destroy()
+				BodyPos:Destroy()
+			end
+			GetChar().Humanoid.PlatformStand = false 
+		end)
+	end
 	if not flying then
-  		fly(Arguments[1] and tonumber(Arguments[1]) or 10)
+		fly(Arguments[1] and tonumber(Arguments[1]) or 10)
 	else 
 		flying = false 
 	end
 end,"fly",{"f"},"Allows you to be like a bird")
+
+local flinging = false
+local function Fling(Plr)
+	if not GetChar():FindFirstChild'Head' then return end
+	local BodyGyro,BodyVelocity = Instance.new('BodyGyro',GetChar().Head),Instance.new('BodyVelocity',GetChar().Head)
+	BodyGyro.P = 9e9
+	BodyGyro.CFrame = GetChar().Head.CFrame
+	BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
+	BodyVelocity.Velocity = Vector3.new(0,0,0)
+	BodyVelocity.maxForce = Vector3.new(9e9,9e9,9e9)
+	pcall(function()
+		repeat wait()
+		GetChar().HumanoidRootPart.CFrame = Plr.Character.Torso.CFrame
+		GetChar().Humanoid.PlatformStand = true
+		BodyGyro.CFrame = workspace.CurrentCamera.CoordinateFrame
+		until not flinging or GetChar().Humanoid.Health == 0 
+		if BodyGyro and BodyVelocity then 
+			BodyGyro:Destroy()
+			BodyVelocity:Destroy()
+		end
+		GetChar().Humanoid.PlatformStand = false 
+	end)
+end
+
+AddCommand(function(Arguments)
+	if Arguments[1] then
+		local Player = PlrFinder(Arguments[1])
+		if Player then
+			Fling(Player)
+		end
+	end 
+	flinging = not flinging
+end,"fling",{},"rocketship")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -1233,42 +1270,42 @@ end,"itemesp",{},"Allows you to see where all the spawners are on the map throug
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
-		local Plr = PlrFinder(Arguments[1])
-		if Plr and Plr.Character and Plr ~= LP then 
+		local Player = PlrFinder(Arguments[1]) 
+		if Player and tostring(AimlockTarget) ~= tostring(Player) then
+			CheckCommand("esp "..Player.Name)
 			AimLock = true 
-			AimlockTarget = Plr.Character
-			OnlyAimLock = true 
-			Plr.CharacterRemoving:Connect(function()
-				if not LoopAimLock then 
-					AimlockTarget = nil
-					OnlyAimLock = false
-				end
+			AimlockTarget = Player.Character
+			local Connection; -- Localized so that it is only accessible in this function (Otherwise it would be over-wrote every time this command was called and would never be disconnected)
+			Connection = Player.CharacterAdded:Connect(function(C)
+				if tostring(C) == tostring(AimlockTarget) then 
+					AimlockTarget = C
+				else 
+					Connection:Disconnect()
+				end 
 			end)
-			Plr.Character.ChildAdded:Connect(function(T)
-				if T:IsA'BoolValue' and T.Name == "KO" and not LoopAimLock then
-					AimlockTarget = nil
-					OnlyAimLock = false 
-				end
-			end)
-			Plr.CharacterAdded:Connect(function(a)
-				if AimlockTarget and AimlockTarget.Name == Plr.Name then 
-					AimlockTarget = Plr.Character 
-				end
-			end)
-			notif("AimlockTarget","has been set to "..AimlockTarget.Name,5,"rbxassetid://1281284684")
+			notif("AimlockTarget has been set to",AimlockTarget.Name,5,nil)
 		end
-	else 
-		OnlyAimLock = false 
+	else
 		AimLock = not AimLock
-		notif("Aimlock","has been set to "..tostring(AimLock).." click on a player to lock on them",5,"rbxassetid://1281284684")
+		notif("Aimlock","has been set to "..tostring(AimLock),5,"rbxassetid://1281284684")
 	end
 end,"aimlock",{"aim"},"Shoots your gun that is titled 75 degrees at the selected person (Aimlock [Player/nil/loop] - if nil click players to set the aimlock target to them (loop makes it so when they respawn it still locks on)")
 
-AddCommand(function()
-	LoopAimLock = not LoopAimLock
-	AimLock = true 
-	notif("Command: LoopLock","has been set to "..tostring(LoopAimLock),5,"rbxassetid://1281284684")
-end,"aimlockloop",{},"Loops/Unloops Aimlock")
+local WhiteListedParts = {
+	['head'] = "Head";
+	['torso'] = "Torso";
+	['humanoidrootpart'] = "HumanoidRootPart";
+	['prediction'] = "Prediction";
+}
+
+AddCommand(function(Arguments)
+	if Arguments[1] then
+		if WhiteListedParts[Arguments[1]:lower()] then
+			TargetPart = WhiteListedParts[Arguments[1]:lower()]
+			notif("AimTarget","has been set to "..TargetPart,5,"rbxassetid://1281284684")
+		end
+	end
+end,"aimtarget",{},"Allows you to pick between a part for aimlock to target/prediction")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -1918,17 +1955,17 @@ local CoolkidTable = {
 		['Access'] = true;
 	};
 	['659119329'] 	= {
-		['Name']   = "!fishgang Cy | Creator/Co-owner";
+		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
 	};
     ['12978668']  	= {
-		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
+		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
 	};
     ['659119329']   = {
-		['Name']   = "!fishgang Cy Alt | Creator/Co-owner";
+		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
 	};
@@ -2142,9 +2179,9 @@ local Alias = Commands[i].Alias
 	CreateCommand(UDim2.new(0.0150422715,0,0.0127776451,0 + (i * 20)),Commands[i].Name.." "..Commands[i].Help)
 end
 
-notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: xB3mTC",10,"rbxassetid://2474242690") 
+notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
-notif("Newest Update:","Added new antikill - use \"antikill legacy\" to use the old method",10,nil)   
+notif("Newest Update:","Added fling [plr],aimtarget [Part/Prediction],Fixed up aimlock (Join the disc for more info)",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
