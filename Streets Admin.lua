@@ -188,7 +188,7 @@ gamememe.__namecall = Closure(function(self,...)
 			if AimlockTarget.FindFirstChild(AimlockTarget,TargetPart) then 
 				return name(self,AimlockTarget[TargetPart].CFrame) 
 			else
-				--notif(tostring(AimlockTarget).." doesn't have that part in their character.","I recommend switching. to something else.",5,nil)
+				notif(tostring(AimlockTarget).." doesn't have that part in their character.","I recommend switching to something else.",5,nil)
 			end
 		end
 	end
