@@ -366,7 +366,7 @@ local MTarget = Mouse.Target
 	local NTarget = MTarget.Parent 
 	if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
 	if not Players:GetPlayerFromCharacter(NTarget) then return end 
-	if NTarget ~= AimlockTarget then 
+	if NTarget ~= AimlockTarget and AimLock then 
 		AimlockTarget = NTarget
 		local Connection;
 		Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
