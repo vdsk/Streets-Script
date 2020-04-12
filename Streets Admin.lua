@@ -1034,13 +1034,17 @@ end,"antiaim",{},"breaks shitty aimbots lol")
 AddCommand(function()
 if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
 math.randomseed(os.time())
-	local Car = workspace.Cars:GetDescendants()
-	for i = 1,#Car do
-		local i = math.random(1,#Car)
-		if Car[i]:IsA'VehicleSeat' and Car[i].Name == "Drive" and not Car[i].Occupant then 
-			GetChar().HumanoidRootPart.CFrame = Car[i].CFrame
+	if workspace:FindFirstChild'Cars' then 
+		local Car = workspace.Cars:GetDescendants()
+		for i = 1,#Car do
+			local i = math.random(1,#Car)
+			if Car[i]:IsA'VehicleSeat' and Car[i].Name == "Drive" and not Car[i].Occupant then 
+				GetChar().HumanoidRootPart.CFrame = Car[i].CFrame
+			end
 		end
-	end
+	else 
+		notif("Command: BringCar","no cars to bring",nil)
+	end 
 end,"bringcar",{},"Brings a car (Streets only)")
 
 AddCommand(function(Arguments)
