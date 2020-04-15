@@ -1958,7 +1958,7 @@ local CoolkidTable = {
 		['Access'] = true;
 	};
     ['114164798']   = {
-		['Name']   = "!fishgang Slays (I bitch about the tag in 3rd person)";
+		['Name']   = "!fishgang Slays (I only don't bitch about my tag as I remove it through a script)";
 		['Colour'] = Color3.fromRGB(63,0,0);
 		['Access'] = true;
 	};
