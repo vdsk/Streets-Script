@@ -26,7 +26,7 @@ local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(14
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local TargetPart = "Prediction"
-game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
+game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1")
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -2118,7 +2118,7 @@ for i = 1,#PlayersX do
 		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
 			if A == "Hey I'm a cyrus' streets admin user1" then
 				Chatted:Disconnect()
-				game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
+				game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1")
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i][2] == Plr then 
@@ -2147,7 +2147,7 @@ Players.PlayerAdded:Connect(function(Plr)
 	local p;
 	P = Plr.Chatted:Connect(function(A)
 		if A == "Hey I'm a cyrus' streets admin user1" then 
-			game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1") -- fuck off aidez you dumb skid lol
+			game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1")
 			local abc123;
 			for i = 1,#PlayerTable do 
 				if PlayerTable[i][2] == Plr then 
