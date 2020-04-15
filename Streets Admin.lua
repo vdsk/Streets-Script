@@ -1482,6 +1482,14 @@ local function checkHp(Plr)
 	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
 end
 
+local WhitelistedOs = {
+	['durango'] = "Xbox";
+	['win32'] = "Windows";
+	['ios'] = "Apple";
+	['android'] = "Superior Android";
+	['osx'] = "Mac (GROSS)";
+}
+
 local function Stepped()
 local Character = GetChar()
 	if Noclipping then 
@@ -1536,10 +1544,11 @@ local Character = GetChar()
             PlayerTable[i][3].Visible = OnScreen
 			PlayerTable[i][3].Position = PlayerTable[i][1].Position + Vector2.new(0,10)
 			PlayerTable[i][3].Color = EspColour
+			local OsPlatform = WhitelistedOs[PlayerTable[i][2].osPlatform:lower()] or "this is a stupid skid please KoS them - Cy"
             if (Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude <= 100 then 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true).."\nCy Admin User: "..PlayerTable[i][4]
+                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..OsPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true).."\nCy Admin User: "..PlayerTable[i][4]
             else 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..PlayerTable[i][2].osPlatform.."\nCy Admin User: "..PlayerTable[i][4]
+                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..OsPlatform.."\nCy Admin User: "..PlayerTable[i][4]
 			end
 		else 
 			if PlayerTable[i] then -- dumb fucking error that sometimes happens!
