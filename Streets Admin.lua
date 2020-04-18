@@ -854,13 +854,13 @@ end,"time",{},"Changes the time to the number you set")
 AddCommand(function(Arguments)
 	Blinking = not Blinking
 	if Blinking then 
-		if not Arguments[1] or tonumber(Arguments[1]) and tonumber(Arguments[1]) > 2 then 
+		if not Arguments[1] or not tonumber(Arguments[1]) then 
 			BlinkSpeed = 2
 		else 
 			BlinkSpeed = Arguments[1]
 		end
 	end 
-end,"blink",{"blinkspeed"},"Another form of speed, Uses CFrame")
+end,"blink",{},"Another form of speed, Uses CFrame")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
