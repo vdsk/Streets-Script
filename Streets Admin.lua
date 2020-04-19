@@ -26,7 +26,7 @@ local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(14
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local TargetPart = "Prediction"
-Players:Chat("same!")
+Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
 
 if UseDraw then 
