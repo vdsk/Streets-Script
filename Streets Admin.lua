@@ -2230,7 +2230,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
-notif("Newest Update:","Added fling [plr],aimtarget [Part/Prediction],Fixed up aimlock (Join the disc for more info)",10,nil)   
+notif("Newest Update:","Added Feloop [plr] (I hate you all LMFAO) to disable just type feloop again - Cy",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
