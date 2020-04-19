@@ -16,8 +16,8 @@ getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() e
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
 local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
-local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking = false,false,false,true,false,false,false,false,false,false,false,false
-local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer
+local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop = false,false,false,true,false,false,false,false,false,false,false,false,false
+local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer,LoopPlayer
 local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
@@ -26,7 +26,8 @@ local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(14
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local TargetPart = "Prediction"
-game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1")
+Players:Chat("same!")
+Players:Chat("Hey I'm a cyrus' streets admin user1")
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -308,7 +309,7 @@ wait()
 	repeat  
 		Track:play(.1,1,1)
 		GetChar().HumanoidRootPart.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)
-		game:GetService'RunService'.Heartbeat:wait()
+		RunService.Heartbeat:wait()
 	until PartTable[Thing]:FindFirstChildOfClass'Part'.BrickColor == BrickColor.new'Bright red' or GetChar():FindFirstChild'KO' or GetChar().Humanoid.Health == 0
 	return true
 end 
@@ -1478,6 +1479,17 @@ AddCommand(function()
 	end 
 end,"rainbowhats",{},"complete autism lol")
 
+AddCommand(function(Arguments)
+	if game.PlaceId == 455366377 then notif("Wont work","you need to be off streets",5,nil) return end 
+	FeLoop = not FeLoop
+	if Arguments[1] and PlrFinder(Arguments[1]) then 
+        LoopPlayer = PlrFinder(Arguments[1])
+        GetChar():BreakJoints()
+	else 
+		LoopPlayer = nil
+	end
+end,"feloop",{},"fe loops said player or turns it off")
+
 local function checkHp(Plr)
 	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
 end
@@ -1507,8 +1519,22 @@ local Character = GetChar()
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
-	if GodMode and Character:FindFirstChild'Right Leg' then 
-		Character['Right Leg']:Destroy()
+	if GodMode or FeLoop then 
+		if Character:FindFirstChild'Right Leg' then 
+			Character['Right Leg']:Destroy()
+		end
+	end
+	if FeLoop then
+		local BChild = LP.Backpack:GetChildren()
+        for i = 1,#BChild do 
+            BChild[i].Parent = Character
+            if game.PlaceId == 455366377 then 
+                repeat wait() until not Character:FindFirstChildOfClass'Tool'
+            end
+		end
+		if Character:FindFirstChild'HumanoidRootPart' and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' then 
+			Character.HumanoidRootPart.CFrame = LoopPlayer.Character.Torso.CFrame
+		end 
 	end
 	if AutoStomp then
 		local Players = Players:GetPlayers()
@@ -1749,6 +1775,12 @@ LP.CharacterAdded:Connect(function()
 	GetChar().Humanoid.WalkSpeed = SpawnWS or NormalWS
     GetChar().Humanoid.JumpPower = SpawnJP or NormalJP
 	GetChar().Humanoid.HipHeight = SpawnHH or NormalHH
+	if FeLoop then 
+		local Humanoid = GetChar().Humanoid:Clone()
+		GetChar().Humanoid:Destroy()
+		Humanoid.Parent = GetChar()
+		workspace.CurrentCamera.CameraSubject = GetChar()
+	end 
 	if PlayOnDeath then
 		wait()
 		local Tool = LP.Backpack:WaitForChild('BoomBox',10)
@@ -2118,7 +2150,7 @@ for i = 1,#PlayersX do
 		Chatted = Plr.Chatted:Connect(function(A) -- had to make it a function instead of calling :Wait() on it or it would yield the whole loop lmao
 			if A == "Hey I'm a cyrus' streets admin user1" then
 				Chatted:Disconnect()
-				game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1")
+				Players:Chat("Hey I'm a cyrus' streets admin user1")
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i][2] == Plr then 
@@ -2147,7 +2179,7 @@ Players.PlayerAdded:Connect(function(Plr)
 	local p;
 	P = Plr.Chatted:Connect(function(A)
 		if A == "Hey I'm a cyrus' streets admin user1" then 
-			game:GetService'Players':Chat("Hey I'm a cyrus' streets admin user1")
+			Players:Chat("Hey I'm a cyrus' streets admin user1")
 			local abc123;
 			for i = 1,#PlayerTable do 
 				if PlayerTable[i][2] == Plr then 
