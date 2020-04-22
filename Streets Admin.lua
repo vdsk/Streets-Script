@@ -2328,7 +2328,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
-notif("Newest Update:","Added right click for aimlocking (not for camlock though)",10,nil)   
+notif("Newest Update:","aimmode rightclick/leftclick default leftclick (rightclick mode = Shift + right click)",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
