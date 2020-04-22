@@ -378,6 +378,30 @@ local MTarget = Mouse.Target
 	end 
 end
 
+local distance = function(x,y)
+	return math.sqrt(math.pow((x - workspace.CurrentCamera.ViewportSize.X/2), 2) + math.pow((y - workspace.CurrentCamera.ViewportSize.Y/2), 2))
+end
+ 
+local relativepos = function(Position)
+	return workspace.CurrentCamera:WorldToScreenPoint(Position)
+end
+
+local getPlayerNearby = function()
+    local NearestPlayer,ClosestPos = nil,math.huge
+    local Plrs,Plr = Players:GetPlayers(),nil
+    for i = 1,#Plrs do
+        Plr = Plrs[i]
+        if Plr ~= LP and Plr.Character and Plr.Character.Head then
+        local Distance = distance(relativepos(Plr.Character.Head.Position).X,relativepos(Plr.Character.Head.Position).Y)
+            if Distance < math.huge and Distance < ClosestPos then 
+                ClosestPos = Distance
+                NearestPlayer = Plr
+            end
+        end 
+    end
+    return NearestPlayer
+end
+
 local function Button2Down()
 if Mouse.Target then 
 	local Target = Mouse.Target.Parent 
@@ -391,8 +415,11 @@ if Mouse.Target then
 			end
 		end
 	end
+	if AimLock then 
+		AimlockTarget = getPlayerNearby().Character
+		notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
+	end 
 end
-
 
 local function FreeCam(Speed)
 if not GetChar():FindFirstChild'Head' then return end 
