@@ -361,21 +361,6 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	local NTarget = MTarget.Parent 
-	if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
-	if not Players:GetPlayerFromCharacter(NTarget) then return end 
-	if NTarget ~= AimlockTarget and AimLock then 
-		AimlockTarget = NTarget
-		local Connection;
-		Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
-			if tostring(AimlockTarget) == tostring(C) then 
-				AimlockTarget = C 
-			else
-				Connection:Disconnect()
-			end 
-		end)
-		notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
-	end 
 end
 
 local distance = function(x,y)
@@ -393,7 +378,7 @@ local getPlayerNearby = function()
         Plr = Plrs[i]
         if Plr ~= LP and Plr.Character and Plr.Character.Head then
         local Distance = distance(relativepos(Plr.Character.Head.Position).X,relativepos(Plr.Character.Head.Position).Y)
-            if Distance < math.huge and Distance < ClosestPos then 
+            if Distance < 500 and Distance < ClosestPos then 
                 ClosestPos = Distance
                 NearestPlayer = Plr
             end
@@ -417,6 +402,14 @@ if Mouse.Target then
 	end
 	if AimLock then 
 		AimlockTarget = getPlayerNearby().Character
+		local Connection;
+		Connection = Players:GetPlayerFromCharacter(AimlockTarget).CharacterAdded:Connect(function(C)
+			if tostring(AimlockTarget) == tostring(C) then 
+				AimlockTarget = C 
+			else
+				Connection:Disconnect()
+			end 
+		end)
 		notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
 	end 
 end
