@@ -427,7 +427,7 @@ if Mouse.Target then
 			end
 		end
 	end
-	if AimLock and AimlockMode == "RightClick" then 
+	if AimLock and AimlockMode == "RightClick" and KeyTable['Shift'] then 
 		AimlockTarget = closestToMouse().Character
 		local Connection;
 		Connection = Players:GetPlayerFromCharacter(AimlockTarget).CharacterAdded:Connect(function(C)
@@ -1720,7 +1720,6 @@ local function PlayerGuiChildAdded(Thing)
 		UziStats()
 	end
 end
-
 
 Cframe.BackgroundColor3 = Color3.new(0.666667,0,0)
 Cframe.BackgroundTransparency = 0.20000000298023
