@@ -898,57 +898,82 @@ AddCommand(function(Arguments)
 	end
 end,"tpto",{"tp"},"Teleports to places [banland/normalstreets/uzi/machete/spray/sawed/sawedoff/pipe/sand/prison/gas/court/beach/bank]")
 
-local function fly(Speed)
-	local Head = GetChar():WaitForChild('Head',10)
-	if not Head then return end 
+local FlySpeed = 10
+local function fly(SPEED) -- CREDITS TO INFINITE YIELD FOR THIS FLY METHOD (I'M PLANNING TO MAKE MY OWN SOON)
+FlySpeed = SPEED or 10
+	local T = LP.Character:FindFirstChild("HumanoidRootPart")
+	local ShootPart = Instance.new('Part',workspace)
+	ShootPart.Size = Vector3.new(5,1,5)
+	ShootPart.Transparency = 1
+	ShootPart.Anchored = true -- I was gonna use airwalk but lol 
+	local CONTROL = {F = 0, B = 0, L = 0, R = 0}
+	local lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+	local function fly()
 		flying = true
-		local HadAirwalk = AirWalkOn
-		local BodyGyro,BodyPos = Instance.new('BodyGyro',Head),Instance.new('BodyPosition',Head)
-		BodyPos.maxForce = Vector3.new(9e9,9e9,9e9)
-		BodyPos.Position = Head.Position
-		BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
-		BodyGyro.CFrame = Head.CFrame
-		pcall(function()
+		local BG = Instance.new('BodyGyro', T)
+		local BV = Instance.new('BodyVelocity', T)
+		BG.P = 9e4
+		BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		BG.cframe = T.CFrame
+		BV.velocity = Vector3.new(0, 0.1, 0)
+		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		spawn(function()
 		repeat wait()
-		GetChar().Humanoid.PlatformStand = true
-		local Pos = BodyGyro.CFrame - BodyGyro.CFrame.p + BodyPos.Position
-		if not KeyTable['w'] and not KeyTable['a'] and not KeyTable['s'] and not KeyTable['d'] then 
-			Speed = Speed
-		elseif KeyTable['w'] then
-			Pos = Pos + workspace.Camera.CoordinateFrame.lookVector * Speed
-		elseif KeyTable['a'] then 
-			Pos = Pos * CFrame.new(-Speed, 0, 0)
-		elseif KeyTable['s'] then 
-			Pos = Pos - workspace.Camera.CoordinateFrame.lookVector * Speed 
-		elseif KeyTable['d'] then 
-			Pos = Pos * CFrame.new(Speed, 0, 0)
-		end 
-		BodyPos.Position = Pos.p
-		BodyGyro.CFrame = workspace.Camera.CoordinateFrame
-		GetChar().Humanoid.PlatformStand = false
-		GetChar().Humanoid:ChangeState(10)
-		if not AirWalkOn then 
-			CheckCommand("airwalk")
+		ShootPart.CFrame = LP.Character.Torso.CFrame * CFrame.new(0,-3.5,0)
+		LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
+		LP.Character.Humanoid:ChangeState(10)
+		if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
+		SPEED = 50
+		elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0) and SPEED ~= 0 then
+		SPEED = 0
 		end
-		until not flying or GetChar().Humanoid.Health == 0
-		if not HadAirwalk then 
-			CheckCommand("airwalk")
+		if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 then
+		BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+		lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+		elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and SPEED ~= 0 then
+		BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+		else
+		BV.velocity = Vector3.new(0, 0.1, 0)
 		end
-		if BodyGyro and BodyPos then 
-				BodyGyro:Destroy()
-			BodyPos:Destroy()
+		BG.cframe = workspace.CurrentCamera.CoordinateFrame
+				until not flying
+				CONTROL = {F = 0, B = 0, L = 0, R = 0}
+				lCONTROL = {F = 0, B = 0, L = 0, R = 0}
+				SPEED = 0
+				ShootPart:Destroy()
+				BG:destroy()
+				BV:destroy()
+				LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
+			end)
 		end
-		GetChar().Humanoid.PlatformStand = false 
+	Mouse.KeyDown:connect(function(KEY)
+		if KEY:lower() == 'w' then
+			CONTROL.F = FlySpeed
+		elseif KEY:lower() == 's' then
+			CONTROL.B = -FlySpeed
+		elseif KEY:lower() == 'a' then
+			CONTROL.L = -FlySpeed 
+		elseif KEY:lower() == 'd' then 
+			CONTROL.R = FlySpeed
+		end
 	end)
+	Mouse.KeyUp:connect(function(KEY)
+		if KEY:lower() == 'w' then
+			CONTROL.F = 0
+		elseif KEY:lower() == 's' then
+			CONTROL.B = 0
+		elseif KEY:lower() == 'a' then
+			CONTROL.L = 0
+		elseif KEY:lower() == 'd' then
+			CONTROL.R = 0
+		end
+	end)
+	fly()
 end
 
 AddCommand(function(Arguments)
 	if not flying then
-		--if Arguments[2] and Arguments[2]:lower() == "iy" then  soon addition 
-		
-		--else
-			fly(Arguments[1] and tonumber(Arguments[1]) or 10)
-		--end
+		fly(Arguments[1] and tonumber(Arguments[1]) or 10)
 	else 
 		flying = false 
 	end
@@ -1274,7 +1299,8 @@ AddCommand(function()
 end,"itemesp",{},"Allows you to see where all the spawners are on the map through walls")
 
 AddCommand(function(Arguments)
-	if Arguments[1] then 
+	if Arguments[1] then
+		if Arguments[1]:lower() == "all" then notif("STOP IT","NO. JUST NO.",10,nil) end 
 		local Player = PlrFinder(Arguments[1]) 
 		if Player and tostring(AimlockTarget) ~= tostring(Player) then
 			CheckCommand("esp "..Player.Name)
@@ -1464,7 +1490,7 @@ AddCommand(function(Arguments)
 			CamlockPlayer = Player
 		end
 	end 
-end,"camlock",{"lockcam"},"Different type of aimbot (Uses camera instead of the remote)")
+end,"camlock",{"lockcam","cl"},"Different type of aimbot (Uses camera instead of the remote)")
 
 local RainbowTable1,RainbowTable2;
 AddCommand(function()
@@ -1812,7 +1838,8 @@ if UserInput:GetFocusedTextBox() then return end
 		if Normalwalk and ControlSpeed == 8 then return end
 		GetChar().Humanoid.WalkSpeed = ControlSpeed
 	end
-	if Key.KeyCode == Enum.KeyCode.LeftShift then 
+	if Key.KeyCode == Enum.KeyCode.LeftShift then
+		KeyTable['Shift'] = true 
 		if Normalwalk and ShiftSpeed == 25 then return end 
 		GetChar().Humanoid.WalkSpeed = ShiftSpeed
 	end
@@ -1880,6 +1907,7 @@ if UserInput:GetFocusedTextBox() then return end
 		KeyTable['d'] = false 
 	end
 	if Key.KeyCode == Enum.KeyCode.LeftShift and ShiftSpeed then
+		KeyTable['Shift'] = false 
 		if Normalwalk and ShiftSpeed == 25 then return end 
 		GetChar().Humanoid.WalkSpeed = WalkSpeed
 	end 
@@ -1915,7 +1943,7 @@ Mouse.Button1Down:Connect(Button1Down)
 Mouse.Button2Down:Connect(Button2Down)
 LP.Chatted:Connect(CheckCommand)
 UserInput.JumpRequest:Connect(DoubleJump)
-CText.Changed:Connect(Changed)
+CText:GetPropertyChangedSignal("Text"):Connect(Changed)
 RunService.Stepped:Connect(Stepped)
 
 spawn(function()
@@ -1926,7 +1954,7 @@ spawn(function()
 		if flying and PartTable then
 			GetChar().Humanoid:ChangeState(3)
 		end
-		if Blinking then 
+		if Blinking and KeyTable['Shift'] then
 			if KeyTable['w'] then 
 				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame + GetChar().HumanoidRootPart.CFrame.lookVector * BlinkSpeed
 			end 
@@ -2225,7 +2253,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
-notif("Newest Update:","Added Feloop [plr] (I hate you all LMFAO) to disable just type feloop again - Cy",10,nil)   
+notif("Newest Update:","Revamped blink speed (Now press shift + W OR S to move),ADDED INFINITE YIELD FLY SO IT'S MORE ACCURATE :crab:,new camlock alias [cl]",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
