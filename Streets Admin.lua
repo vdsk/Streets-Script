@@ -1587,6 +1587,9 @@ local Character = GetChar()
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
+	if flying and PartTable then
+		Character.Humanoid:ChangeState(3)
+	end
 	if GodMode or FeLoop then 
 		if Character:FindFirstChild'Right Leg' then 
 			Character['Right Leg']:Destroy()
@@ -1993,9 +1996,6 @@ spawn(function()
 		if GetChar():FindFirstChildOfClass'Humanoid' and UseDraw then 
 			DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 		end
-		if flying and PartTable then
-			GetChar().Humanoid:ChangeState(3)
-		end
 		if Blinking and KeyTable['Shift'] then
 			if KeyTable['w'] then 
 				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame + GetChar().HumanoidRootPart.CFrame.lookVector * BlinkSpeed
@@ -2295,7 +2295,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
-notif("Newest Update:","Revamped blink speed (Now press shift + W OR S to move),ADDED INFINITE YIELD FLY SO IT'S MORE ACCURATE :crab:,new camlock alias [cl]",10,nil)   
+notif("Newest Update:","Added right click for aimlocking (not for camlock though)",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
