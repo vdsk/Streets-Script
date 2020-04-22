@@ -27,6 +27,7 @@ local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
 local OldFov = workspace.CurrentCamera.FieldOfView
 local TargetPart = "Prediction"
+local AimlockMode = "LeftClick"
 Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
 
@@ -66,7 +67,8 @@ local SettingsTable = {
    ClickTpKey = "";
    ShiftSpeed = 25;
    ControlSpeed = 8;
-   TargetPart = "Prediction"
+   TargetPart = "Prediction";
+   AimlockMode = "LeftClick";
 }
 
 -- Hotkey start
@@ -79,6 +81,7 @@ local function savesettings()
 	ShiftSpeed = SettingsToSave.ShiftSpeed;
 	ControlSpeed = SettingsToSave.ControlSpeed;
 	TargetPart = SettingsToSave.TargetPart;
+	AimlockMode = SettingsToSave.AimlockMode;
 end 
 
 getgenv().updateSettings = function()
@@ -88,6 +91,7 @@ getgenv().updateSettings = function()
 		ShiftSpeed = ShiftSpeed;
 		ControlSpeed = ControlSpeed;
 		TargetPart = TargetPart;
+		AimlockMode = AimlockMode;
     }
     writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
 end
@@ -96,6 +100,9 @@ local function runsettings()
     local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
     Keys = SettingsToRun.Keys
 	ClickTpKey = SettingsToRun.ClickTpKey
+	if SettingsToRun.AimlockMode then 
+		AimlockMode = SettingsToRun.AimlockMode
+	end
 	if SettingsToRun.TargetPart then 
 		TargetPart = SettingsToRun.TargetPart
 	end
@@ -361,30 +368,50 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
+	local NTarget = MTarget.Parent 
+	if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
+	if not Players:GetPlayerFromCharacter(NTarget) then return end 
+	if NTarget ~= AimlockTarget and AimLock and AimlockMode == "LeftClick" then 
+		AimlockTarget = NTarget
+		local Connection;
+		Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
+			if tostring(AimlockTarget) == tostring(C) then 
+				AimlockTarget = C 
+			else
+				Connection:Disconnect()
+			end 
+		end)
+		notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
+	end 
 end
 
-local distance = function(x,y)
-	return math.sqrt(math.pow((x - workspace.CurrentCamera.ViewportSize.X/2), 2) + math.pow((y - workspace.CurrentCamera.ViewportSize.Y/2), 2))
-end
- 
-local relativepos = function(Position)
-	return workspace.CurrentCamera:WorldToScreenPoint(Position)
+local function BehindAWall(Target)
+	local RYEBread = Ray.new(workspace.CurrentCamera.CoordinateFrame.p,Target.Head.Position - workspace.CurrentCamera.CoordinateFrame.Position)
+	local RYEBreadHit = workspace:FindPartOnRay(RYEBread)
+	if RYEBreadHit then 
+		if RYEBreadHit:IsDescendantOf(Target) then 
+			return false
+		else
+			return true 
+		end 
+	end 
 end
 
-local getPlayerNearby = function()
-    local NearestPlayer,ClosestPos = nil,math.huge
-    local Plrs,Plr = Players:GetPlayers(),nil
-    for i = 1,#Plrs do
-        Plr = Plrs[i]
-        if Plr ~= LP and Plr.Character and Plr.Character.Head then
-        local Distance = distance(relativepos(Plr.Character.Head.Position).X,relativepos(Plr.Character.Head.Position).Y)
-            if Distance < 500 and Distance < ClosestPos then 
-                ClosestPos = Distance
-                NearestPlayer = Plr
-            end
-        end 
-    end
-    return NearestPlayer
+local function closestToMouse()
+local ClosestPos,ClosestPlayer = math.huge,nil
+	for i,v in pairs(Players:GetPlayers()) do 
+		if v.Character and v.Character:FindFirstChild'Head' and v ~= LP then 
+			local Dist = (v.Character.Head.Position - workspace.CurrentCamera.CoordinateFrame.Position).magnitude
+			local RYETarget = Ray.new(workspace.CurrentCamera.CoordinateFrame.Position,(Mouse.Hit.p - workspace.CurrentCamera.CoordinateFrame.Position)).unit
+			local RYEHit,RYEPos = workspace:FindPartOnRay(RYETarget,workspace)
+			local NewPos = math.floor((RYEPos - v.Character.Head.Position).magnitude)
+			if NewPos < 500 and NewPos < ClosestPos and not BehindAWall(v.Character) then
+				ClosestPos = NewPos
+				ClosestPlayer = v 
+			end
+		end
+	end
+	return ClosestPlayer
 end
 
 local function Button2Down()
@@ -400,8 +427,8 @@ if Mouse.Target then
 			end
 		end
 	end
-	if AimLock then 
-		AimlockTarget = getPlayerNearby().Character
+	if AimLock and AimlockMode == "RightClick" then 
+		AimlockTarget = closestToMouse().Character
 		local Connection;
 		Connection = Players:GetPlayerFromCharacter(AimlockTarget).CharacterAdded:Connect(function(C)
 			if tostring(AimlockTarget) == tostring(C) then 
@@ -1554,6 +1581,20 @@ end,"feloop",{},"fe loops said player or turns it off")
 local function checkHp(Plr)
 	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
 end
+
+AddCommand(function(Arguments)
+	if Arguments[1] then 
+		if Arguments[1]:lower() == "leftclick" then 
+			AimlockMode = "LeftClick"
+			updateSettings()
+		elseif Arguments[1]:lower() == "rightclick" then 
+			AimlockMode = "RightClick"
+			updateSettings()
+		else
+			notif("Not a mode","Either type leftclick or rightclick")
+		end
+	end
+end,"aimmode",{"aimlockmode"},"Sets aimmode [LeftClick/RightClick]")
 
 local WhitelistedOs = {
 	['durango'] = "Xbox";
