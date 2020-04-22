@@ -211,7 +211,7 @@ getgenv().notif = function(title,message,length,icon)
 end
 
 getgenv().Teleport = function(Part)
-if not typeof(Part) == "CFrame" then return end 
+if not typeof(Part) == "CFrame" or not GetChar():FindFirstChild'HumanoidRootPart' then return end 
 	if _G.DoYouHaveBfgBypass then 
 		GetChar().HumanoidRootPart.CFrame = Part
 	else
