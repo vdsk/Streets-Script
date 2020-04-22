@@ -25,6 +25,7 @@ local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
+local OldFov = workspace.CurrentCamera.FieldOfView
 local TargetPart = "Prediction"
 Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
@@ -978,6 +979,16 @@ AddCommand(function(Arguments)
 		flying = false 
 	end
 end,"fly",{"f"},"Allows you to be like a bird")
+
+AddCommand(function(Arguments)
+	if Arguments[1] then 
+		if Arguments[1]:lower()	== "normal" then 
+			workspace.CurrentCamera.FieldOfView = OldFov
+		elseif tonumber(Arguments[1]) then 
+			workspace.CurrentCamera.FieldOfView = Arguments[1]
+		end 
+	end 
+end,"fov",{},"Changes Field Of View")
 
 local flinging = false
 local function Fling(Plr)
