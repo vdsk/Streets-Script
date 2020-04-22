@@ -1464,26 +1464,30 @@ AddCommand(function(Arguments)
 end,"antikill",{},"Turns on Anti FE kill for your current life")
 
 AddCommand(function(Arguments)
-	local Player = PlrFinder(Arguments[1])
-	if Player and Player.Character then 
-		local PlayerChild = Player.Character:GetDescendants() 
-		for i = 1,#PlayerChild do
-			local v = PlayerChild[i]
-			if v:IsA'Sound' and v.Name == "SoundX" or v.Name == "son" then
-				notif("Stole the Audio","From "..Player.Name.." check your exploits workspace folder",5,nil)
-				writefile("AudioLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen ID: "..v.SoundId:match"%d+".." From: "..Player.Name)
+	if Arguments[1] then 
+		local Player = PlrFinder(Arguments[1])
+		if Player and Player.Character then 
+			local PlayerChild = Player.Character:GetDescendants() 
+			for i = 1,#PlayerChild do
+				local v = PlayerChild[i]
+				if v:IsA'Sound' and v.Name == "SoundX" or v.Name == "son" then
+					notif("Stole the Audio","From "..Player.Name.." check your exploits workspace folder",5,nil)
+					writefile("AudioLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen ID: "..v.SoundId:match"%d+".." From: "..Player.Name)
+				end
 			end
 		end
 	end 
 end,"steal",{},"Steals a persons audio")
 
 AddCommand(function(Arguments)
-local Player = PlrFinder(Arguments[1])
-	if Player then 
-		local FindDecal = workspace:FindFirstChild(Player.Name.."Spray")
-		if FindDecal and FindDecal:FindFirstChildOfClass'Decal' then 
-			writefile("DecalLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen Decal: "..tostring(FindDecal.Decal.Texture:match"%d+").." From: "..Player.Name)
-			notif("Stole the Decal","From "..Player.Name.." check your exploits workspace folder",5,nil)
+	if Arguments[1] then 
+	local Player = PlrFinder(Arguments[1])
+		if Player then 
+			local FindDecal = workspace:FindFirstChild(Player.Name.."Spray")
+			if FindDecal and FindDecal:FindFirstChildOfClass'Decal' then 
+				writefile("DecalLog From "..Player.Name.." "..math.random(1,99)..".txt","Stolen Decal: "..tostring(FindDecal.Decal.Texture:match"%d+").." From: "..Player.Name)
+				notif("Stole the Decal","From "..Player.Name.." check your exploits workspace folder",5,nil)
+			end
 		end
 	end
 end,"decalsteal",{},"Steals a persons decal")
