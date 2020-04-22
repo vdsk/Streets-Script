@@ -368,21 +368,23 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	local NTarget = MTarget.Parent 
-	if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
-	if not Players:GetPlayerFromCharacter(NTarget) then return end 
-	if NTarget ~= AimlockTarget and AimLock and AimlockMode == "LeftClick" then 
-		AimlockTarget = NTarget
-		local Connection;
-		Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
-			if tostring(AimlockTarget) == tostring(C) then 
-				AimlockTarget = C 
-			else
-				Connection:Disconnect()
-			end 
-		end)
-		notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
-	end 
+	if MTarget.Parent then 
+		local NTarget = MTarget.Parent 
+		if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
+		if not Players:GetPlayerFromCharacter(NTarget) then return end 
+		if NTarget ~= AimlockTarget and AimLock and AimlockMode == "LeftClick" then 
+			AimlockTarget = NTarget
+			local Connection;
+			Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
+				if tostring(AimlockTarget) == tostring(C) then 
+					AimlockTarget = C 
+				else
+					Connection:Disconnect()
+				end 
+			end)
+			notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
+		end
+	end
 end
 
 local function BehindAWall(Target)
