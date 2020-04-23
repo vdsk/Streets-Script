@@ -2209,6 +2209,11 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(52,152,219);
 		['Access'] = true;
 	};
+	['418171482'] 	= {
+		['Name'] = "Woman beater";
+		['Colour'] = Color3.fromRGB(255,0,70);
+		['Access'] = false;
+	};
 }
 
 local function espcool(Plr)
