@@ -1936,6 +1936,9 @@ if UserInput:GetFocusedTextBox() then return end
 	if Key.KeyCode == Enum.KeyCode.D then 
 		KeyTable['d'] = true 
 	end
+	if Key.KeyCode == Enum.KeyCode.E and GetChar():FindFirstChildOfClass'Tool' and not GetChar():FindFirstChild'KO' then 
+		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
+	end 
 	if Key.KeyCode == Enum.KeyCode.Space and AirWalkOn then 
 		GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame + Vector3.new(0,5,0)
 	end
@@ -2336,7 +2339,7 @@ local Alias = Commands[i].Alias
 end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
-notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
+notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
 notif("Newest Update:","Blink now supports A,D not just W,S / Added car seats to neversit",10,nil)   
 
 --[[
