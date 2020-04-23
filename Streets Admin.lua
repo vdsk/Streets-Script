@@ -864,14 +864,14 @@ NeverSitting = not NeverSitting
 	if NeverSitting then
 		local toParent = workspace:GetDescendants()
 		for i = 1,#toParent do 
-			if toParent[i]:IsA'Seat' then 
+			if string.find(toParent[i].ClassName:lower(),'seat') then 
 				toParent[i].Parent = CoreGui
 			end
 		end
 	else
 		local toParent = CoreGui:GetChildren()
 		for i = 1,#toParent do 
-			if toParent[i]:IsA'Seat' then 
+			if string.find(toParent[i].ClassName:lower(),'seat') then 
 				toParent[i].Parent = workspace
 			end
 		end
@@ -2034,10 +2034,16 @@ spawn(function()
 		end
 		if Blinking and KeyTable['Shift'] then
 			if KeyTable['w'] then 
-				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame + GetChar().HumanoidRootPart.CFrame.lookVector * BlinkSpeed
+				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(0,0,-BlinkSpeed)
 			end 
+			if KeyTable['a'] then 
+				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(-BlinkSpeed,0,0)
+			end
 			if KeyTable['s'] then 
-				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame - GetChar().HumanoidRootPart.CFrame.lookVector * BlinkSpeed
+				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(0,0,BlinkSpeed)
+			end
+			if KeyTable['d'] then 
+				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(BlinkSpeed,0,0)
 			end
 		end
 		wait()
@@ -2331,7 +2337,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock",10,nil)   
-notif("Newest Update:","aimmode rightclick/leftclick default leftclick (rightclick mode = Shift + right click)",10,nil)   
+notif("Newest Update:","Blink now supports A,D not just W,S / Added car seats to neversit",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
