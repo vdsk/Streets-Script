@@ -18,7 +18,7 @@ local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers,DontStompWhitelisted =
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
 local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop = false,false,false,true,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer,LoopPlayer
-local AirWalk = Instance.new'Part'
+local AirWalk,ShootPart = Instance.new'Part',Instance.new('Part',workspace)
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
@@ -952,7 +952,6 @@ local FlySpeed = 10
 local function fly(SPEED) -- CREDITS TO INFINITE YIELD FOR THIS FLY METHOD (I'M PLANNING TO MAKE MY OWN SOON)
 FlySpeed = SPEED or 10
 	local T = LP.Character:FindFirstChild("HumanoidRootPart")
-	local ShootPart = Instance.new('Part',workspace)
 	ShootPart.Size = Vector3.new(5,1,5)
 	ShootPart.Transparency = 1
 	ShootPart.Anchored = true -- I was gonna use airwalk but lol 
@@ -969,7 +968,6 @@ FlySpeed = SPEED or 10
 		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
 		spawn(function()
 		repeat wait()
-		ShootPart.CFrame = LP.Character.Torso.CFrame * CFrame.new(0,-3.5,0)
 		LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
 		LP.Character.Humanoid:ChangeState(10)
 		if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
@@ -1640,8 +1638,11 @@ local Character = GetChar()
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
-	if flying and PartTable then
-		Character.Humanoid:ChangeState(3)
+	if flying then
+		ShootPart.CFrame = LP.Character.Torso.CFrame * CFrame.new(0,-3.5,0)
+		if PartTable then 
+			Character.Humanoid:ChangeState(3)
+		end
 	end
 	if GodMode or FeLoop then 
 		if Character:FindFirstChild'Right Leg' then 
