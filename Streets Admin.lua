@@ -14,7 +14,7 @@ getgenv().LP = Players.LocalPlayer or Players.PlayerAdded:Wait()
 getgenv().Mouse = LP:GetMouse()
 getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() end
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
-local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{}
+local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers,DontStompWhitelisted = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
 local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop = false,false,false,true,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer,LoopPlayer
@@ -1138,16 +1138,14 @@ math.randomseed(os.time())
 end,"bringcar",{},"Brings a car (Streets only)")
 
 AddCommand(function(Arguments)
-	if Arguments[1] and Arguments[2] and Keys then
+	if Arguments[1] and #Arguments[1] == 1 and Arguments[2] and Keys then
 		for Index,Key in pairs(Keys) do
 		if Key:match("[%a%d]+$") == Arguments[1]:lower() then
 				table.remove(Keys,Index)
 			end
 		end
-		local hotkeyKEY = string.sub(Arguments[1], 1, 3)
-		table.remove(Arguments, 1)
-		local hotkeyCMD = table.concat(Arguments, " ")
-		table.insert(Keys, hotkeyCMD.."||"..hotkeyKEY)
+		local Hotkey = table.remove(Arguments, 1)
+		Keys[#Keys + 1] = table.concat(Arguments, " ").."||"..Hotkey
 		if writefile and readfile then 
 			updateSettings()
 		end
@@ -1488,6 +1486,24 @@ AddCommand(function()
 end,"autostomp",{},"Turns On/Off AutoStomp")
 
 AddCommand(function(Arguments)
+	if Arguments[1] and Arguments[1]:lower() == "remove" then 
+		if Arguments[2] then
+			local Player = PlrFinder(Arguments[2])
+			if Player and Player ~= LP then
+				for i,v in pairs(DontStompWhitelisted) do if Player.UserId == v then table.remove(DontStompWhitelisted,i) end end
+			end
+		else 
+			DontStompWhitelisted = {}
+		end
+	else 
+		local Player = PlrFinder(Arguments[1])
+		if Player and Player ~= LP then 
+			table.insert(DontStompWhitelisted,Player.UserId)
+		end 
+	end
+end,"autostompwhitelist",{},"Whitelists to autostomp so that it doesn't stomp them")
+
+AddCommand(function(Arguments)
 	if Arguments[1] and Arguments[1] == "legacy" then 
 		if GetChar():FindFirstChild'Right Arm' then 
 			GetChar()['Right Arm']:Destroy()
@@ -1648,9 +1664,9 @@ local Character = GetChar()
 		local Players = Players:GetPlayers()
 		for i = 1,#Players do
 			if Players[i] ~= LP and Players[i].Character and Players[i].Character:FindFirstChild'Head' and Players[i].Character:FindFirstChild'Torso' and not Players[i]:IsFriendsWith(LP.UserId) then
-				if (Character.HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not Character:FindFirstChild'KO' and Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' then
+				if (Character.HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not Character:FindFirstChild'KO' and Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' and not table.find(DontStompWhitelisted,Players[i].UserId) then
 					Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
-					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch')
+					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Backpack:FindFirstChild'Character')
 				end
 			end
 		end
@@ -2345,8 +2361,9 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","Blink now supports A,D not just W,S / Added car seats to neversit",10,nil)   
+notif("Newest Update:","autostompwhitelist [plr/remove [plr]/nil] / fixed a bug with hotkeys",10,nil)   
 
+while wait(1) do table.foreach(DontStompWhitelisted,print) end
 --[[
 if game.PlaceId == 455366377 then 
 	local InfectedTable = {} 
