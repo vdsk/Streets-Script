@@ -1604,6 +1604,7 @@ local WhitelistedOs = {
 	['ios'] = "Apple";
 	['android'] = "Superior Android";
 	['osx'] = "Mac (GROSS)";
+	['Windows_Universal'] = "Windows 10 roblox"
 }
 
 local function Stepped()
