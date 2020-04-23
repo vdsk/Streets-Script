@@ -593,7 +593,7 @@ local function HumanoidState(Old,New)
 		wait(0.3)
 		AnimTrack:play()
 		JustDoubleJumped = false
-	elseif New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh or flying then
+	elseif New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh then
       	GetChar().Humanoid.PlatformStand = false
 		GetChar().Humanoid:ChangeState(10)
   	end
