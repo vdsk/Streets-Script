@@ -328,7 +328,7 @@ if table.find(AdminUsers,Player.UserId) then IsUser = "true" end
 	end 
 end
 
-local function GrabThing(Thing)
+local function GrabThing(Thing,OldPos)
 if not PartTable then 
 	notif("Can't tp to "..Thing,"as you are not playing normal streets!",5,"rbxassetid://1281284684") return 
 end
@@ -343,6 +343,7 @@ wait()
 		PartFound.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)
 		RunService.Heartbeat:wait()
 	until PartTable[Thing]:FindFirstChildOfClass'Part'.BrickColor == BrickColor.new'Bright red' or GetChar():FindFirstChild'KO' or GetChar().Humanoid.Health == 0
+	PartFound.CFrame = OldPos
 	return true
 end 
 
@@ -950,17 +951,17 @@ AddCommand(function(Arguments)
 		elseif Arguments[1] == "normalstreets" then 
 			TeleportService:Teleport(455366377)
 		elseif Arguments[1] == "uzi" then 
-			GrabThing("Uzi")
+			GrabThing("Uzi",GetChar().Head.CFrame)
 		elseif Arguments[1] == "machete" then 
-			GrabThing("Machete")
+			GrabThing("Machete",GetChar().Head.CFrame)
 		elseif Arguments[1] == "spray" then 
-			GrabThing("Spray")
+			GrabThing("Spray",GetChar().Head.CFrame)
 		elseif Arguments[1] == "sawed" or Arguments[1] == "sawedoff" then 
-			GrabThing("SawedOff")
+			GrabThing("SawedOff",GetChar().Head.CFrame)
 		elseif Arguments[1] == "pipe" then 
-			GrabThing("Pipe")
+			GrabThing("Pipe",GetChar().Head.CFrame)
 		elseif Arguments[1] == "glock" then 
-			GrabThing("Glock")
+			GrabThing("Glock",GetChar().Head.CFrame)
 		elseif PartTable and Arguments[1] == "sand" or Arguments[1] == "sandbox" then
 			Teleport(CFrame.new(-178.60614013672,3.2000000476837,-117.21733093262))
 		elseif PartTable and Arguments[1] == "prison" or Arguments[1] == "jail" or Arguments[1] == "whereblacksgoaftertheyattempttorobsaidbank" then 
@@ -1156,6 +1157,7 @@ end,"hotkey",{"key"},"Hotkeys a command to a key")
 
 AddCommand(function()
 if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
+if TpBypass then notif("Due to snakes code","you can not use burgers/drinks with the tpbypass") return end
 	if GrabThing("Burger") then
 		local Hamborger = LP.Backpack:FindFirstChild'Burger'
 		if Hamborger then 
@@ -1175,7 +1177,7 @@ end,"heal",{"h"},"Heals you")
 AddCommand(function()
 	if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
 	if not GetChar():FindFirstChildOfClass'Tool' then notif("Tool needed","Hold a gun",5,nil) return end 
-	GrabThing("Ammo")
+	GrabThing("Ammo",GetChar().Head.CFrame)
 end,"reload",{"r"},"Gives your current gun ammo")
 
 AddCommand(function()
@@ -1361,7 +1363,7 @@ end,"itemesp",{},"Allows you to see where all the spawners are on the map throug
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
-		if Arguments[1]:lower() == "all" then notif("STOP IT","NO. JUST NO.",10,nil) end 
+		if Arguments[1]:lower() == "all" then notif("STOP IT","NO. JUST NO.",10,nil) return end 
 		local Player = PlrFinder(Arguments[1]) 
 		if Player and tostring(AimlockTarget) ~= tostring(Player) then
 			CheckCommand("esp "..Player.Name)
@@ -2375,9 +2377,8 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","autostompwhitelist [plr/remove [plr]/nil] / fixed a bug with hotkeys",10,nil)   
+notif("Newest Update:","TpBypass (Instant Tp) Command: tpbypass",10,nil)   
 
-while wait(1) do table.foreach(DontStompWhitelisted,print) end
 --[[
 if game.PlaceId == 455366377 then 
 	local InfectedTable = {} 
