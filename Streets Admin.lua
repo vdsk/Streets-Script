@@ -2191,6 +2191,11 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(12,4,134);
 		['Access'] = true;
 	};
+	['378666469'] = {
+		['Name']   = "trippinfo";
+		['Colour'] = Color3.fromRGB(12,4,134);
+		['Access'] = true;
+	};
 	['1443431439']  = {
 		['Name']   = "wk1r";
 		['Colour'] = Color3.fromRGB(194,23,255);
