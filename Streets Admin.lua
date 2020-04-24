@@ -525,22 +525,6 @@ local Tool = Plr:FindFirstChildOfClass'Tool'
 	end
 end 
 
-local function ColourChanger(T)
-	if T:IsA'Trail' then
-		T.Color = BulletColour
-	end
-	if T:IsA'ObjectValue' and T.Name == "creator" and not Debounce then
-		local Thing = T.Value
-		local Method,Tool = Char(Thing)
-        b(Thing.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - Thing.Head.Position).magnitude).." studs with a "..Tool.Name)
-		if Tool.Name == "Shotty" then 
-			Debounce = true 
-			wait(0.7)
-			Debounce = false 
-		end 
-	end
-end
-
 getgenv().AddCommand = function(CommandF,Name,Alias,Help)
 	Commands[#Commands + 1] = {['Function'] = CommandF,['Name'] = Name,['Alias'] = Alias,['Help'] = Help}
 end
@@ -2047,76 +2031,6 @@ CText.FocusLost:Connect(function(Enter)
 		CheckCommand(Command)
 	end
 end)
-
-ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
-BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
-PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
-HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
-HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
-MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
-Mouse.Button1Down:Connect(Button1Down)
-Mouse.Button2Down:Connect(Button2Down)
-LP.Chatted:Connect(CheckCommand)
-UserInput.JumpRequest:Connect(DoubleJump)
-CText:GetPropertyChangedSignal("Text"):Connect(Changed)
-RunService.Stepped:Connect(Stepped)
-
-spawn(function()
-	while true do
-	local Char = GetChar()
-	local PartFound = Char:FindFirstChild'HumanoidRootPart' or Char:FindFirstChild'Torso'
-		if Char:FindFirstChildOfClass'Humanoid' and UseDraw then 
-			DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
-		end
-		if Blinking and KeyTable['Shift'] then
-			if KeyTable['w'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
-			end 
-			if KeyTable['a'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
-			end
-			if KeyTable['s'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
-			end
-			if KeyTable['d'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
-			end
-		end
-		wait()
-	end
-end)
-
-if PartTable then 
-	spawn(function()
-		while wait() do
-			local Char = GetChar()
-			if Char:FindFirstChildOfClass'Humanoid' and Char.Humanoid.HipHeight > 0 or AirWalkOn and Char.Humanoid.FloorMaterial == Enum.Material.Neon and not Char.Humanoid.Sit then 
-				local JP = Char.Humanoid.JumpPower
-				Char.Humanoid.JumpPower = 1.5
-				Char.Humanoid:ChangeState(3)
-				wait(0.2)
-				Char.Humanoid.JumpPower = JP
-			end
-		end
-	end)
-end
-
-spawn(function()
-	while wait(SpamDelay) do 
-		if Spamming and SpamMessage then 
-			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(SpamMessage,"All")
-		end
-	end 
-end)
-
-spawn(function()
-	while wait(10) do 
-		if AntiAfk then 
-			keypress(0x20)
-		end
-	end
-end)
-
 local CoolkidTable = {
 	['300227703']	= {
 		['Name']   = "!fishgang Envy";
@@ -2292,8 +2206,106 @@ local CoolkidTable = {
 		['Name'] = "Woman beater";
 		['Colour'] = Color3.fromRGB(255,0,70);
 		['Access'] = false;
+		['Glock'] = {
+			['Handle'] = {
+				['Colour'] = Color3.fromRGB(151,0,0);
+				['Material'] = "Metal";
+				['Transparency'] = 0.6
+			};
+			['Main'] = {
+				['Colour'] = Color3.fromRGB(151,0,0);
+				['Material'] = "Metal";
+				['Transparency'] = 0.6;
+			};
+		};
 	};
 }
+
+local function ColourChanger(T)
+	if CoolkidTable[tostring(LP.UserId)] then return end 
+	if T:IsA'Trail' then
+		T.Color = BulletColour
+	end
+	if T:IsA'ObjectValue' and T.Name == "creator" and not Debounce then
+		local Thing = T.Value
+		local Method,Tool = Char(Thing)
+		b(Thing.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - Thing.Head.Position).magnitude).." studs with a "..Tool.Name)
+		if Tool.Name == "Shotty" then 
+			Debounce = true 
+			wait(0.7)
+			Debounce = false 
+		end 
+	end
+end
+
+ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
+BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
+PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
+HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
+HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
+MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
+Mouse.Button1Down:Connect(Button1Down)
+Mouse.Button2Down:Connect(Button2Down)
+LP.Chatted:Connect(CheckCommand)
+UserInput.JumpRequest:Connect(DoubleJump)
+CText:GetPropertyChangedSignal("Text"):Connect(Changed)
+RunService.Stepped:Connect(Stepped)
+
+spawn(function()
+	while true do
+	local Char = GetChar()
+	local PartFound = Char:FindFirstChild'HumanoidRootPart' or Char:FindFirstChild'Torso'
+		if Char:FindFirstChildOfClass'Humanoid' and UseDraw then 
+			DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
+		end
+		if Blinking and KeyTable['Shift'] then
+			if KeyTable['w'] then 
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
+			end 
+			if KeyTable['a'] then 
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
+			end
+			if KeyTable['s'] then 
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
+			end
+			if KeyTable['d'] then 
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
+			end
+		end
+		wait()
+	end
+end)
+
+if PartTable then 
+	spawn(function()
+		while wait() do
+			local Char = GetChar()
+			if Char:FindFirstChildOfClass'Humanoid' and Char.Humanoid.HipHeight > 0 or AirWalkOn and Char.Humanoid.FloorMaterial == Enum.Material.Neon and not Char.Humanoid.Sit then 
+				local JP = Char.Humanoid.JumpPower
+				Char.Humanoid.JumpPower = 1.5
+				Char.Humanoid:ChangeState(3)
+				wait(0.2)
+				Char.Humanoid.JumpPower = JP
+			end
+		end
+	end)
+end
+
+spawn(function()
+	while wait(SpamDelay) do 
+		if Spamming and SpamMessage then 
+			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(SpamMessage,"All")
+		end
+	end 
+end)
+
+spawn(function()
+	while wait(10) do 
+		if AntiAfk then 
+			keypress(0x20)
+		end
+	end
+end)
 
 local function espcool(Plr)
 	local Esp1 = Instance.new('BillboardGui',Plr.Character.Head)
@@ -2325,7 +2337,14 @@ local function espcool(Plr)
 			end
 		end)
 	end
-	local Glock = Plr.Backpack:WaitForChild'Glock' 
+	if Plr.Character:FindFirstChild'Humanoid' then 
+		Plr.Character.Humanoid.DescendantAdded:Connect(function(T)
+			if T:IsA'Trail' then 
+				T.Color = ColorSequence.new(CoolkidTable[tostring(Plr.UserId)].Colour)
+			end
+		end)
+	end
+	local Glock = Plr.Backpack:WaitForChild('Glock',10)
 	if Glock then 
 		local Gun = CoolkidTable[tostring(Plr.UserId)][Glock.Name]
 		if Gun then 
@@ -2333,15 +2352,19 @@ local function espcool(Plr)
             Glock.Handle.Material = Gun.Handle.Material
             Glock.Heh.Color = Gun.Main.Colour
 			Glock.Heh.Material = Gun.Main.Material
+			if Gun.Transparency then 
+				Glock.Handle.Transparency = Gun.Transparency 
+				Glock.Heh.Transparency = Gun.Transparency 
+			end 
 		end 
 	end 
-	if CoolkidTable[tostring(Plr.UserId)].Name == "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin" then 
-		local Shotty = Plr.Backpack:WaitForChild'Shotty' 
+	local Shotty = Plr.Backpack:WaitForChild('Shotty',10) 
+	if Shotty then 
 		if Shotty then 
 			for i,v in pairs(Shotty:GetChildren()) do 
 				if v.Name == "Union" then
 					v.UsePartColor = true 
-					v.Color = Color3.fromRGB(144,0,0);
+					v.Color = CoolkidTable[tostring(Plr.UserId)].Colour
 					v.Material = "ForceField"
 				end 
 			end 
