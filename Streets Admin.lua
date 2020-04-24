@@ -397,7 +397,7 @@ local MTarget = Mouse.Target
 		local NTarget = MTarget.Parent 
 		if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
 		if not Players:GetPlayerFromCharacter(NTarget) then return end 
-		if NTarget ~= AimlockTarget and AimLock and AimlockMode == "LeftClick" then 
+		if NTarget ~= LP.Character and NTarget ~= AimlockTarget and AimLock and AimlockMode == "LeftClick" then 
 			AimlockTarget = NTarget
 			local Connection;
 			Connection = Players:GetPlayerFromCharacter(NTarget).CharacterAdded:Connect(function(C)
@@ -407,7 +407,7 @@ local MTarget = Mouse.Target
 					Connection:Disconnect()
 				end 
 			end)
-			notif("AimlockTarget","has been set to"..AimlockTarget.Name,5,nil)
+			notif("AimlockTarget has been set to",AimlockTarget.Name,5,nil)
 		end
 	end
 end
@@ -999,8 +999,10 @@ FlySpeed = SPEED or 10
 		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
 		spawn(function()
 		repeat wait()
-		LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
-		LP.Character.Humanoid:ChangeState(10)
+		if LP.Character:FindFirstChild'Humanoid' then 
+			LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
+			LP.Character.Humanoid:ChangeState(10)
+		end
 		if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
 		SPEED = 50
 		elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0) and SPEED ~= 0 then
@@ -1365,7 +1367,7 @@ AddCommand(function(Arguments)
 	if Arguments[1] then
 		if Arguments[1]:lower() == "all" then notif("STOP IT","NO. JUST NO.",10,nil) return end 
 		local Player = PlrFinder(Arguments[1]) 
-		if Player and tostring(AimlockTarget) ~= tostring(Player) then
+		if Player ~= LP and Player and tostring(AimlockTarget) ~= tostring(Player) then
 			CheckCommand("esp "..Player.Name)
 			AimLock = true 
 			AimlockTarget = Player.Character
@@ -2140,6 +2142,16 @@ local CoolkidTable = {
 		['Name']   = "!fishgang Slays | [RPF] Retard Prevention Force";
 		['Colour'] = Color3.fromRGB(63,0,0);
 		['Access'] = true;
+		['Glock'] = {
+			['Main'] = {
+				['Colour'] = Color3.fromRGB(17,17,17);
+				['Material'] = "DiamondPlate";
+			};
+			['Handle'] = {
+				['Colour'] = Color3.fromRGB(0,255,255);
+				['Material'] = "ForceField";
+			};
+		};
 	};
 	['359564044'] 	= {
 		['Name']   = "!fishgang 7w4c";
@@ -2150,16 +2162,46 @@ local CoolkidTable = {
 		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
+		['Glock'] = {
+			['Main'] = {
+				['Colour'] = Color3.fromRGB(17,17,17);
+				['Material'] = "Fabric";
+			};
+			['Handle'] = {
+				['Colour'] = Color3.fromRGB(144,0,0);
+				['Material'] = "DiamondPlate";
+			};
+		};
 	};
     ['12978668']  	= {
 		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
+		['Glock'] = {
+			['Main'] = {
+				['Colour'] = Color3.fromRGB(17,17,17);
+				['Material'] = "Fabric";
+			};
+			['Handle'] = {
+				['Colour'] = Color3.fromRGB(144,0,0);
+				['Material'] = "DiamondPlate";
+			};
+		};
 	};
     ['659119329']   = {
 		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
+		['Glock'] = {
+			['Main'] = {
+				['Colour'] = Color3.fromRGB(17,17,17);
+				['Material'] = "Fabric";
+			};
+			['Handle'] = {
+				['Colour'] = Color3.fromRGB(144,0,0);
+				['Material'] = "DiamondPlate";
+			};
+		};
 	};
 	['62009114'] 	= {
 		['Name']   = "!fishgang Owner X_D6";
@@ -2253,6 +2295,29 @@ local CoolkidTable = {
 	};
 }
 
+local CyrusShottyTable = {
+    [6] = {
+        ['Colour'] = Color3.fromRGB(24,0,0);
+        ['Material'] = "DiamondPlate";
+    };
+    [7] = {
+        ['Colour'] = Color3.fromRGB(54,0,0);
+        ['Material'] = "Fabric";
+    };
+    [8] = {
+        ['Colour'] = Color3.fromRGB(144,0,0);
+        ['Material'] = "CorrodedMetal";
+    };
+    [9] = {
+        ['Colour'] = Color3.fromRGB(27,0,0);
+        ['Material'] = "Fabric";
+    };
+    [10] = {
+        ['Colour'] = Color3.fromRGB(144,0,0);
+        ['Material'] = "ForceField";
+    };
+}
+
 local function espcool(Plr)
 	local Esp1 = Instance.new('BillboardGui',Plr.Character.Head)
 	Esp1.Adornee = Plr.Character.Head
@@ -2282,6 +2347,26 @@ local function espcool(Plr)
 				end
 			end
 		end)
+	end
+	for i,v in pairs(Plr.Backpack:GetChildren()) do
+		if v.Name == "Shotty" and CoolkidTable[tostring(Plr.UserId)].Name == "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin" then 
+			for i,v in pairs(v:GetChildren()) do 
+				if v.Name == "Union" then 
+					v.UsePartColor = true
+					if CyrusShottyTable[i] then 
+						v.Color = CyrusShottyTable[i].Colour 
+						v.Material = CyrusShottyTable[i].Material 
+					end 
+				end 
+			end 
+		end
+		local Gun = CoolkidTable[tostring(Plr.UserId)][v.Name]
+		if Gun then 
+			v.Handle.Color = Gun.Handle.Colour
+			v.Handle.Material = Gun.Handle.Material
+			v.Heh.Color = Gun.Main.Colour
+			v.Heh.Material = Gun.Main.Material
+		end
 	end
 end
 
