@@ -2054,18 +2054,8 @@ local CoolkidTable = {
 	};
     ['114164798']   = {
 		['Name']   = "!fishgang Slays | [RPF] Retard Prevention Force";
-		['Colour'] = Color3.fromRGB(63,0,0);
+		['Colour'] = Color3.fromRGB(0,255,255);
 		['Access'] = true;
-		['Glock'] = {
-			['Main'] = {
-				['Colour'] = Color3.fromRGB(17,17,17);
-				['Material'] = "DiamondPlate";
-			};
-			['Handle'] = {
-				['Colour'] = Color3.fromRGB(0,255,255);
-				['Material'] = "ForceField";
-			};
-		};
 	};
 	['359564044'] 	= {
 		['Name']   = "!fishgang 7w4c";
@@ -2076,46 +2066,16 @@ local CoolkidTable = {
 		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
-		['Glock'] = {
-			['Main'] = {
-				['Colour'] = Color3.fromRGB(17,17,17);
-				['Material'] = "Fabric";
-			};
-			['Handle'] = {
-				['Colour'] = Color3.fromRGB(144,0,0);
-				['Material'] = "DiamondPlate";
-			};
-		};
 	};
     ['12978668']  	= {
 		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
-		['Glock'] = {
-			['Main'] = {
-				['Colour'] = Color3.fromRGB(17,17,17);
-				['Material'] = "Fabric";
-			};
-			['Handle'] = {
-				['Colour'] = Color3.fromRGB(144,0,0);
-				['Material'] = "DiamondPlate";
-			};
-		};
 	};
     ['659119329']   = {
 		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(125,0,0);
 		['Access'] = true;
-		['Glock'] = {
-			['Main'] = {
-				['Colour'] = Color3.fromRGB(17,17,17);
-				['Material'] = "Fabric";
-			};
-			['Handle'] = {
-				['Colour'] = Color3.fromRGB(144,0,0);
-				['Material'] = "DiamondPlate";
-			};
-		};
 	};
 	['62009114'] 	= {
 		['Name']   = "!fishgang Owner X_D6";
@@ -2206,18 +2166,6 @@ local CoolkidTable = {
 		['Name'] = "Woman beater";
 		['Colour'] = Color3.fromRGB(255,0,70);
 		['Access'] = false;
-		['Glock'] = {
-			['Handle'] = {
-				['Colour'] = Color3.fromRGB(151,0,0);
-				['Material'] = "Metal";
-				['Transparency'] = 0.6
-			};
-			['Main'] = {
-				['Colour'] = Color3.fromRGB(151,0,0);
-				['Material'] = "Metal";
-				['Transparency'] = 0.6;
-			};
-		};
 	};
 }
 
@@ -2344,32 +2292,34 @@ local function espcool(Plr)
 			end
 		end)
 	end
-	local Glock = Plr.Backpack:WaitForChild('Glock',10)
-	if Glock then 
-		local Gun = CoolkidTable[tostring(Plr.UserId)][Glock.Name]
-		if Gun then 
-			Glock.Handle.Color = Gun.Handle.Colour
-            Glock.Handle.Material = Gun.Handle.Material
-            Glock.Heh.Color = Gun.Main.Colour
-			Glock.Heh.Material = Gun.Main.Material
-			if Gun.Transparency then 
-				Glock.Handle.Transparency = Gun.Transparency 
-				Glock.Heh.Transparency = Gun.Transparency 
-			end 
-		end 
-	end 
-	local Shotty = Plr.Backpack:WaitForChild('Shotty',10) 
-	if Shotty then 
-		if Shotty then 
-			for i,v in pairs(Shotty:GetChildren()) do 
-				if v.Name == "Union" then
-					v.UsePartColor = true 
-					v.Color = CoolkidTable[tostring(Plr.UserId)].Colour
-					v.Material = "ForceField"
+	local Table = {}
+	for i,v in pairs(Plr.Backpack:GetChildren()) do if v:IsA'Tool' and v:FindFirstChild'Fire' then table.insert(Table,v) end end 
+	for i,v in pairs(Plr.Character:GetChildren()) do if v:IsA'Tool' and v:FindFirstChild'Fire' then table.insert(Table,v) end end
+	-- To make sure all tools get set ugly I know lol
+	for Index,Tool in pairs(Table) do 
+		for Index2,Part in pairs(Tool:GetDescendants()) do 
+			if Part:IsA'UnionOperation' or Part:IsA'Part' or Part:IsA'MeshPart' then 
+				if Part:IsA'UnionOperation' then
+					Part.UsePartColor = true
 				end 
-			end 
-		end 
-	end 
+				Part.Material = "ForceField" 
+				Part.Color = CoolkidTable[tostring(Plr.UserId)].Colour
+			end
+		end
+	end
+	Plr.Character.ChildAdded:Connect(function(T)
+		if T:IsA'Tool' and T:FindFirstChild'Fire' then 
+			for Index2,Part in pairs(T:GetDescendants()) do 
+				if Part:IsA'UnionOperation' or Part:IsA'Part' or Part:IsA'MeshPart' then 
+					if Part:IsA'UnionOperation' then
+						Part.UsePartColor = true
+					end 
+					Part.Material = "ForceField" 
+					Part.Color = CoolkidTable[tostring(Plr.UserId)].Colour
+				end
+			end
+		end
+	end)
 end
 
 local PlayersX = Players:GetPlayers()
