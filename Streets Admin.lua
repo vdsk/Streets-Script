@@ -235,7 +235,7 @@ end
 getgenv().Teleport = function(Part)
 if not typeof(Part) == "CFrame" then return end
 local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
-	if _G.DoYouHaveBfgBypass or not GetChar():FindFirstChild'HumanoidRootPart' then 
+	if not GetChar():FindFirstChild'HumanoidRootPart' then 
 		PartFound.CFrame = Part
 	else
 		local Play = TweenService:Create(PartFound, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
@@ -359,39 +359,6 @@ local function Button1Down()
 local MTarget = Mouse.Target
 	if GetChar():FindFirstChild'Zetox Btools' then 
 		Mouse.Target:Destroy()
-	end
-	if BfgOn and GetChar():FindFirstChild'Uzi' then
-		local BChild = LP.Backpack:GetChildren()
-		for i = 1,#BChild do 
-			if BChild[i].Name == "Uzi" then 
-				BChild[i].Parent = GetChar()
-				FireGun(BChild[i])
-				if MinigunMode then wait() end 
-			end
-		end
-	end
-	if NormalBfg then 
-		local CChild = GetChar():GetChildren()
-		for i = 1,#CChild do 
-			if CChild[i]:FindFirstChild'Fire' then 
-				FireGun(CChild[i])
-				if MinigunMode then wait() end 
-			end
-		end
-	end
-	if MultiUzi and GetChar():FindFirstChild'Zetox Uzi' then
-		local PChild = LP.PlayerGui:GetChildren()
-		for i = 1,#PChild do 
-			if PChild[i].Name == "Uzi" then 
-				PChild[i].Grip = CFrame.new(0,0,-6)
-				PChild[i].Parent = LP.Backpack
-				PChild[i].Parent = GetChar()
-				FireGun(PChild[i])
-				UziStats()
-				PChild[i].Parent = LP.PlayerGui
-				if MinigunMode then wait() end 
-			end
-		end
 	end
 	if MTarget and MTarget.Parent then 
 		local NTarget = MTarget.Parent 
@@ -565,34 +532,6 @@ if NewPlr == "all" then return Player end
 	end
 end
 
-local function Style(Style,Amount)
-local CChild,BChild = GetChar():GetChildren(),LP.Backpack:GetChildren()
-for i = 1,#CChild do if CChild[i]:IsA'Tool' then CChild[i].Parent = LP.Backpack end end 
-	for i = 1,#BChild do
-		if BChild[i]:IsA'Tool' then 
-			if Style == "void" then
-				Amount = Amount or 0.6
-				BChild[i].Grip = CFrame.Angles(0,0.6,Amount * i)
-			elseif Style == "shield1" then 
-				BChild[i].Grip = CFrame.Angles(1 * i,1.5,0)
-			elseif Style == "wormhole" then 
-				BChild[i].Grip = CFrame.Angles(5,50*i,0) + Vector3.new(0,0,0.6)
-			elseif Style == "circle" then
-				Amount = Amount or 100
-				BChild[i].Grip = CFrame.Angles(30,Amount*i,0) + Vector3.new(10,0.5,0.6)
-			elseif Style == "sphere" then 
-				BChild[i].Grip = CFrame.Angles(5*i,2*i,7*i) + Vector3.new(0,5,0)
-			elseif Style == "storm" then 
-				BChild[i].Grip = CFrame.Angles(5*i,2040/i,2*i/i*10)
-			elseif Style == "shield2" then 
-				BChild[i].Grip = CFrame.Angles(5,200*i,2*i)
-			elseif Style == "deathcircle" then 
-				BChild[i].Grip = CFrame.Angles(0.1/i*i,200*i,0) + Vector3.new(0,0,5)
-			end
-		end
-	end 
-end
-
 local JustDoubleJumped = false 
 local function HumanoidState(Old,New)
 	if New == Enum.HumanoidStateType.Landed and JustDoubleJumped then 
@@ -692,11 +631,7 @@ getgenv().farm = function(Item)
 	if v.Name == "RandomSpawner" then 
 		if find(Item) and type(find(Item)) == "userdata" then 
 			Teleport(find(Item).CFrame)
-			if not _G.DoYouHaveBfgBypass then 
-				wait(3)
-			else 
-				wait()
-			end
+			wait(3)
 		else 
 			notif("Farm "..Item,"None of "..Item.." on the map",5,"rbxassetid://1281284684")
 			break;
@@ -1241,34 +1176,6 @@ AddCommand(function()
 	workspace.CurrentCamera.CameraSubject = GetChar()
 end,"unview",{},"Brings you back to your normal vision")
 
-AddCommand(function(Arguments)
-if not _G.DoYouHaveBfgBypass then notif("Command: Style","This is only for people with BFG bypass. Use the grip command.",5,"rbxassetid://1281284684") return end 
-	if Arguments[1] then 
-		Style(Arguments[1]:lower(),tonumber(Arguments[2]))
-	end
-end,"style",{},"Styles your BFG (Bfg bypass users only)")
-
-AddCommand(function(Arguments)
-	if Arguments[1] then 
-		if Arguments[1]:lower() ~= "minigun" and not _G.DoYouHaveBfgBypass then 
-			notif("Command: BFG","This mode is only for people with BFG bypass.",5,"rbxassetid://1281284684")
-		else
-			if Arguments[1]:lower() == "allbfg" then 
-				NormalBfg = not NormalBfg
-			end
-			if Arguments[1]:lower() == "minigun" then 
-				MinigunMode = not MinigunMode
-			end
-		end
-	else 
-		if _G.DoYouHaveBfgBypass then 
-			BfgOn = not BfgOn 
-		else
-			MultiUzi = not MultiUzi 
-		end
-	end
-end,"bfg",{},"Turns on BFG (Bfg [allbfg/minigun] - minigun makes your bfg not all shoot at once")
-
 local HR;
 AddCommand(function(Arguments)
 if not GetChar():FindFirstChild'HumanoidRootPart' then notif("Sorry","this can be only used without tpbypass on",5,nil) end
@@ -1666,14 +1573,6 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 					PartFound.CFrame = CFrame.new(Players[i].Character.Torso.Position)
 					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Backpack:FindFirstChild'Character')
 				end
-			end
-		end
-	end
-	if NormalBfg then 
-		local BChild = LP.Backpack:GetChildren()
-		for i = 1,#BChild do 
-			if BChild[i]:FindFirstChild'Fire' then 
-				BChild[i].Parent = Character
 			end
 		end
 	end
@@ -2203,8 +2102,13 @@ spawn(function()
 	while true do
 	local Char = GetChar()
 	local PartFound = Char:FindFirstChild'HumanoidRootPart' or Char:FindFirstChild'Torso'
-		if Char:FindFirstChildOfClass'Humanoid' and UseDraw then 
-			DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
+		if Char:FindFirstChildOfClass'Humanoid' and UseDraw then
+			local Tool = Char:FindFirstChildOfClass'Tool'
+			if Tool and Tool:FindFirstChild'Ammo' then 
+				DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget).."\n"..Tool.Name.." Clips & Ammo: "..Tool.Clips.Value..":"..Tool.Ammo.Value
+			else 
+				DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget) 
+			end
 		end
 		if Blinking and KeyTable['Shift'] then
 			if KeyTable['w'] then 
@@ -2419,7 +2323,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","TpBypass (Instant Tp) Command: tpbypass",10,nil)   
+notif("Newest Update:","Added stats for gun clips & ammo",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
