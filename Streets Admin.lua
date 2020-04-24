@@ -16,7 +16,7 @@ getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() e
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
 local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers,DontStompWhitelisted = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
-local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop = false,false,false,true,false,false,false,false,false,false,false,false,false
+local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop,TpBypass = false,false,false,true,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer,LoopPlayer
 local AirWalk,ShootPart = Instance.new'Part',Instance.new('Part',workspace)
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
@@ -128,8 +128,16 @@ end
 local gamememe = getrawmetatable(game)
 local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
 local writeable = setreadonly or make_writeable
+local callingscript = getcallingscript or get_calling_script
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
 writeable(gamememe,false)
+
+gamememe.__index = Closure(function(self,Index)
+	if TpBypass and callingscript and callingscript() ~= script and Index == "HumanoidRootPart" then -- was requested to add this
+		return index(self,"Torso")
+	end 
+	return index(self,Index)
+end)
 
 gamememe.__newindex = Closure(function(self,Property,b)
 if Caller() then return nindex(self,Property,b) end
@@ -151,8 +159,16 @@ if Caller() then return nindex(self,Property,b) end
 end)
 
 gamememe.__namecall = Closure(function(self,...)
-	if Caller() then return name(self,...) end 
-		local Arguments = {...}
+local Arguments = {...}
+	if Caller() then 
+		if getnamecallmethod() == "FindFirstChild" then
+			if Arguments[1] == "RealHumanoidRootPart" then 
+				Arguments[1] = "HumanoidRootPart" 
+				return name(self,unpack(Arguments))
+			end
+		end
+		return name(self,...) 
+	end 
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
 			return invalidfunctiongang(self,...)
 		end
@@ -161,7 +177,13 @@ gamememe.__namecall = Closure(function(self,...)
 		end
 		if getnamecallmethod() == "Kick" or getnamecallmethod() == "Destroy" and self == LP.Character then 
 			return
-		end 
+		end
+		if getnamecallmethod() == "WaitForChild" or getnamecallmethod() == "FindFirstChild" then 
+			if getcallingscript() ~= script and TpBypass and Arguments[1] == "HumanoidRootPart" then
+				Arguments[1] = "Torso"
+				return name(self,unpack(Arguments))
+			end
+		end
 		if getnamecallmethod() == "FireServer" then
 				if self.Name == "lIII" or tostring(self.Parent) == "ReplicatedStorage" then 
 					return wait(9e9)
@@ -211,11 +233,12 @@ getgenv().notif = function(title,message,length,icon)
 end
 
 getgenv().Teleport = function(Part)
-if not typeof(Part) == "CFrame" or not GetChar():FindFirstChild'HumanoidRootPart' then return end 
-	if _G.DoYouHaveBfgBypass then 
-		GetChar().HumanoidRootPart.CFrame = Part
+if not typeof(Part) == "CFrame" then return end
+local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
+	if _G.DoYouHaveBfgBypass or not GetChar():FindFirstChild'HumanoidRootPart' then 
+		PartFound.CFrame = Part
 	else
-		local Play = TweenService:Create(GetChar().HumanoidRootPart, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
+		local Play = TweenService:Create(PartFound, TweenInfo.new(3.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),{CFrame = Part})
 		Play:play()
 	end
 end
@@ -308,15 +331,16 @@ end
 local function GrabThing(Thing)
 if not PartTable then 
 	notif("Can't tp to "..Thing,"as you are not playing normal streets!",5,"rbxassetid://1281284684") return 
-end 
+end
+local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
 local Anim = Instance.new'Animation'
 Anim.AnimationId = "rbxassetid://188632011"
 local Track = GetChar().Humanoid:LoadAnimation(Anim)
-GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(math.random(20,45),0,math.random(1,5))
+PartFound.CFrame = PartFound.CFrame * CFrame.new(math.random(20,45),0,math.random(1,5))
 wait()
 	repeat  
 		Track:play(.1,1,1)
-		GetChar().HumanoidRootPart.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)
+		PartFound.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)
 		RunService.Heartbeat:wait()
 	until PartTable[Thing]:FindFirstChildOfClass'Part'.BrickColor == BrickColor.new'Bright red' or GetChar():FindFirstChild'KO' or GetChar().Humanoid.Health == 0
 	return true
@@ -368,7 +392,7 @@ local MTarget = Mouse.Target
 			end
 		end
 	end
-	if MTarget.Parent then 
+	if MTarget and MTarget.Parent then 
 		local NTarget = MTarget.Parent 
 		if not Players:GetPlayerFromCharacter(NTarget) then NTarget = NTarget.Parent end 
 		if not Players:GetPlayerFromCharacter(NTarget) then return end 
@@ -896,6 +920,11 @@ AddCommand(function(Arguments)
 	end
 end,"goto",{"to"},"Teleports you to the selected player")
 
+AddCommand(function()
+	TpBypass = not TpBypass
+	GetChar():BreakJoints()
+end,"tpbypass",{},"Turns on tp bypass")
+
 AddCommand(function(Arguments)
 	if Arguments[1] and tonumber(Arguments[1]) then 
 		ClockTime = Arguments[1]
@@ -949,9 +978,10 @@ AddCommand(function(Arguments)
 end,"tpto",{"tp"},"Teleports to places [banland/normalstreets/uzi/machete/spray/sawed/sawedoff/pipe/sand/prison/gas/court/beach/bank]")
 
 local FlySpeed = 10
+local FirstFly = true  
 local function fly(SPEED) -- CREDITS TO INFINITE YIELD FOR THIS FLY METHOD (I'M PLANNING TO MAKE MY OWN SOON)
 FlySpeed = SPEED or 10
-	local T = LP.Character:FindFirstChild("HumanoidRootPart")
+	local T = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
 	ShootPart.Size = Vector3.new(5,1,5)
 	ShootPart.Transparency = 1
 	ShootPart.Anchored = true -- I was gonna use airwalk but lol 
@@ -1017,6 +1047,12 @@ FlySpeed = SPEED or 10
 		end
 	end)
 	fly()
+	if FirstFly then
+		flying = false 
+		wait(0.5)
+		fly()
+		FirstFly = false
+	end
 end
 
 AddCommand(function(Arguments)
@@ -1036,39 +1072,6 @@ AddCommand(function(Arguments)
 		end 
 	end 
 end,"fov",{},"Changes Field Of View")
-
-local flinging = false
-local function Fling(Plr)
-	if not GetChar():FindFirstChild'Head' then return end
-	local BodyGyro,BodyVelocity = Instance.new('BodyGyro',GetChar().Head),Instance.new('BodyVelocity',GetChar().Head)
-	BodyGyro.P = 9e9
-	BodyGyro.CFrame = GetChar().Head.CFrame
-	BodyGyro.maxTorque = Vector3.new(9e9,9e9,9e9)
-	BodyVelocity.Velocity = Vector3.new(0,0,0)
-	BodyVelocity.maxForce = Vector3.new(9e9,9e9,9e9)
-	pcall(function()
-		repeat wait()
-		GetChar().HumanoidRootPart.CFrame = Plr.Character.Torso.CFrame
-		GetChar().Humanoid.PlatformStand = true
-		BodyGyro.CFrame = workspace.CurrentCamera.CoordinateFrame
-		until not flinging or GetChar().Humanoid.Health == 0 
-		if BodyGyro and BodyVelocity then 
-			BodyGyro:Destroy()
-			BodyVelocity:Destroy()
-		end
-		GetChar().Humanoid.PlatformStand = false 
-	end)
-end
-
-AddCommand(function(Arguments)
-	if Arguments[1] then
-		local Player = PlrFinder(Arguments[1])
-		if Player then
-			Fling(Player)
-		end
-	end 
-	flinging = not flinging
-end,"fling",{},"rocketship")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -1120,14 +1123,15 @@ AddCommand(function()
 end,"antiaim",{},"breaks shitty aimbots lol")
 
 AddCommand(function()
-if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
+if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end
+local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
 math.randomseed(os.time())
 	if workspace:FindFirstChild'Cars' then 
 		local Car = workspace.Cars:GetDescendants()
 		for i = 1,#Car do
 			local i = math.random(1,#Car)
 			if Car[i]:IsA'VehicleSeat' and Car[i].Name == "Drive" and not Car[i].Occupant then 
-				GetChar().HumanoidRootPart.CFrame = Car[i].CFrame
+				PartFound.CFrame = Car[i].CFrame
 			end
 		end
 	else 
@@ -1279,6 +1283,7 @@ end,"bfg",{},"Turns on BFG (Bfg [allbfg/minigun] - minigun makes your bfg not al
 
 local HR;
 AddCommand(function(Arguments)
+if not GetChar():FindFirstChild'HumanoidRootPart' then notif("Sorry","this can be only used without tpbypass on",5,nil) end
 	if HR then
 		local CFramex = HR.CFrame
 		HR:Destroy()
@@ -1623,6 +1628,12 @@ local WhitelistedOs = {
 
 local function Stepped()
 local Character = GetChar()
+	if GodMode or FeLoop then 
+		if Character:FindFirstChild'Right Leg' then 
+			Character['Right Leg']:Destroy()
+		end
+	end
+local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
 	if Noclipping then 
 		local CDescendant = Character:GetDescendants() 
 		for i = 1,#CDescendant do 
@@ -1635,18 +1646,16 @@ local Character = GetChar()
 		LP.Backpack.Stank:FireServer("rep",RainbowTable2[math.random(1,#RainbowTable2)])
 		LP.Backpack.Stank:FireServer("color",RainbowTable1[math.random(1,#RainbowTable1)])
 	end
+	if TpBypass and Character:FindFirstChild'RealHumanoidRootPart' then 
+		Character:FindFirstChild'RealHumanoidRootPart':Destroy() 
+	end 
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
 	if flying then
-		ShootPart.CFrame = LP.Character.Torso.CFrame * CFrame.new(0,-3.5,0)
-		if PartTable then 
+		ShootPart.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
+		if PartTable and Character:FindFirstChild'HumanoidRootPart' and Character:FindFirstChild'Humanoid' then 
 			Character.Humanoid:ChangeState(3)
-		end
-	end
-	if GodMode or FeLoop then 
-		if Character:FindFirstChild'Right Leg' then 
-			Character['Right Leg']:Destroy()
 		end
 	end
 	if FeLoop then
@@ -1657,16 +1666,16 @@ local Character = GetChar()
                 repeat wait() until not Character:FindFirstChildOfClass'Tool'
             end
 		end
-		if Character:FindFirstChild'HumanoidRootPart' and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' then 
-			Character.HumanoidRootPart.CFrame = LoopPlayer.Character.Torso.CFrame
+		if PartFound and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' then 
+			PartFound.CFrame = LoopPlayer.Character.Torso.CFrame
 		end 
 	end
 	if AutoStomp then
 		local Players = Players:GetPlayers()
 		for i = 1,#Players do
 			if Players[i] ~= LP and Players[i].Character and Players[i].Character:FindFirstChild'Head' and Players[i].Character:FindFirstChild'Torso' and not Players[i]:IsFriendsWith(LP.UserId) then
-				if (Character.HumanoidRootPart.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not Character:FindFirstChild'KO' and Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' and not table.find(DontStompWhitelisted,Players[i].UserId) then
-					Character.HumanoidRootPart.CFrame = CFrame.new(Players[i].Character.Torso.Position)
+				if (PartFound.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not Character:FindFirstChild'KO' and Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' and not table.find(DontStompWhitelisted,Players[i].UserId) then
+					PartFound.CFrame = CFrame.new(Players[i].Character.Torso.Position)
 					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Backpack:FindFirstChild'Character')
 				end
 			end
@@ -1680,9 +1689,9 @@ local Character = GetChar()
 			end
 		end
 	end
-	if AirWalkOn and Character:FindFirstChild'Humanoid' and Character:FindFirstChild'HumanoidRootPart' then 
+	if AirWalkOn and Character:FindFirstChild'Humanoid' and PartFound then 
 		Character.Humanoid.HipHeight = 0
-		AirWalk.CFrame = Character.HumanoidRootPart.CFrame * CFrame.new(0,-3.5,0)
+		AirWalk.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
 	end
 	if CamLocking and CamlockPlayer and CamlockPlayer.Character and CamlockPlayer.Character:FindFirstChild'Torso' then 
 		workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
@@ -1929,6 +1938,7 @@ end)
 
 UserInput.InputBegan:Connect(function(Key)
 if UserInput:GetFocusedTextBox() then return end
+local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
 	if Key.KeyCode == Enum.KeyCode.LeftControl then
 		if AirWalkOn then 
 			AirWalk.Size = Vector3.new(0,-1,0)
@@ -1957,7 +1967,7 @@ if UserInput:GetFocusedTextBox() then return end
 		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
 	end 
 	if Key.KeyCode == Enum.KeyCode.Space and AirWalkOn then 
-		GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame + Vector3.new(0,5,0)
+		PartFound.CFrame = PartFound.CFrame + Vector3.new(0,5,0)
 	end
 	if Key.KeyCode == Enum.KeyCode.Quote then 
 		CText:CaptureFocus()
@@ -1971,8 +1981,8 @@ if UserInput:GetFocusedTextBox() then return end
 		Cframe:TweenPosition(UDim2.new(0.015,0,1,0),"Out","Quad",0.5,true)
 	end
 	if ClickTpKey and ClickTpKey ~= "" and Key.KeyCode == Enum.KeyCode[ClickTpKey:upper()] and Mouse.Target then
-		if (Mouse.Hit.Position - GetChar().HumanoidRootPart.Position).magnitude < 50 then 
-			GetChar().HumanoidRootPart.CFrame = CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0))
+		if (Mouse.Hit.Position - PartFound.Position).magnitude < 50 then 
+			PartFound.CFrame = CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0))
 		else
 			Teleport(CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0)))
 		end
@@ -2049,21 +2059,23 @@ RunService.Stepped:Connect(Stepped)
 
 spawn(function()
 	while true do
-		if GetChar():FindFirstChildOfClass'Humanoid' and UseDraw then 
-			DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
+	local Char = GetChar()
+	local PartFound = Char:FindFirstChild'HumanoidRootPart' or Char:FindFirstChild'Torso'
+		if Char:FindFirstChildOfClass'Humanoid' and UseDraw then 
+			DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 		end
 		if Blinking and KeyTable['Shift'] then
 			if KeyTable['w'] then 
-				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(0,0,-BlinkSpeed)
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
 			end 
 			if KeyTable['a'] then 
-				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(-BlinkSpeed,0,0)
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
 			end
 			if KeyTable['s'] then 
-				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(0,0,BlinkSpeed)
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
 			end
 			if KeyTable['d'] then 
-				GetChar().HumanoidRootPart.CFrame = GetChar().HumanoidRootPart.CFrame * CFrame.new(BlinkSpeed,0,0)
+				PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
 			end
 		end
 		wait()
@@ -2072,13 +2084,14 @@ end)
 
 if PartTable then 
 	spawn(function()
-		while wait() do 
-			if GetChar():FindFirstChildOfClass'Humanoid' and GetChar().Humanoid.HipHeight > 0 or AirWalkOn and GetChar().Humanoid.FloorMaterial == Enum.Material.Neon and not GetChar().Humanoid.Sit then 
-				local JP = GetChar().Humanoid.JumpPower
-				GetChar().Humanoid.JumpPower = 1.5
-				GetChar().Humanoid:ChangeState(3)
+		while wait() do
+			local Char = GetChar()
+			if Char:FindFirstChildOfClass'Humanoid' and Char.Humanoid.HipHeight > 0 or AirWalkOn and Char.Humanoid.FloorMaterial == Enum.Material.Neon and not Char.Humanoid.Sit then 
+				local JP = Char.Humanoid.JumpPower
+				Char.Humanoid.JumpPower = 1.5
+				Char.Humanoid:ChangeState(3)
 				wait(0.2)
-				GetChar().Humanoid.JumpPower = JP
+				Char.Humanoid.JumpPower = JP
 			end
 		end
 	end)
@@ -2378,8 +2391,8 @@ if game.PlaceId == 455366377 then
 				local Infected = false
 				if not InfectedTable[Player] and Player ~= LP then 
 				repeat wait()
-					if Player.Character and Player.Character:FindFirstChild'Torso' and GetChar():FindFirstChild'HumanoidRootPart' then 
-						GetChar().HumanoidRootPart.CFrame = Player.Character.Torso.CFrame
+					if Player.Character and Player.Character:FindFirstChild'Torso' and GetChar():FindFirstChild'Torso' then 
+						GetChar().Torso.CFrame = Player.Character.Torso.CFrame
 						for i,v in pairs(Player.Character.Humanoid:GetPlayingAnimationTracks()) do 
 							if string.find(v.Animation.AnimationId,"4812408744") then 
 								Infected = true
