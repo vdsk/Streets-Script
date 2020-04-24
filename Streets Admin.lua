@@ -2295,29 +2295,6 @@ local CoolkidTable = {
 	};
 }
 
-local CyrusShottyTable = {
-    [6] = {
-        ['Colour'] = Color3.fromRGB(24,0,0);
-        ['Material'] = "DiamondPlate";
-    };
-    [7] = {
-        ['Colour'] = Color3.fromRGB(54,0,0);
-        ['Material'] = "Fabric";
-    };
-    [8] = {
-        ['Colour'] = Color3.fromRGB(144,0,0);
-        ['Material'] = "CorrodedMetal";
-    };
-    [9] = {
-        ['Colour'] = Color3.fromRGB(27,0,0);
-        ['Material'] = "Fabric";
-    };
-    [10] = {
-        ['Colour'] = Color3.fromRGB(144,0,0);
-        ['Material'] = "ForceField";
-    };
-}
-
 local function espcool(Plr)
 	local Esp1 = Instance.new('BillboardGui',Plr.Character.Head)
 	Esp1.Adornee = Plr.Character.Head
@@ -2348,26 +2325,28 @@ local function espcool(Plr)
 			end
 		end)
 	end
-	for i,v in pairs(Plr.Backpack:GetChildren()) do
-		if v.Name == "Shotty" and CoolkidTable[tostring(Plr.UserId)].Name == "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin" then 
-			for i,v in pairs(v:GetChildren()) do 
-				if v.Name == "Union" then 
-					v.UsePartColor = true
-					if CyrusShottyTable[i] then 
-						v.Color = CyrusShottyTable[i].Colour 
-						v.Material = CyrusShottyTable[i].Material 
-					end 
+	local Glock = Plr.Backpack:WaitForChild'Glock' 
+	if Glock then 
+		local Gun = CoolkidTable[tostring(Plr.UserId)][Glock.Name]
+		if Gun then 
+			Glock.Handle.Color = Gun.Handle.Colour
+            Glock.Handle.Material = Gun.Handle.Material
+            Glock.Heh.Color = Gun.Main.Colour
+			Glock.Heh.Material = Gun.Main.Material
+		end 
+	end 
+	if CoolkidTable[tostring(Plr.UserId)].Name == "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin" then 
+		local Shotty = Plr.Backpack:WaitForChild'Shotty' 
+		if Shotty then 
+			for i,v in pairs(Shotty:GetChildren()) do 
+				if v.Name == "Union" then
+					v.UsePartColor = true 
+					v.Color = Color3.fromRGB(144,0,0);
+					v.Material = "ForceField"
 				end 
 			end 
-		end
-		local Gun = CoolkidTable[tostring(Plr.UserId)][v.Name]
-		if Gun then 
-			v.Handle.Color = Gun.Handle.Colour
-			v.Handle.Material = Gun.Handle.Material
-			v.Heh.Color = Gun.Main.Colour
-			v.Heh.Material = Gun.Main.Material
-		end
-	end
+		end 
+	end 
 end
 
 local PlayersX = Players:GetPlayers()
