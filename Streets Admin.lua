@@ -1364,7 +1364,7 @@ end,"unesp",{},"Removes the esp on the player")
 
 AddCommand(function()
 	wait(0.5)
-	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by NotCyrusAtAll(Alt: Periius) | Join the cord at xB3mTC","All")
+	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by NotCyrusAtAll(Alt: Periius) | Join the cord at nXcZH36","All")
 end,"advertise",{},"Advertises my discord lol")
 
 AddCommand(function()
