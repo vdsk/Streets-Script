@@ -179,7 +179,7 @@ local Arguments = {...}
 			return
 		end
 		if getnamecallmethod() == "WaitForChild" or getnamecallmethod() == "FindFirstChild" then 
-			if getcallingscript and getcallingscript() ~= script and TpBypass and Arguments[1] == "HumanoidRootPart" then
+			if callingscript and callingscript() ~= script and TpBypass and Arguments[1] == "HumanoidRootPart" then
 				Arguments[1] = "Torso"
 				return name(self,unpack(Arguments))
 			end
