@@ -1080,14 +1080,15 @@ end,"hotkey",{"key"},"Hotkeys a command to a key")
 AddCommand(function()
 if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
 if TpBypass then notif("Due to snakes code","you can not use burgers/drinks with the tpbypass") return end
-	if GrabThing("Burger") then
+	if GrabThing("Burger",GetChar().Head.CFrame) then
 		local Hamborger = LP.Backpack:FindFirstChild'Burger'
 		if Hamborger then 
 			Hamborger.Parent = GetChar()
 			Hamborger:Activate() -- CHEEMS
+			repeat RunService.Heartbeat:Wait() until Hamborger.Parent ~= LP.Character
 		end
 	end
-	if GrabThing("Drink") then
+	if GrabThing("Drink",GetChar().Head.CFrame) then
 		local Drink = LP.Backpack:FindFirstChild'Drink'
 		if Drink then 
 			Drink.Parent = GetChar()
@@ -1164,16 +1165,24 @@ AddCommand(function(Arguments)
 	end
 end,"clicktp",{"ctp"},"Allows you to teleport around the map with a Key")
 
+local ViewPlayerConnection;
 AddCommand(function(Arguments)
-if Arguments[1] then 
+	if Arguments[1] then 
 	local Plr = PlrFinder(Arguments[1]) 
 		if Plr and Plr.Character then
+			if ViewPlayerConnection then ViewPlayerConnection:Disconnect() ViewPlayerConnection = nil end 
 			workspace.CurrentCamera.CameraSubject = Plr.Character
+			if Arguments[2] and Arguments[2] == "loop" then
+				ViewPlayerConnection = Plr.CharacterAdded:Connect(function(C)
+					workspace.CurrentCamera.CameraSubject = C
+				end)
+			end
 		end
 	end
 end,"view",{},"Allows you to look through a players vision")
 
 AddCommand(function()
+	if ViewPlayerConnection then ViewPlayerConnection:Disconnect() ViewPlayerConnection = nil end 
 	workspace.CurrentCamera.CameraSubject = GetChar()
 end,"unview",{},"Brings you back to your normal vision")
 
@@ -2249,7 +2258,7 @@ for i = 1,#PlayersX do
 				Players:Chat("Hey I'm a cyrus' streets admin user1")
 				local abc123;
 				for i = 1,#PlayerTable do 
-					if PlayerTable[i][2] == Plr then 
+					if PlayerTable[i] and PlayerTable[i][2] == Plr then 
 						PlayerTable[i][4] = "true"
 						abc123 = true
 					end
@@ -2278,7 +2287,7 @@ Players.PlayerAdded:Connect(function(Plr)
 			Players:Chat("Hey I'm a cyrus' streets admin user1")
 			local abc123;
 			for i = 1,#PlayerTable do 
-				if PlayerTable[i][2] == Plr then 
+				if PlayerTable[i] and PlayerTable[i][2] == Plr then 
 					PlayerTable[i][4] = "true"
 					abc123 = true
 				end
