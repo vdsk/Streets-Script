@@ -126,7 +126,7 @@ end
 -- Bypass Start
 
 local gamememe = getrawmetatable(game)
-local Closure,Caller = hide_me or newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
+local Closure,Caller = newcclosure,checkcaller or is_protosmasher_caller or Cer.isCerus
 local writeable = setreadonly or make_writeable
 local callingscript = getcallingscript or get_calling_script
 local name,index,nindex = gamememe.__namecall,gamememe.__index,gamememe.__newindex
@@ -226,6 +226,7 @@ local Arguments = {...}
     return name(self,...)
 end)
 
+writeable(gamememe,true)
 -- Bypass End
 
 getgenv().notif = function(title,message,length,icon)
@@ -1784,6 +1785,161 @@ local Index = 0
 	end
 end)
 
+local CoolkidTable = {
+	['300227703']	= {
+		['Name']   = "!fishgang Envy";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+    ['590620847'] 	= {
+		['Name']   = "!fishgang Envy";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+    ['714877']      = {
+		['Name']   = "!fishgang Ambiguity";
+		['Colour'] = Color3.fromRGB(57,52,52);
+		['Access'] = true;
+	};
+    ['96316322']    = {
+		['Name']   = "!fishgang Ambiguity";
+		['Colour'] = Color3.fromRGB(57,52,52);
+		['Access'] = true;
+	};
+    ['114164798']   = {
+		['Name']   = "!fishgang Slays | [RPF] Retard Prevention Force";
+		['Colour'] = Color3.fromRGB(0,255,255);
+		['Access'] = true;
+	};
+	['359564044'] 	= {
+		['Name']   = "!fishgang 7w4c";
+		['Colour'] = Color3.fromRGB(255,255,255);
+		['Access'] = true;
+	};
+	['659119329'] 	= {
+		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+    ['12978668']  	= {
+		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+    ['659119329']   = {
+		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+	['62009114'] 	= {
+		['Name']   = "!fishgang Owner X_D6";
+		['Colour'] = Color3.fromRGB(176,16,16);
+		['Access'] = true;
+	};
+	['57370993'] 	= {
+		['Name']   = "!fishgang Karma";
+		['Colour'] = Color3.fromRGB(255,0,0);
+		['Access'] = true;
+	};
+	['20220183'] 	= {
+		['Name']   = "!fishgang Wya";
+		['Colour'] = Color3.fromRGB(215,19,19);
+		['Access'] = true;
+	};
+	['1477162063']  = {
+		['Name'] = "!fishgang Wya (YFRWK)";
+		['Colour'] = Color3.fromRGB(192,6,6);
+		['Access'] = true;
+	};
+	['105183043'] 	= {
+		['Name']   = "Drpoppadopolist | Drpoppa Creator";
+		['Colour'] = Color3.fromRGB(107,50,124);
+		['Access'] = true;
+	};
+	['1190936'] 	= {
+		['Name']   = "trippinfo";
+		['Colour'] = Color3.fromRGB(12,4,134);
+		['Access'] = true;
+	};
+	['378666469'] = {
+		['Name']   = "trippinfo";
+		['Colour'] = Color3.fromRGB(12,4,134);
+		['Access'] = true;
+	};
+	['1443431439']  = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
+	};
+	['164282612']   = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
+	};
+	['1299915133']  = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
+	};
+	['548617338']   = {
+		['Name']   = "Cool Person";
+		['Colour'] = Color3.fromRGB(36,89,237);
+		['Access'] = false;
+	};
+	['1275692258']  = { 
+		['Name']   = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+	['612618136']   = { 
+		['Name']   = "Bird (Donator)";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = false;
+	};
+	['284761493']   = {
+		['Name']   = "[Strafe] gzt";
+		['Colour'] = Color3.fromRGB(102,0,0);
+		['Access'] = true;
+	};
+	['178560']      = {
+		['Name'] = "Literally a fucking egg.";
+		['Colour'] =  Color3.fromRGB(255,248,11);
+		['Access'] = false;
+	};
+	['120476167']   = {
+		['Name']   = "Pawels Owner";
+		['Colour'] = Color3.fromRGB(52,152,219);
+		['Access'] = true;
+	};
+	['120476167']   = {
+		['Name']   = "Pawels Owner";
+		['Colour'] = Color3.fromRGB(52,152,219);
+		['Access'] = true;
+	};
+	['418171482'] 	= {
+		['Name'] = "Woman beater";
+		['Colour'] = Color3.fromRGB(255,0,70);
+		['Access'] = false;
+	};
+}
+
+local function ColourChanger(T)
+	if CoolkidTable[tostring(LP.UserId)] then return end 
+	if T:IsA'Trail' then
+		T.Color = BulletColour
+	end
+	if T:IsA'ObjectValue' and T.Name == "creator" and not Debounce then
+		local Thing = T.Value
+		local Method,Tool = Char(Thing)
+		b(Thing.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - Thing.Head.Position).magnitude).." studs with a "..Tool.Name)
+		if Tool.Name == "Shotty" then 
+			Debounce = true 
+			wait(0.7)
+			Debounce = false 
+		end 
+	end
+end
+
 LP.CharacterAdded:Connect(function()
 	GetChar():WaitForChild('Humanoid',10)
 	ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
@@ -1930,160 +2086,7 @@ CText.FocusLost:Connect(function(Enter)
 		CheckCommand(Command)
 	end
 end)
-local CoolkidTable = {
-	['300227703']	= {
-		['Name']   = "!fishgang Envy";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-    ['590620847'] 	= {
-		['Name']   = "!fishgang Envy";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-    ['714877']      = {
-		['Name']   = "!fishgang Ambiguity";
-		['Colour'] = Color3.fromRGB(57,52,52);
-		['Access'] = true;
-	};
-    ['96316322']    = {
-		['Name']   = "!fishgang Ambiguity";
-		['Colour'] = Color3.fromRGB(57,52,52);
-		['Access'] = true;
-	};
-    ['114164798']   = {
-		['Name']   = "!fishgang Slays | [RPF] Retard Prevention Force";
-		['Colour'] = Color3.fromRGB(0,255,255);
-		['Access'] = true;
-	};
-	['359564044'] 	= {
-		['Name']   = "!fishgang 7w4c";
-		['Colour'] = Color3.fromRGB(255,255,255);
-		['Access'] = true;
-	};
-	['659119329'] 	= {
-		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-    ['12978668']  	= {
-		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-    ['659119329']   = {
-		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-	['62009114'] 	= {
-		['Name']   = "!fishgang Owner X_D6";
-		['Colour'] = Color3.fromRGB(176,16,16);
-		['Access'] = true;
-	};
-	['57370993'] 	= {
-		['Name']   = "!fishgang Karma (Gay)";
-		['Colour'] = Color3.fromRGB(255,0,127);
-		['Access'] = true;
-	};
-	['20220183'] 	= {
-		['Name']   = "!fishgang Wya";
-		['Colour'] = Color3.fromRGB(215,19,19);
-		['Access'] = true;
-	};
-	['1477162063']  = {
-		['Name'] = "!fishgang Wya (YFRWK)";
-		['Colour'] = Color3.fromRGB(192,6,6);
-		['Access'] = true;
-	};
-	['105183043'] 	= {
-		['Name']   = "Drpoppadopolist | Drpoppa Creator";
-		['Colour'] = Color3.fromRGB(107,50,124);
-		['Access'] = true;
-	};
-	['1190936'] 	= {
-		['Name']   = "trippinfo";
-		['Colour'] = Color3.fromRGB(12,4,134);
-		['Access'] = true;
-	};
-	['378666469'] = {
-		['Name']   = "trippinfo";
-		['Colour'] = Color3.fromRGB(12,4,134);
-		['Access'] = true;
-	};
-	['1443431439']  = {
-		['Name']   = "wk1r";
-		['Colour'] = Color3.fromRGB(194,23,255);
-		['Access'] = true;
-	};
-	['164282612']   = {
-		['Name']   = "wk1r";
-		['Colour'] = Color3.fromRGB(194,23,255);
-		['Access'] = true;
-	};
-	['1299915133']  = {
-		['Name']   = "wk1r";
-		['Colour'] = Color3.fromRGB(194,23,255);
-		['Access'] = true;
-	};
-	['548617338']   = {
-		['Name']   = "Cool Person";
-		['Colour'] = Color3.fromRGB(36,89,237);
-		['Access'] = false;
-	};
-	['1275692258']  = { 
-		['Name']   = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-	['612618136']   = { 
-		['Name']   = "Bird (Donator)";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = false;
-	};
-	['284761493']   = {
-		['Name']   = "[Strafe] gzt";
-		['Colour'] = Color3.fromRGB(102,0,0);
-		['Access'] = true;
-	};
-	['178560']      = {
-		['Name'] = "Literally a fucking egg.";
-		['Colour'] =  Color3.fromRGB(255,248,11);
-		['Access'] = false;
-	};
-	['120476167']   = {
-		['Name']   = "Pawels Owner";
-		['Colour'] = Color3.fromRGB(52,152,219);
-		['Access'] = true;
-	};
-	['120476167']   = {
-		['Name']   = "Pawels Owner";
-		['Colour'] = Color3.fromRGB(52,152,219);
-		['Access'] = true;
-	};
-	['418171482'] 	= {
-		['Name'] = "Woman beater";
-		['Colour'] = Color3.fromRGB(255,0,70);
-		['Access'] = false;
-	};
-}
 
-local function ColourChanger(T)
-	if CoolkidTable[tostring(LP.UserId)] then return end 
-	if T:IsA'Trail' then
-		T.Color = BulletColour
-	end
-	if T:IsA'ObjectValue' and T.Name == "creator" and not Debounce then
-		local Thing = T.Value
-		local Method,Tool = Char(Thing)
-		b(Thing.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - Thing.Head.Position).magnitude).." studs with a "..Tool.Name)
-		if Tool.Name == "Shotty" then 
-			Debounce = true 
-			wait(0.7)
-			Debounce = false 
-		end 
-	end
-end
 
 ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
 BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
