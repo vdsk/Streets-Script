@@ -179,7 +179,7 @@ local Arguments = {...}
 			return
 		end
 		if getnamecallmethod() == "WaitForChild" or getnamecallmethod() == "FindFirstChild" then 
-			if getcallingscript() ~= script and TpBypass and Arguments[1] == "HumanoidRootPart" then
+			if getcallingscript and getcallingscript() ~= script and TpBypass and Arguments[1] == "HumanoidRootPart" then
 				Arguments[1] = "Torso"
 				return name(self,unpack(Arguments))
 			end
@@ -2255,7 +2255,7 @@ for i = 1,#PlayersX do
 					end
 				end
 				table.insert(AdminUsers,Plr.UserId)
-				if not abc123 then 
+				if not abc123 and UseDraw then 
 					espPlayer(Plr,nil,true)
 				end
 			end
@@ -2284,7 +2284,7 @@ Players.PlayerAdded:Connect(function(Plr)
 				end
 			end
 			table.insert(AdminUsers,Plr.UserId)
-			if not abc123 then 
+			if not abc123 and UseDraw then 
 				espPlayer(Plr,nil,true)
 			end
 			P:Disconnect()
