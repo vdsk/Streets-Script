@@ -244,20 +244,6 @@ local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFi
 	end
 end
 
-local function UziStats()
-	local Child = LP.PlayerGui:GetChildren()
-	local UziAmount,ClipsAmount,AmmoAmount,Damage = 0,0,0,0
-	for i = 1,#Child do
-		if Child[i].Name == "Uzi" and Child[i].Clips and Child[i].Ammo then 
-			UziAmount = UziAmount + 1 
-			ClipsAmount = ClipsAmount + Child[i].Clips.Value
-			AmmoAmount = AmmoAmount + Child[i].Ammo.Value
-		end
-	end 
-	local ZetoxUzi = LP.Backpack:FindFirstChild'Zetox Uzi' or GetChar():FindFirstChild'Zetox Uzi'
-	ZetoxUzi.ToolTip = "Zetox Uzi | Clips "..tostring(ClipsAmount / UziAmount).." | Damage "..tostring(UziAmount * 20).." | Ammo "..tostring(AmmoAmount / UziAmount).." | Uzi Amount "..tostring(UziAmount)
-end
-
 local function hasItem(Player,Item)
     if type(Item) == "boolean" then
         local Tool = Player.Character:FindFirstChildOfClass'Tool'
@@ -639,24 +625,6 @@ getgenv().farm = function(Item)
 	   	end
       end
    end
-end
-
-local UziDebounce = false 
-local function MultiUzireload(Part)
-	if Part.Parent.Name == "Buy Ammo | $25" and GetChar():FindFirstChild'Zetox Uzi' and LP.PlayerGui:FindFirstChild'Uzi' and not UziDebounce then
-		local ActualUzi,LowestAmmo,Child,UziDebounce = nil,math.huge,LP.PlayerGui:GetChildren(),true
-		for i = 1,#Child do 
-			if Child[i].Name == "Uzi" and Child[i].Clips and Child[i].Clips.Value < LowestAmmo then 
-				LowestAmmo = Child[i].Clips.Value 
-				ActualUzi = Child[i]
-			end
-		end
-		ActualUzi.Parent = LP.Backpack
-		ActualUzi.Parent = GetChar()
-		repeat wait() until Part.BrickColor == BrickColor.new'Bright red'
-		ActualUzi.Parent = LP.PlayerGui
-		UziDebounce = false 
-	end
 end
 
 AddCommand(function()
@@ -1622,31 +1590,6 @@ local function CChildAdded(Thing)
 	end
 end
 
-local function BChildAdded(Thing)
-	if Thing.Name == "Uzi" and MultiUzi then 
-		wait()
-		if not LP.Backpack:FindFirstChild'Zetox Uzi' and not GetChar():FindFirstChild'Zetox Uzi' then
-			local Tool = Instance.new('Tool',LP.Backpack)
-			Tool.RequiresHandle = false 
-			Tool.CanBeDropped = false 
-			Tool.Name = "Zetox Uzi"
-			Tool.Equipped:Connect(UziStats)
-		end
-		Thing.Parent = LP.PlayerGui
-	end
-	if string.find(Thing.Name:lower(),"cash") then
-		wait()
-		Thing.Parent = GetChar()
-		Thing:Activate()
-	end
-end
-
-local function PlayerGuiChildAdded(Thing)
-	if Thing.Name == "Uzi" then 
-		UziStats()
-	end
-end
-
 Cframe.BackgroundColor3 = Color3.new(0.666667,0,0)
 Cframe.BackgroundTransparency = 0.20000000298023
 Cframe.BorderSizePixel = 0
@@ -1932,9 +1875,9 @@ local CoolkidTable = {
 	};
 }
 
+local Debounce = false 
 local function ColourChanger(T)
-	if CoolkidTable[tostring(LP.UserId)] then return end 
-	if T:IsA'Trail' then
+	if T:IsA'Trail' and not CoolkidTable[tostring(LP.UserId)] then
 		T.Color = BulletColour
 	end
 	if T:IsA'ObjectValue' and T.Name == "creator" and not Debounce then
@@ -1952,10 +1895,7 @@ end
 LP.CharacterAdded:Connect(function()
 	GetChar():WaitForChild('Humanoid',10)
 	ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
-	PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
-	BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
 	HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
-	MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
 	HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
 	GetChar().Humanoid.WalkSpeed = SpawnWS or NormalWS
     GetChar().Humanoid.JumpPower = SpawnJP or NormalJP
@@ -1968,9 +1908,10 @@ LP.CharacterAdded:Connect(function()
 	end 
 	if PlayOnDeath then
 		wait()
-		local Tool = LP.Backpack:WaitForChild('BoomBox',10)
+		local Tool = LP.Backpack:WaitForChild('BoomBox')
 		if Tool then 
 			Tool.Parent = GetChar() 
+			wait()
 			Tool:FindFirstChildOfClass'RemoteEvent':FireServer("play",PlayOnDeath)
 			Tool.Parent = LP.Backpack
 		end
@@ -1979,10 +1920,7 @@ end)
 
 LP.CharacterRemoving:Connect(function()
 	ChildAddedEvent:Disconnect()
-	PlayerGuiChildAddedEvent:Disconnect()
-	BackpackAddedEvent:Disconnect()
 	HumanoidStateChangedEvent:Disconnect()
-	MultiUziReload:Disconnect()
 	HumanoidCAdded:Disconnect()
 	HR = nil
 	flying = false
@@ -2098,11 +2036,8 @@ end)
 
 
 ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
-BackpackAddedEvent = LP.Backpack.ChildAdded:Connect(BChildAdded)
-PlayerGuiChildAddedEvent = LP.PlayerGui.ChildAdded:Connect(PlayerGuiChildAdded)
 HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
 HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
-MultiUziReload = GetChar()['Left Leg'].Touched:Connect(MultiUzireload)
 Mouse.Button1Down:Connect(Button1Down)
 Mouse.Button2Down:Connect(Button2Down)
 LP.Chatted:Connect(CheckCommand)
@@ -2186,21 +2121,6 @@ local function espcool(Plr)
 	Esp2.TextStrokeTransparency = 0.5
 	Esp2.TextSize = 15
 	Esp2.TextStrokeColor3 = CoolkidTable[tostring(Plr.UserId)].Colour
-	if CoolkidTable[tostring(Plr.UserId)].Access then 
-		Plr.Chatted:Connect(function(Chat)
-			local Arguments = string.split(Chat:sub(2)," ")
-			local Player = PlrFinder(Arguments[1])
-			table.remove(Arguments,1)
-			if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
-				if Chat:sub(1,1) == "`" then 
-					CheckCommand(table.concat(Arguments," "))
-				end
-				if Chat:sub(1,1) == "[" then 
-					LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
-				end
-			end
-		end)
-	end
 	if Plr.Character:FindFirstChild'Humanoid' then 
 		Plr.Character.Humanoid.DescendantAdded:Connect(function(T)
 			if T:IsA'Trail' then 
@@ -2249,6 +2169,21 @@ for i = 1,#PlayersX do
 				espcool(Plr)
 			end
 		end)
+		if CoolkidTable[tostring(Plr.UserId)].Access then 
+		Plr.Chatted:Connect(function(Chat)
+			local Arguments = string.split(Chat:sub(2)," ")
+			local Player = PlrFinder(Arguments[1])
+			table.remove(Arguments,1)
+			if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
+				if Chat:sub(1,1) == "`" then 
+					CheckCommand(table.concat(Arguments," "))
+				end
+				if Chat:sub(1,1) == "[" then 
+					LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
+				end
+			end
+		end)
+	end
 	end
 	if Plr ~= LP then 
 		local Chatted;
@@ -2275,6 +2210,21 @@ end
 Players.PlayerAdded:Connect(function(Plr)
 	if CoolkidTable[tostring(Plr.UserId)] then
 		Plr.CharacterAdded:Connect(function()
+			if CoolkidTable[tostring(Plr.UserId)].Access then 
+				Plr.Chatted:Connect(function(Chat)
+					local Arguments = string.split(Chat:sub(2)," ")
+					local Player = PlrFinder(Arguments[1])
+					table.remove(Arguments,1)
+					if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
+						if Chat:sub(1,1) == "`" then 
+							CheckCommand(table.concat(Arguments," "))
+						end
+						if Chat:sub(1,1) == "[" then 
+							LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
+						end
+					end
+				end)
+			end
 			local Head = Plr.Character:WaitForChild('Head',10)
 			if Head then 
 				espcool(Plr)
@@ -2335,7 +2285,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","Added stats for gun clips & ammo",10,nil)   
+notif("Newest Update:","Fixed some internal bugs / WOW OVER 200 COMMITS ON GITHUB",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
