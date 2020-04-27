@@ -632,6 +632,7 @@ end
 
 AddCommand(function()
 	AliasesEnabled = not AliasesEnabled
+	notif("AliasesEnabled","Has been set to "..tostring(AliasesEnabled),5,nil) 
 end,"usealias",{},"Turns on / off Aliases")
 
 AddCommand(function(Arguments)
@@ -658,9 +659,11 @@ AddCommand(function()
 	notif("Nogh","Has been set to "..tostring(NoGh),5,nil) 
 end,"nogroundhit",{"nogh","antigh","antigroundhit"},"Makes it so you can't be ground hit")
 
-AddCommand(function()
-	GodMode = not GodMode
-	GetChar():BreakJoints()
+AddCommand(function(Arguments)
+	if not Arguments[1] then 
+		GodMode = not GodMode
+		GetChar():BreakJoints()
+	end
 end,"godmode",{"god"},"Gods your player (Breaks tools)")
 
 AddCommand(function(Arguments)
@@ -831,7 +834,8 @@ AddCommand(function(Arguments)
 		else 
 			BlinkSpeed = Arguments[1]
 		end
-	end 
+	end
+	notif("Blinking","Has been set to "..tostring(Blinking),5,nil) 
 end,"blink",{},"Another form of speed, Uses CFrame")
 
 AddCommand(function(Arguments)
@@ -1099,6 +1103,7 @@ AddCommand(function(Arguments)
 	if Arguments[1] and Arguments[2] and tonumber(Arguments[2]) and Arguments[1] == "health" then 
 		HealBotHealth = tonumber(Arguments[2])
 	end 
+	notif("HealBot","Has been set to "..tostring(HealBot),5,nil) 
 end,"healbot",{},"Turns on auto healing at a set health (Defaults at 25 hp")
 
 AddCommand(function()
