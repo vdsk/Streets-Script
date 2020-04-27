@@ -27,8 +27,7 @@ local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth = 25,8,16,25
 local OldFov = workspace.CurrentCamera.FieldOfView
 local Config = "CyrusStreetsAdminSettings"
-local TargetPart = "Prediction"
-local AimlockMode = "LeftClick"
+local TargetPart,AimlockMode,BlinkMode = "Prediction","LeftClick","Shift"
 Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
 
@@ -83,6 +82,7 @@ local function savesettings()
 	ControlSpeed = SettingsToSave.ControlSpeed;
 	TargetPart = SettingsToSave.TargetPart;
 	AimlockMode = SettingsToSave.AimlockMode;
+	BlinkMode = SettingstoSave.BlinkMode;
 end 
 
 getgenv().updateSettings = function()
@@ -93,6 +93,7 @@ getgenv().updateSettings = function()
 		ControlSpeed = ControlSpeed;
 		TargetPart = TargetPart;
 		AimlockMode = AimlockMode;
+		BlinkMode = BlinkMode;
     }
     writefile(Config,HttpService:JSONEncode(New))
 end
@@ -101,6 +102,7 @@ local function runsettings()
 	local SettingsToRun = HttpService:JSONDecode(readfile(Config))
     Keys = SettingsToRun.Keys
 	ClickTpKey = SettingsToRun.ClickTpKey
+	BlinkMode = SettingsToRun.BlinkMode
 	if SettingsToRun.AimlockMode then 
 		AimlockMode = SettingsToRun.AimlockMode
 	end
@@ -833,6 +835,17 @@ AddCommand(function(Arguments)
 end,"blink",{},"Another form of speed, Uses CFrame")
 
 AddCommand(function(Arguments)
+	if Arguments[1] then 
+		if Arguments[1]:lower() == "shift" then
+			BlinkMode = "Shift"
+		elseif Arguments[1]:lower() == "none" then 
+			BlinkMode = "None" -- giving people the illusion of free choice is my motto!
+		end
+		updateSettings()
+	end 
+end,"blinkmode",{},"Changes Blinkmode")
+
+AddCommand(function(Arguments)
 	if readfile and writefile then
 		if Arguments[1] then
 			if Arguments[1]:lower() == "default" then
@@ -1556,13 +1569,13 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 		Lighting.ClockTime = ClockTime 
 	end
 	if flying then
-		ShootPart.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
 		if PartTable and Character:FindFirstChild'HumanoidRootPart' and Character:FindFirstChild'Humanoid' then 
+			ShootPart.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
+			Character.Humanoid.PlatformStand = false
+			Character.Humanoid:ChangeState(8)
 			wait() -- apparently this works better then putting it below when testing lol 
 			Character.Humanoid:ChangeState(3)
 		end
-		Character.Humanoid.PlatformStand = false
-		Character.Humanoid:ChangeState(8)
 	end
 	if FeLoop then
 		local BChild = LP.Backpack:GetChildren()
@@ -2113,7 +2126,7 @@ spawn(function()
 				DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget) 
 			end
 		end
-		if Blinking and KeyTable['Shift'] then
+		if Blinking and BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
 			if KeyTable['w'] then 
 				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
 			end 
