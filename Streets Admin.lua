@@ -1534,6 +1534,22 @@ AddCommand(function(Arguments)
 	end
 end,"aimmode",{"aimlockmode"},"Sets aimmode [LeftClick/RightClick]")
 
+AddCommand(function()
+local Table = {}
+	for i = 1,10 do 
+		local Server = HttpService:JSONDecode(game:HttpGet("https://www.roblox.com/games/getgameinstancesjson?placeId="..game.PlaceId.."&startindex="..i)) -- OMG IP LOGGER IT DOES AN HTTP REQUEST - half of people on the streets lol
+		for i = 1,#Server.Collection do 
+			Table[Server.Collection[i].Ping] = Server.Collection[i].Guid
+		end
+	end
+	for i,v in pairs(Table) do
+		if v ~= game.JobId then 
+			TeleportService:TeleportToPlaceInstance(game.PlaceId,v)
+			break
+		end 
+	end 
+end,"serverhop",{},"Server hopping capabilities")
+
 local WhitelistedOs = {
 	['durango'] = "Xbox";
 	['win32'] = "Windows";
@@ -2355,7 +2371,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","CONFIGS???????????????????? OMG!!!!!!!!!!! config [config]/default (typing a config that doesn't exist creates one so you can set it up)",10,nil)   
+notif("Newest Update:","CONFIGS???????????????????? OMG!!!!!!!!!!! config [config]/default (typing a config that doesn't exist creates one so you can set it up) AND serverhop",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
