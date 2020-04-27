@@ -26,6 +26,7 @@ local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(14
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth = 25,8,16,25
 local OldFov = workspace.CurrentCamera.FieldOfView
+local Config = "CyrusStreetsAdminSettings"
 local TargetPart = "Prediction"
 local AimlockMode = "LeftClick"
 Players:Chat("Cyrus is my god")
@@ -74,8 +75,8 @@ local SettingsTable = {
 -- Hotkey start
 
 local function savesettings()
-    writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(SettingsTable))
-    local SettingsToSave = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
+	writefile(Config,HttpService:JSONEncode(SettingsTable))
+    local SettingsToSave = HttpService:JSONDecode(readfile(Config))
     Keys = SettingsToSave.Keys;
 	ClickTpKey = SettingsToSave.ClickTpKey;
 	ShiftSpeed = SettingsToSave.ShiftSpeed;
@@ -93,11 +94,11 @@ getgenv().updateSettings = function()
 		TargetPart = TargetPart;
 		AimlockMode = AimlockMode;
     }
-    writefile("CyrusStreetsAdminSettings",HttpService:JSONEncode(New))
+    writefile(Config,HttpService:JSONEncode(New))
 end
 
 local function runsettings()
-    local SettingsToRun = HttpService:JSONDecode(readfile("CyrusStreetsAdminSettings"))
+	local SettingsToRun = HttpService:JSONDecode(readfile(Config))
     Keys = SettingsToRun.Keys
 	ClickTpKey = SettingsToRun.ClickTpKey
 	if SettingsToRun.AimlockMode then 
@@ -113,7 +114,7 @@ local function runsettings()
 end
 
 if readfile and writefile then 
-	local Work,Error = pcall(readfile,"CyrusStreetsAdminSettings")
+	local Work,Error = pcall(readfile,Config)
 	if not Work then 
 		savesettings()
 	else
@@ -830,6 +831,24 @@ AddCommand(function(Arguments)
 		end
 	end 
 end,"blink",{},"Another form of speed, Uses CFrame")
+
+AddCommand(function(Arguments)
+	if readfile and writefile then
+		if Arguments[1] then
+			if Arguments[1]:lower() == "default" then
+				Config = "CyrusStreetsAdminSettings"
+				runsettings()
+			elseif pcall(readfile,Arguments[1]) then
+				Config = Arguments[1]
+				runsettings(Arguments[1])
+			else
+				Config = Arguments[1]
+				savesettings()
+				runsettings()
+			end 
+		end 
+	end 
+end,"config",{},"Changes Config") 
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
@@ -2322,7 +2341,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","Added Healbot healbot health [number] to change the health you start healbotting at,fixed view plr loop,aimlockmode nomouse to not be able to click on players to lock on them",10,nil)   
+notif("Newest Update:","CONFIGS???????????????????? OMG!!!!!!!!!!! config [config]/default (typing a config that doesn't exist creates one so you can set it up)",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
