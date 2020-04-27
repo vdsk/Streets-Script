@@ -996,6 +996,7 @@ AddCommand(function(Arguments)
 	if Arguments[1] then 
 		if string.lower(Arguments[1]) == "ws" or string.lower(Arguments[1]) == "speed" then 
 			GetChar():FindFirstChildWhichIsA'Humanoid'.WalkSpeed = Arguments[2]
+			Normalwalk = true
 			SpawnWS = Arguments[2] or NormalWS
 		elseif string.lower(Arguments[1]) == "jp" or string.lower(Arguments[1]) == "jumppower" then 
 			GetChar():FindFirstChildWhichIsA'Humanoid'.JumpPower = Arguments[2]
