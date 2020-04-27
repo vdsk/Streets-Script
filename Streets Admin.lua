@@ -16,7 +16,7 @@ getgenv().GetChar = function() return LP.Character or LP.CharacterAdded:Wait() e
 GetChar():WaitForChild('Humanoid',10) -- allows auto-execution
 local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers,DontStompWhitelisted = {},{},{['w'] = false;['a'] = false;['s'] = false;['d'] = false;['Shift'] = false;['Control'] = false;},{['0'] = "%30";['1'] = "%31";['2'] = "%32";['3'] = "%33"; ['4'] = "%34";['5'] = "%35";['6'] = "%36";['7'] = "%37";['8'] = "%38";['9'] = "%39";[' '] = "%20";},{},{}
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
-local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop,TpBypass = false,false,false,true,false,false,false,false,false,false,false,false,false,false
+local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop,TpBypass,HealBot = false,false,false,true,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer,LoopPlayer
 local AirWalk,ShootPart = Instance.new'Part',Instance.new('Part',workspace)
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
@@ -24,7 +24,7 @@ local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Ins
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-local ShiftSpeed,ControlSpeed,WalkSpeed = 25,8,16
+local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth = 25,8,16,25
 local OldFov = workspace.CurrentCamera.FieldOfView
 local TargetPart = "Prediction"
 local AimlockMode = "LeftClick"
@@ -109,7 +109,7 @@ local function runsettings()
 	if SettingsToRun.ShiftSpeed and SettingsToRun.ControlSpeed then 
 		ShiftSpeed = SettingsToRun.ShiftSpeed;
 		ControlSpeed = SettingsToRun.ControlSpeed;
-	end
+	end 
 end
 
 if readfile and writefile then 
@@ -887,10 +887,6 @@ FlySpeed = SPEED or 10
 		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
 		spawn(function()
 		repeat wait()
-		if LP.Character:FindFirstChild'Humanoid' then 
-			LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
-			LP.Character.Humanoid:ChangeState(10)
-		end
 		if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 then
 		SPEED = 50
 		elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0) and SPEED ~= 0 then
@@ -1065,6 +1061,13 @@ if TpBypass then notif("Due to snakes code","you can not use burgers/drinks with
 	end
 end,"heal",{"h"},"Heals you")
 
+AddCommand(function(Arguments)
+	HealBot = not HealBot 
+	if Arguments[1] and Arguments[2] and tonumber(Arguments[2]) and Arguments[1] == "health" then 
+		HealBotHealth = tonumber(Arguments[2])
+	end 
+end,"healbot",{},"Turns on auto healing at a set health (Defaults at 25 hp")
+
 AddCommand(function()
 	if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
 	if not GetChar():FindFirstChildOfClass'Tool' then notif("Tool needed","Hold a gun",5,nil) return end 
@@ -1133,16 +1136,21 @@ AddCommand(function(Arguments)
 	end
 end,"clicktp",{"ctp"},"Allows you to teleport around the map with a Key")
 
-local ViewPlayerConnection;
+local ViewPlayerConnection,ViewPlayerConnection2;
 AddCommand(function(Arguments)
 	if Arguments[1] then 
 	local Plr = PlrFinder(Arguments[1]) 
 		if Plr and Plr.Character then
-			if ViewPlayerConnection then ViewPlayerConnection:Disconnect() ViewPlayerConnection = nil end 
+			if ViewPlayerConnection then ViewPlayerConnection:Disconnect() ViewPlayerConnection = nil ViewPlayerConnection2:Disconnect() ViewPlayerConnection2 = nil end 
 			workspace.CurrentCamera.CameraSubject = Plr.Character
 			if Arguments[2] and Arguments[2] == "loop" then
 				ViewPlayerConnection = Plr.CharacterAdded:Connect(function(C)
 					workspace.CurrentCamera.CameraSubject = C
+				end)
+				LP.CharacterAdded:Connect(function(C)
+					if Plr.Character then
+						workspace.CurrentCamera.CameraSubject = Plr.Character -- I don't know if this does anything I coded it at 7am but I remember someone saying view plr loop doesn't work when you respawn so
+					end
 				end)
 			end
 		end
@@ -1150,7 +1158,7 @@ AddCommand(function(Arguments)
 end,"view",{},"Allows you to look through a players vision")
 
 AddCommand(function()
-	if ViewPlayerConnection then ViewPlayerConnection:Disconnect() ViewPlayerConnection = nil end 
+	if ViewPlayerConnection and ViewPlayerConnection2 then ViewPlayerConnection:Disconnect() ViewPlayerConnection2:Disconnect() ViewPlayerConnection = nil ViewPlayerConnection2 = nil end 
 	workspace.CurrentCamera.CameraSubject = GetChar()
 end,"unview",{},"Brings you back to your normal vision")
 
@@ -1484,8 +1492,11 @@ AddCommand(function(Arguments)
 		elseif Arguments[1]:lower() == "rightclick" then 
 			AimlockMode = "RightClick"
 			updateSettings()
+		elseif Arguments[1]:lower() == "nomouse" then 
+			AimlockMode = "NoMouse" 
+			updateSettings()
 		else
-			notif("Not a mode","Either type leftclick or rightclick")
+			notif("Not a mode","Either type leftclick,rightclick,nomouse")
 		end
 	end
 end,"aimmode",{"aimlockmode"},"Sets aimmode [LeftClick/RightClick]")
@@ -1528,8 +1539,11 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 	if flying then
 		ShootPart.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
 		if PartTable and Character:FindFirstChild'HumanoidRootPart' and Character:FindFirstChild'Humanoid' then 
+			wait() -- apparently this works better then putting it below when testing lol 
 			Character.Humanoid:ChangeState(3)
 		end
+		Character.Humanoid.PlatformStand = false
+		Character.Humanoid:ChangeState(8)
 	end
 	if FeLoop then
 		local BChild = LP.Backpack:GetChildren()
@@ -1892,11 +1906,32 @@ local function ColourChanger(T)
 	end
 end
 
+local function HealthChanged(Health)
+	if Health <= HealBotHealth and HealBot and not TpBypass then 
+		if GrabThing("Burger",GetChar().Head.CFrame) then
+			local Hamborger = LP.Backpack:FindFirstChild'Burger'
+			if Hamborger then 
+				Hamborger.Parent = GetChar()
+				Hamborger:Activate() -- CHEEMS
+				repeat RunService.Heartbeat:Wait() until Hamborger.Parent ~= LP.Character
+			end
+		end -- yeah I copy pasted it from my heal cmd DEAL WITH IT 
+		if GrabThing("Drink",GetChar().Head.CFrame) then
+			local Drink = LP.Backpack:FindFirstChild'Drink'
+			if Drink then 
+				Drink.Parent = GetChar()
+				Drink:Activate()
+			end 
+		end		
+	end
+end 
+
 LP.CharacterAdded:Connect(function()
 	GetChar():WaitForChild('Humanoid',10)
 	ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
 	HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
 	HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
+	HumanoidHealthChanged = GetChar().Humanoid.HealthChanged:Connect(HealthChanged)
 	GetChar().Humanoid.WalkSpeed = SpawnWS or NormalWS
     GetChar().Humanoid.JumpPower = SpawnJP or NormalJP
 	GetChar().Humanoid.HipHeight = SpawnHH or NormalHH
@@ -1922,6 +1957,7 @@ LP.CharacterRemoving:Connect(function()
 	ChildAddedEvent:Disconnect()
 	HumanoidStateChangedEvent:Disconnect()
 	HumanoidCAdded:Disconnect()
+	HumanoidHealthChanged:Disconnect()
 	HR = nil
 	flying = false
 end)
@@ -2038,6 +2074,7 @@ end)
 ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
 HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
 HumanoidCAdded = GetChar().Humanoid.DescendantAdded:Connect(ColourChanger)
+HumanoidHealthChanged = GetChar().Humanoid.HealthChanged:Connect(HealthChanged)
 Mouse.Button1Down:Connect(Button1Down)
 Mouse.Button2Down:Connect(Button2Down)
 LP.Chatted:Connect(CheckCommand)
@@ -2285,7 +2322,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","Fixed some internal bugs / WOW OVER 200 COMMITS ON GITHUB",10,nil)   
+notif("Newest Update:","Added Healbot healbot health [number] to change the health you start healbotting at,fixed view plr loop,aimlockmode nomouse to not be able to click on players to lock on them",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
