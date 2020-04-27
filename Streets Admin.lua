@@ -1658,7 +1658,6 @@ Cframe.BackgroundTransparency = 0.20000000298023
 Cframe.BorderSizePixel = 0
 Cframe.Position = UDim2.new(0, 0, 1, 0)
 Cframe.Size = UDim2.new(0, 270, 0, 35)
-Cframe.Name = math.random(1,3000000)
 
 CText.BackgroundColor3 = Color3.new(0,0.000738177,0.000738177)
 CText.BorderSizePixel = 0
@@ -1670,7 +1669,6 @@ CText.TextColor3 = Color3.new(1, 1, 1)
 CText.TextScaled = true
 CText.TextSize = 14
 CText.TextWrapped = true
-CText.Name = math.random(1,3000000)
 
 CmdFrame.BackgroundColor3 = Color3.new(0, 0.000738177, 0.000738177)
 CmdFrame.BorderSizePixel = 0
