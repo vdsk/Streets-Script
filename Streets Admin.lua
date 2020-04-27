@@ -18,7 +18,7 @@ local PlayerTable,Commands,KeyTable,UrlEncoder,AdminUsers,DontStompWhitelisted =
 local NormalWS,NormalJP,NormalHH = GetChar().Humanoid.WalkSpeed,GetChar().Humanoid.JumpPower,GetChar().Humanoid.HipHeight
 local AimLock,GodMode,AutoDie,AliasesEnabled,Noclipping,AutoFarm,ItemEsp,WalkShoot,flying,AutoStomp,Freecam,CamLocking,FeLoop,TpBypass,HealBot = false,false,false,true,false,false,false,false,false,false,false,false,false,false,false
 local BlinkSpeed,SpawnWS,SpawnJP,SpawnHH,ClockTime,PlayOnDeath,AimlockTarget,CamlockPlayer,LoopPlayer
-local AirWalk,ShootPart = Instance.new'Part',Instance.new('Part',workspace)
+local AirWalk = Instance.new'Part'
 local Cframe = Instance.new("Frame",CoreGui.RobloxGui)
 local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Instance.new("Frame",Cframe),Instance.new('Frame',CoreGui.RobloxGui),Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
@@ -907,9 +907,9 @@ local FirstFly = true
 local function fly(SPEED) -- CREDITS TO INFINITE YIELD FOR THIS FLY METHOD (I'M PLANNING TO MAKE MY OWN SOON)
 FlySpeed = SPEED or 10
 	local T = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
-	ShootPart.Size = Vector3.new(5,1,5)
-	ShootPart.Transparency = 1
-	ShootPart.Anchored = true -- I was gonna use airwalk but lol 
+	if not AirWalkOn then
+		CheckCommand("airwalk") -- decided to use airwalk since it works the best
+	end 
 	local CONTROL = {F = 0, B = 0, L = 0, R = 0}
 	local lCONTROL = {F = 0, B = 0, L = 0, R = 0}
 	local function fly()
@@ -941,10 +941,12 @@ FlySpeed = SPEED or 10
 				CONTROL = {F = 0, B = 0, L = 0, R = 0}
 				lCONTROL = {F = 0, B = 0, L = 0, R = 0}
 				SPEED = 0
-				ShootPart:Destroy()
 				BG:destroy()
 				BV:destroy()
 				LP.Character:FindFirstChildOfClass'Humanoid'.PlatformStand = false
+				if AirWalkOn then
+					CheckCommand("airwalk")
+				end 
 			end)
 		end
 	Mouse.KeyDown:connect(function(KEY)
@@ -1592,7 +1594,6 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 	end
 	if flying then
 		if PartTable and Character:FindFirstChild'HumanoidRootPart' and Character:FindFirstChild'Humanoid' then 
-			ShootPart.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
 			Character.Humanoid.PlatformStand = false
 			Character.Humanoid:ChangeState(8)
 			wait() -- apparently this works better then putting it below when testing lol 
