@@ -1134,6 +1134,10 @@ AddCommand(function(Arguments)
 end,"removekey",{"rkey"},"Removes a hotkey to a command")
 
 AddCommand(function()
+	LP:Kick'SHUT'
+end,"sex",{},"Added sex now shut up about it in cyadmin suggestions")
+
+AddCommand(function()
 	Keys = {}
 	ClickTpKey = ""
 	updateSettings()
