@@ -1377,7 +1377,6 @@ AddCommand(function(Arguments)
 	end
 end,"esp",{},"allows you to see the player through walls (Esp [plr] legacy for the old esp (will default if you do NOT have drawing api)")
 
-local Change = 
 AddCommand(function(Arguments)
 	if Arguments[1] and Arguments[2] then 
 		if Arguments[1]:lower() == "line" then 
