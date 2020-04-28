@@ -1586,6 +1586,7 @@ local WhitelistedOs = {
 	['windows_universal'] = "Windows 10 roblox"
 }
 
+local Debounce = false
 local function Stepped()
 	if GodMode or FeLoop then 
 		if LP.Character:FindFirstChild'Right Leg' then 
@@ -1601,6 +1602,12 @@ local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:
 			end
 		end
 	end
+	if flying and LP.Character:FindFirstChild'Humanoid' and not Debounce then
+		Debounce = true
+		LP.Character.Humanoid:ChangeState(3)
+		wait(0.2)
+		Debounce = false
+	end 
 	if RainbowHats and LP.Backpack:FindFirstChild'Stank' then 
 		LP.Backpack.Stank:FireServer("rep",RainbowTable2[math.random(1,#RainbowTable2)])
 		LP.Backpack.Stank:FireServer("color",RainbowTable1[math.random(1,#RainbowTable1)])
@@ -2206,7 +2213,7 @@ end)
 if PartTable then 
 	spawn(function()
 		while wait() do
-			if LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character.Humanoid.HipHeight > 0 or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character.Humanoid.Sit or flying then 
+			if LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character.Humanoid.HipHeight > 0 or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character.Humanoid.Sit then 
 				local JP = LP.Character.Humanoid.JumpPower
 				LP.Character.Humanoid.JumpPower = 1.5
 				LP.Character.Humanoid:ChangeState(3)
