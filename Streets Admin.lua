@@ -30,6 +30,12 @@ local Config = "CyrusStreetsAdminSettings"
 local TargetPart,AimlockMode = "Prediction","LeftClick"
 Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
+local DrawTable = {
+	['LineColour'] = Color3.fromRGB(0,144,0);
+	['Thickness'] = 1;
+	['Transparency'] = 1;
+	['Visible'] = true;
+}
 
 if UseDraw then 
 	DrawingT = Drawing.new'Text'
@@ -1371,6 +1377,21 @@ AddCommand(function(Arguments)
 	end
 end,"esp",{},"allows you to see the player through walls (Esp [plr] legacy for the old esp (will default if you do NOT have drawing api)")
 
+local Change = 
+AddCommand(function(Arguments)
+	if Arguments[1] and Arguments[2] then 
+		if Arguments[1]:lower() == "line" then 
+			if Arguments[2]:lower() == "thickness" and Arguments[3] then 
+				DrawTable['Thickness'] = tonumber(Arguments[3])
+			elseif Arguments[2]:lower() == "transparency" and Arguments[3] then 
+				DrawTable['Transparency'] = tonumber(Arguments[3])
+			elseif Arguments[2]:lower() == "visible" then 
+				DrawTable['Visible'] = not DrawTable['Visible'] 
+			end 
+		end
+	end 
+end,"espsettings",{},"Changes Drawing API esp settings")
+
 AddCommand(function(Arguments)
 	if Arguments[1] then 
 	local Player = PlrFinder(Arguments[1])
@@ -1654,7 +1675,12 @@ local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:
 			 local RelativePos,OnScreen = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
 			 Square.Visible = OnScreen
 			 Text.Visible = OnScreen
-			 Line.Visible = OnScreen
+			 print(DrawTable['Visible'])
+			 if DrawTable['Visible'] then 
+				 Line.Visible = OnScreen
+			 else 
+				Line.Visible = false 
+			 end 
 			 if OnScreen then 
 				 Square.Position = Vector2.new(RelativePos.X,RelativePos.Y)
 				 Square.Color = Color3.new(125,0,0)
@@ -1668,10 +1694,12 @@ local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:
 				 Text.Color = EspColour
 				 Line.To = Vector2.new(RelativePos.X,RelativePos.Y)
 				 Line.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2,workspace.CurrentCamera.ViewportSize.X / 2 + 400)
+				 Line.Thickness = DrawTable['Thickness']
+				 Line.Transparency = DrawTable['Transparency']
 				 if tostring(Player) == tostring(AimlockTarget) or tostring(Player) == tostring(CamlockPlayer) then 
 					Line.Color = Color3.fromRGB(144,0,0)
 				 else 
-					Line.Color = Color3.fromRGB(0,144,0)
+					Line.Color = DrawTable['LineColour']
 				 end
 			 end
 		end
