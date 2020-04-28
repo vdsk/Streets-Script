@@ -1590,7 +1590,7 @@ local Debounce = false
 local function Stepped()
 	if GodMode or FeLoop then 
 		if LP.Character:FindFirstChild'Right Leg' then 
-			Character['Right Leg']:Destroy()
+			LP.Character['Right Leg']:Destroy()
 		end
 	end
 local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:FindFirstChild'Torso'
