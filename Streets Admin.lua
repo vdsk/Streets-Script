@@ -2147,7 +2147,7 @@ spawn(function()
 				DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget) 
 			end
 		end
-		if Blinking and BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
+		if PartFound and Blinking and BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
 			if KeyTable['w'] then 
 				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
 			end 
