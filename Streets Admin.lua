@@ -1104,6 +1104,7 @@ if TpBypass then notif("Due to snakes code","you can not use burgers/drinks with
 end,"heal",{"h"},"Heals you")
 
 AddCommand(function(Arguments)
+	if not PartTable then notif("Sorry,","This command only works on streets.",5,nil) return end 
 	HealBot = not HealBot 
 	if Arguments[1] and Arguments[2] and tonumber(Arguments[2]) and Arguments[1] == "health" then 
 		HealBotHealth = tonumber(Arguments[2])
