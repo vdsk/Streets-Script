@@ -1658,7 +1658,7 @@ local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:
 				 else
 					 Text.Text = Player.Name.." | Position: "..math.floor((LP.Character.Head.Position - Player.Character.Head.Position).magnitude).."\nHealth: "..checkHp(Player.Character).."\nOperating System: "..OsPlatform.."\nCy Admin User: "..PlayerTable[i][5]
 				 end
-				 Text.Color = Color3.fromRGB(200,200,200)
+				 Text.Color = EspColour
 				 Line.To = Vector2.new(RelativePos.X,RelativePos.Y)
 				 Line.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2,workspace.CurrentCamera.ViewportSize.X / 2 + 400)
 				 if tostring(Player) == tostring(AimlockTarget) or tostring(Player) == tostring(CamlockPlayer) then 
