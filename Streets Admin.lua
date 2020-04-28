@@ -212,21 +212,23 @@ local Arguments = {...}
 			PlayOnDeath = nil 
 		end
 	end
-	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[1]) == "CFrame" and AimlockTarget and AimLock then
-		if TargetPart == "Prediction" then
-			if AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") then
-				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
-			else 
-				return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 10)
-			end 
-		else
-			if AimlockTarget.FindFirstChild(AimlockTarget,TargetPart) then 
-				return name(self,AimlockTarget[TargetPart].CFrame) 
+	if LP.Character.FindFirstChildOfClass(LP.Character,"Tool") and typeof(Arguments[1]) == "CFrame" then
+		if AimlockTarget and AimLock then
+			if TargetPart == "Prediction" then
+				if AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") then
+					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
+				else 
+					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 10)
+				end 
 			else
-				notif(tostring(AimlockTarget).." doesn't have that part in their character.","I recommend switching to something else.",5,nil)
+				if AimlockTarget.FindFirstChild(AimlockTarget,TargetPart) then 
+					return name(self,AimlockTarget[TargetPart].CFrame) 
+				else
+					notif(tostring(AimlockTarget).." doesn't have that part in their character.","I recommend switching to something else.",5,nil)
+				end
 			end
 		end
-	end
+	end 
     return name(self,...)
 end)
 
@@ -306,18 +308,30 @@ if table.find(AdminUsers,Player.UserId) then IsUser = "true" end
 			end
 		end)
 	else 
-		local RelativePos = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
-		local Square,Text = Drawing.new'Square',Drawing.new'Text'
-		Square.Position = Vector2.new(RelativePos.X, RelativePos.Y)
+		local RelativeHeadPos = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
+		local Square = Drawing.new'Square'
+		Square.Position = Vector2.new(RelativeHeadPos.X,RelativeHeadPos.Y)
 		Square.Size = Vector2.new(5,5)
-		Square.Visible = true
-		Square.Filled = true
-		Square.Color = Color3.fromRGB(125,0,0)
+		Square.Filled = true 
+		local Text = Drawing.new'Text'
 		Text.Position = Square.Position + Vector2.new(0,10)
-		Text.Visible = true
-		PlayerTable[#PlayerTable + 1] = {Square,Player,Text,IsUser}
+		Text.Color = Color3.fromRGB(200,200,200)
+		local Line = Drawing.new'Line'
+		Line.Color = Color3.fromRGB(200,200,200)
+		PlayerTable[#PlayerTable + 1] = {Player,Square,Text,Line,IsUser}
 	end 
 end
+
+local function Unesp(P)
+	for i = 1,#PlayerTable do
+		if PlayerTable[i] and PlayerTable[i][1] == P then
+			PlayerTable[i][2]:Remove()
+			PlayerTable[i][3]:Remove()
+			PlayerTable[i][4]:Remove()
+			table.remove(PlayerTable,i)
+		end 
+	end
+end 
 
 local function GrabThing(Thing,OldPos)
 if not PartTable then 
@@ -532,9 +546,9 @@ local function HumanoidState(Old,New)
 		wait(0.3)
 		AnimTrack:play()
 		JustDoubleJumped = false
-	elseif New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh then
+	elseif New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh or flying then
       	GetChar().Humanoid.PlatformStand = false
-		GetChar().Humanoid:ChangeState(10)
+		GetChar().Humanoid:ChangeState(8)
   	end
 end
 
@@ -1368,14 +1382,7 @@ AddCommand(function(Arguments)
 				A[i]:Destroy()
 			end
 		end
-		for i = 1,#PlayerTable do 
-			if PlayerTable[i] and PlayerTable[i][2].Name == Player.Name then 
-				PlayerTable[i][1]:Remove()
-				PlayerTable[i][3]:Remove()
-				PlayerTable[i][2] = nil 
-				PlayerTable[i] = nil 
-			end
-		end
+		Unesp(Player)
 	else
 		local A = workspace:GetDescendants()
 		EspTable = {}
@@ -1384,14 +1391,10 @@ AddCommand(function(Arguments)
 				A[i]:Destroy()
 			end
 		end
-		for i = 1,#PlayerTable do
-			if PlayerTable[i] and PlayerTable[i][1] and PlayerTable[i][2] and PlayerTable[i][3] then 
-				PlayerTable[i][1]:Remove()
-				PlayerTable[i][3]:Remove()
-				PlayerTable[i][2] = nil 
-				PlayerTable[i] = nil
-			end
-		end
+		local P = Players:GetPlayers()
+		for i = 1,#P do 
+			Unesp(P[i])
+		end 
 	end
 end,"unesp",{},"Removes the esp on the player")
 
@@ -1584,15 +1587,14 @@ local WhitelistedOs = {
 }
 
 local function Stepped()
-local Character = GetChar()
 	if GodMode or FeLoop then 
-		if Character:FindFirstChild'Right Leg' then 
+		if LP.Character:FindFirstChild'Right Leg' then 
 			Character['Right Leg']:Destroy()
 		end
 	end
-local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
+local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:FindFirstChild'Torso'
 	if Noclipping then 
-		local CDescendant = Character:GetDescendants() 
+		local CDescendant = LP.Character:GetDescendants() 
 		for i = 1,#CDescendant do 
 			if CDescendant[i]:IsA'Part' then 
 				CDescendant[i].CanCollide = false
@@ -1603,26 +1605,18 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 		LP.Backpack.Stank:FireServer("rep",RainbowTable2[math.random(1,#RainbowTable2)])
 		LP.Backpack.Stank:FireServer("color",RainbowTable1[math.random(1,#RainbowTable1)])
 	end
-	if TpBypass and Character:FindFirstChild'RealHumanoidRootPart' then 
-		Character:FindFirstChild'RealHumanoidRootPart':Destroy() 
+	if TpBypass and LP.Character:FindFirstChild'RealHumanoidRootPart' then 
+		LP.Character:FindFirstChild'RealHumanoidRootPart':Destroy() 
 	end 
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
-	if flying then
-		if PartTable and Character:FindFirstChild'HumanoidRootPart' and Character:FindFirstChild'Humanoid' then 
-			Character.Humanoid.PlatformStand = false
-			Character.Humanoid:ChangeState(8)
-			wait() -- apparently this works better then putting it below when testing lol 
-			Character.Humanoid:ChangeState(3)
-		end
-	end
 	if FeLoop then
 		local BChild = LP.Backpack:GetChildren()
         for i = 1,#BChild do 
-            BChild[i].Parent = Character
+            BChild[i].Parent = LP.Character
             if game.PlaceId == 455366377 then 
-                repeat wait() until not Character:FindFirstChildOfClass'Tool'
+                repeat wait() until not LP.Character:FindFirstChildOfClass'Tool'
             end
 		end
 		if PartFound and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' then 
@@ -1633,41 +1627,48 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 		local Players = Players:GetPlayers()
 		for i = 1,#Players do
 			if Players[i] ~= LP and Players[i].Character and Players[i].Character:FindFirstChild'Head' and Players[i].Character:FindFirstChild'Torso' and not Players[i]:IsFriendsWith(LP.UserId) then
-				if (PartFound.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not Character:FindFirstChild'KO' and Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' and not table.find(DontStompWhitelisted,Players[i].UserId) then
+				if (PartFound.Position - Players[i].Character.Torso.Position).magnitude < 50  and Players[i].Character:FindFirstChild'KO' and Players[i].Character.Humanoid.Health > 0 and not LP.Character:FindFirstChild'KO' and LP.Character.Humanoid.Health > 0  and not Players[i]:FindFirstChild'Dragged' and not table.find(DontStompWhitelisted,Players[i].UserId) then
 					PartFound.CFrame = CFrame.new(Players[i].Character.Torso.Position)
-					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Backpack:FindFirstChild'Character')
+					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Character:FindFirstChild'Punch')
 				end
 			end
 		end
 	end
-	if AirWalkOn and Character:FindFirstChild'Humanoid' and PartFound then 
-		Character.Humanoid.HipHeight = 0
+	if AirWalkOn and LP.Character:FindFirstChild'Humanoid' and PartFound then 
+		LP.Character.Humanoid.HipHeight = 0
 		AirWalk.CFrame = PartFound.CFrame * CFrame.new(0,-3.5,0)
 	end
 	if CamLocking and CamlockPlayer and CamlockPlayer.Character and CamlockPlayer.Character:FindFirstChild'Torso' then 
 		workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
 	end
-	for i = 1,#PlayerTable do
-        if PlayerTable[i] and PlayerTable[i][2] and PlayerTable[i][2].Character and PlayerTable[i][2].Character:FindFirstChild'Head' and Character:FindFirstChild'Head' then 
-            local RelativePos,OnScreen = workspace.CurrentCamera:WorldToViewportPoint(PlayerTable[i][2].Character.Head.Position)
-            PlayerTable[i][1].Visible = OnScreen
-            PlayerTable[i][1].Position = Vector2.new(RelativePos.X,RelativePos.Y)
-            PlayerTable[i][3].Visible = OnScreen
-			PlayerTable[i][3].Position = PlayerTable[i][1].Position + Vector2.new(0,10)
-			PlayerTable[i][3].Color = EspColour
-			local OsPlatform = WhitelistedOs[PlayerTable[i][2].osPlatform:lower()] or "this is a stupid skid please KoS them - Cy"
-            if (Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude <= 100 then 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).." | Health: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..OsPlatform.."\nHas: Glock "..hasItem(PlayerTable[i][2],"Glock").." | Shotty "..hasItem(PlayerTable[i][2],"Shotty").." | Vest "..hasItem(PlayerTable[i][2],"BulletResist").."\nCurrent Tool: "..hasItem(PlayerTable[i][2],true).."\nCy Admin User: "..PlayerTable[i][4]
-            else 
-                PlayerTable[i][3].Text = PlayerTable[i][2].Name.." | Position: "..math.floor((Character.Head.Position - PlayerTable[i][2].Character.Head.Position).magnitude).."\nHealth: "..checkHp(PlayerTable[i][2].Character).."\nOperating System: "..OsPlatform.."\nCy Admin User: "..PlayerTable[i][4]
-			end
-		else 
-			if PlayerTable[i] then -- dumb fucking error that sometimes happens!
-				PlayerTable[i][1].Visible = false 
-				PlayerTable[i][3].Visible = false
-			end
-        end
-    end
+	for i = 1,#PlayerTable do 
+		local Player,Square,Text,Line = PlayerTable[i][1],PlayerTable[i][2],PlayerTable[i][3],PlayerTable[i][4]
+		 if Player and Player.Character and Player.Character:FindFirstChild'Head' and LP.Character and LP.Character:FindFirstChild'Head' then 
+			 local RelativePos,OnScreen = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
+			 Square.Visible = OnScreen
+			 Text.Visible = OnScreen
+			 Line.Visible = OnScreen
+			 if OnScreen then 
+				 Square.Position = Vector2.new(RelativePos.X,RelativePos.Y)
+				 Square.Color = Color3.new(125,0,0)
+				 Text.Position = Square.Position + Vector2.new(0,10)
+				 local OsPlatform = WhitelistedOs[Player.osPlatform:lower()] or "this is a stupid skid please KoS them - Cy"
+				 if (LP.Character.Head.Position - Player.Character.Head.Position).magnitude <= 100 then 
+					Text.Text = Player.Name.." | Position: "..math.floor((LP.Character.Head.Position - Player.Character.Head.Position).magnitude).." | Health: "..checkHp(Player.Character).."\nOperating System: "..OsPlatform.."\nHas: Glock "..hasItem(Player,"Glock").." | Shotty "..hasItem(Player,"Shotty").." | Vest "..hasItem(Player,"BulletResist").."\nCurrent Tool: "..hasItem(Player,true).."\nCy Admin User: "..PlayerTable[i][5]
+				 else
+					 Text.Text = Player.Name.." | Position: "..math.floor((LP.Character.Head.Position - Player.Character.Head.Position).magnitude).."\nHealth: "..checkHp(Player.Character).."\nOperating System: "..OsPlatform.."\nCy Admin User: "..PlayerTable[i][5]
+				 end
+				 Text.Color = Color3.fromRGB(200,200,200)
+				 Line.To = Vector2.new(RelativePos.X,RelativePos.Y)
+				 Line.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2,workspace.CurrentCamera.ViewportSize.X / 2 + 400)
+				 if tostring(Player) == tostring(AimlockTarget) or tostring(Player) == tostring(CamlockPlayer) then 
+					Line.Color = Color3.fromRGB(144,0,0)
+				 else 
+					Line.Color = Color3.fromRGB(0,144,0)
+				 end
+			 end
+		end
+	 end 
 end
 
 local function CChildAdded(Thing)
@@ -2120,15 +2121,8 @@ if UserInput:GetFocusedTextBox() then return end
 	end 
 end)
 
-Players.PlayerRemoving:Connect(function(Plr)
-    for i = 1,#PlayerTable do 
-        if PlayerTable[i] and PlayerTable[i][2] == Plr then 
-            PlayerTable[i][1]:Remove()
-            PlayerTable[i][3]:Remove()
-            PlayerTable[i][2] = nil 
-			PlayerTable[i] = nil 
-        end
-    end
+Players.PlayerRemoving:Connect(function(P)
+	Unesp(P)
 end)
 
 CText.FocusLost:Connect(function(Enter)
@@ -2213,7 +2207,7 @@ if PartTable then
 	spawn(function()
 		while wait() do
 			local Char = GetChar()
-			if Char:FindFirstChildOfClass'Humanoid' and Char.Humanoid.HipHeight > 0 or AirWalkOn and Char.Humanoid.FloorMaterial == Enum.Material.Neon and not Char.Humanoid.Sit then 
+			if Char:FindFirstChildOfClass'Humanoid' and Char.Humanoid.HipHeight > 0 or AirWalkOn and not flying and Char.Humanoid.FloorMaterial == Enum.Material.Neon and not Char.Humanoid.Sit then 
 				local JP = Char.Humanoid.JumpPower
 				Char.Humanoid.JumpPower = 1.5
 				Char.Humanoid:ChangeState(3)
@@ -2328,7 +2322,7 @@ for i = 1,#PlayersX do
 				local abc123;
 				for i = 1,#PlayerTable do 
 					if PlayerTable[i] and PlayerTable[i][2] == Plr then 
-						PlayerTable[i][4] = "true"
+						PlayerTable[i][5] = "true"
 						abc123 = true
 					end
 				end
@@ -2372,7 +2366,7 @@ Players.PlayerAdded:Connect(function(Plr)
 			local abc123;
 			for i = 1,#PlayerTable do 
 				if PlayerTable[i] and PlayerTable[i][2] == Plr then 
-					PlayerTable[i][4] = "true"
+					PlayerTable[i][5] = "true"
 					abc123 = true
 				end
 			end
@@ -2419,7 +2413,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","CONFIGS???????????????????? OMG!!!!!!!!!!! config [config]/default (typing a config that doesn't exist creates one so you can set it up) AND serverhop",10,nil)   
+notif("Newest Update:","TRACERS FOR ESP? + TRACER LINE GOES RED WHEN YOU PUT AIMLOCK ON THEM????????????",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
