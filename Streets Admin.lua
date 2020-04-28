@@ -1560,6 +1560,15 @@ local Table = {}
 	end 
 end,"serverhop",{},"Server hopping capabilities")
 
+
+local function Temp()
+local Table = {} 
+	for i,v in pairs(CmdFrame:GetChildren()) do
+		table.insert(Table,v.Text)
+	end
+	return Table 
+end 
+
 local WhitelistedOs = {
 	['durango'] = "Xbox";
 	['win32'] = "Windows";
@@ -2126,6 +2135,29 @@ CText.FocusLost:Connect(function(Enter)
 	end
 end)
 
+AddCommand(function(Arguments)
+	if Arguments[1] then
+		local File = loadfile("CyAdminPlugins\\"..Arguments[1])
+		if not File then 
+			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Syntax Error (Can't output it since loadfile gay)","All")
+			return 
+		else 
+			local W,E = pcall(File)
+			if not W then 
+				ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Runtime Error"..E,"All")
+				return 
+			end 
+		end 
+		local T = Temp()
+		for i = 1,#Commands do
+			if not table.find(T,Commands[i].Name) then 
+				Create(Commands[i].Name)
+				CreateCommand(UDim2.new(0.0150422715,0,0.0127776451,0 + (i * 20)),Commands[i].Name.." "..Commands[i].Help)
+			end 
+		end 
+	end 
+end,"runplugin",{},"Loads plugins (no it doesn't refresh them so don't be retarded") 
+-- DON'T ASK ABOUT IT ANYONE WHO READS THIS CODE OK?
 
 ChildAddedEvent = GetChar().ChildAdded:Connect(CChildAdded)
 HumanoidStateChangedEvent = GetChar().Humanoid.StateChanged:Connect(HumanoidState)
