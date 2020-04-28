@@ -2206,13 +2206,12 @@ end)
 if PartTable then 
 	spawn(function()
 		while wait() do
-			local Char = GetChar()
-			if Char:FindFirstChildOfClass'Humanoid' and Char.Humanoid.HipHeight > 0 or AirWalkOn and not flying and Char.Humanoid.FloorMaterial == Enum.Material.Neon and not Char.Humanoid.Sit then 
-				local JP = Char.Humanoid.JumpPower
-				Char.Humanoid.JumpPower = 1.5
-				Char.Humanoid:ChangeState(3)
+			if LP.Character:FindFirstChildOfClass'Humanoid' and LP.Character.Humanoid.HipHeight > 0 or AirWalkOn and LP.Character.Humanoid.FloorMaterial == Enum.Material.Neon and not LP.Character.Humanoid.Sit or flying then 
+				local JP = LP.Character.Humanoid.JumpPower
+				LP.Character.Humanoid.JumpPower = 1.5
+				LP.Character.Humanoid:ChangeState(3)
 				wait(0.2)
-				Char.Humanoid.JumpPower = JP
+				LP.Character.Humanoid.JumpPower = JP
 			end
 		end
 	end)
