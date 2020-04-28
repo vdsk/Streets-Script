@@ -27,7 +27,7 @@ local UseDraw,DrawingT = pcall(assert,Drawing,'test')
 local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth = 25,8,16,25
 local OldFov = workspace.CurrentCamera.FieldOfView
 local Config = "CyrusStreetsAdminSettings"
-local TargetPart,AimlockMode,BlinkMode = "Prediction","LeftClick","Shift"
+local TargetPart,AimlockMode = "Prediction","LeftClick"
 Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
 
@@ -69,6 +69,7 @@ local SettingsTable = {
    ControlSpeed = 8;
    TargetPart = "Prediction";
    AimlockMode = "LeftClick";
+   BlinkMode = "Shift";
 }
 
 -- Hotkey start
@@ -82,7 +83,7 @@ local function savesettings()
 	ControlSpeed = SettingsToSave.ControlSpeed;
 	TargetPart = SettingsToSave.TargetPart;
 	AimlockMode = SettingsToSave.AimlockMode;
-	BlinkMode = SettingstoSave.BlinkMode;
+	BlinkMode = SettingsToSave.BlinkMode;
 end 
 
 getgenv().updateSettings = function()
@@ -636,7 +637,9 @@ AddCommand(function()
 end,"usealias",{},"Turns on / off Aliases")
 
 AddCommand(function(Arguments)
-	MainFrame.Visible = not MainFrame.Visible 
+	if not Arguments[1] then 
+		MainFrame.Visible = not MainFrame.Visible
+	end
 end,"help",{"commands","cmds"},"Gives you the commands help info")
 
 AddCommand(function()
