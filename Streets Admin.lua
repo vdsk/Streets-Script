@@ -24,7 +24,7 @@ local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Ins
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth = 25,8,16,25
+local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth,BlinkSpeed = 25,8,16,25,1
 local OldFov = workspace.CurrentCamera.FieldOfView
 local Config = "CyrusStreetsAdminSettings"
 local TargetPart,AimlockMode = "Prediction","LeftClick"
@@ -2141,31 +2141,33 @@ RunService.Stepped:Connect(Stepped)
 spawn(function()
 	while true do
 	local Char = GetChar()
-	local PartFound = Char:FindFirstChild'HumanoidRootPart' or Char:FindFirstChild'Torso'
-		if Char:FindFirstChildOfClass'Humanoid' and UseDraw then
-			local Tool = Char:FindFirstChildOfClass'Tool'
-			if Tool and Tool:FindFirstChild'Ammo' then 
-				DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget).."\n"..Tool.Name.." Clips & Ammo: "..Tool.Clips.Value..":"..Tool.Ammo.Value
-			else 
-				DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget) 
+	if Char then 
+		local PartFound = Char:FindFirstChild'HumanoidRootPart' or Char:FindFirstChild'Torso'
+			if Char:FindFirstChildOfClass'Humanoid' and UseDraw then
+				local Tool = Char:FindFirstChildOfClass'Tool'
+				if Tool and Tool:FindFirstChild'Ammo' then 
+					DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget).."\n"..Tool.Name.." Clips & Ammo: "..Tool.Clips.Value..":"..Tool.Ammo.Value
+				else 
+					DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget) 
+				end
 			end
+			if PartFound and Blinking and BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
+				if KeyTable['w'] then 
+					PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
+				end 
+				if KeyTable['a'] then 
+					PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
+				end
+				if KeyTable['s'] then 
+					PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
+				end
+				if KeyTable['d'] then 
+					PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
+				end
+			end
+			wait()
 		end
-		if PartFound and Blinking and BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
-			if KeyTable['w'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
-			end 
-			if KeyTable['a'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
-			end
-			if KeyTable['s'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
-			end
-			if KeyTable['d'] then 
-				PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
-			end
-		end
-		wait()
-	end
+	end 
 end)
 
 if PartTable then 
