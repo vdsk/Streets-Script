@@ -2151,19 +2151,21 @@ spawn(function()
 					DrawingT.Text = "Current WalkSpeed: "..Char.Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..Char.Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget) 
 				end
 			end
-			if PartFound and Blinking and BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
-				if KeyTable['w'] then 
-					PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
+			if PartFound and Blinking then 
+				if BlinkMode == "None" or BlinkMode == "Shift" and KeyTable['Shift'] then
+					if KeyTable['w'] then 
+						PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
+					end 
+					if KeyTable['a'] then 
+						PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
+					end
+					if KeyTable['s'] then 
+						PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
+					end
+					if KeyTable['d'] then 
+						PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
+					end
 				end 
-				if KeyTable['a'] then 
-					PartFound.CFrame = PartFound.CFrame * CFrame.new(-BlinkSpeed,0,0)
-				end
-				if KeyTable['s'] then 
-					PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,BlinkSpeed)
-				end
-				if KeyTable['d'] then 
-					PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
-				end
 			end
 			wait()
 		end
