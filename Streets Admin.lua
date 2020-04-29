@@ -30,6 +30,7 @@ local Config = "CyrusStreetsAdminSettings"
 local TargetPart,AimlockMode = "Prediction","LeftClick"
 Players:Chat("Cyrus is my god")
 Players:Chat("Hey I'm a cyrus' streets admin user1")
+local RobloxInForeground = true 
 local DrawTable = {
 	['LineColour'] = Color3.fromRGB(0,144,0);
 	['Thickness'] = 1;
@@ -272,6 +273,10 @@ local function hasItem(Player,Item)
     end
 end 
 
+local function checkHp(Plr)
+	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
+end
+
 local function LegacyEsp(Player)
 if not Player.Character or not Player.Character:FindFirstChild'Head' then return end 
 	local Esp1 = Instance.new("BillboardGui",Player.Character)
@@ -314,17 +319,14 @@ if table.find(AdminUsers,Player.UserId) then IsUser = "true" end
 			end
 		end)
 	else 
-		local RelativeHeadPos = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
-		local Square = Drawing.new'Square'
-		Square.Position = Vector2.new(RelativeHeadPos.X,RelativeHeadPos.Y)
-		Square.Size = Vector2.new(5,5)
-		Square.Filled = true 
+		local TopLeft,TopRight,BottomLeft,BottomRight = Drawing.new'Line',Drawing.new'Line',Drawing.new'Line',Drawing.new'Line'
 		local Text = Drawing.new'Text'
-		Text.Position = Square.Position + Vector2.new(0,10)
-		Text.Color = Color3.fromRGB(200,200,200)
-		local Line = Drawing.new'Line'
-		Line.Color = Color3.fromRGB(200,200,200)
-		PlayerTable[#PlayerTable + 1] = {Player,Square,Text,Line,IsUser}
+		TopLeft.Color = Color3.fromRGB(144,0,0)
+		TopRight.Color = Color3.fromRGB(144,0,0)
+		BottomLeft.Color = Color3.fromRGB(144,0,0)
+		BottomRight.Color = Color3.fromRGB(144,0,0)
+		local Tracer = Drawing.new'Line'
+		PlayerTable[#PlayerTable + 1] = {Player,TopLeft,TopRight,BottomLeft,BottomRight,Text,Tracer,IsUser}
 	end 
 end
 
@@ -334,6 +336,9 @@ local function Unesp(P)
 			PlayerTable[i][2]:Remove()
 			PlayerTable[i][3]:Remove()
 			PlayerTable[i][4]:Remove()
+			PlayerTable[i][5]:Remove()
+			PlayerTable[i][6]:Remove()
+			PlayerTable[i][7]:Remove()
 			table.remove(PlayerTable,i)
 		end 
 	end
@@ -1551,10 +1556,6 @@ AddCommand(function(Arguments)
 	end
 end,"feloop",{},"fe loops said player or turns it off")
 
-local function checkHp(Plr)
-	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
-end
-
 AddCommand(function(Arguments)
 	if Arguments[1] then 
 		if Arguments[1]:lower() == "leftclick" then 
@@ -1605,8 +1606,13 @@ local WhitelistedOs = {
 	['osx'] = "Mac (GROSS)";
 	['windows_universal'] = "Windows 10 roblox"
 }
+UserInput.WindowFocusReleased:Connect(function()
+    RobloxInForeground = false 
+    UserInput.WindowFocused:Wait()
+    RobloxInForeground = true 
+end)
 
-local Debounce = false
+local Debounce = false -- this code gets uglier every day holy fuck I'm gonna have to re-write it again soon lmao
 local function Stepped()
 	if GodMode or FeLoop then 
 		if LP.Character:FindFirstChild'Right Leg' then 
@@ -1668,40 +1674,64 @@ local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:
 	if CamLocking and CamlockPlayer and CamlockPlayer.Character and CamlockPlayer.Character:FindFirstChild'Torso' then 
 		workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
 	end
-	for i = 1,#PlayerTable do 
-		local Player,Square,Text,Line = PlayerTable[i][1],PlayerTable[i][2],PlayerTable[i][3],PlayerTable[i][4]
+    for i = 1,#PlayerTable do
+		local Player,TopLeft,TopRight,BottomLeft,BottomRight = PlayerTable[i][1],PlayerTable[i][2],PlayerTable[i][3],PlayerTable[i][4],PlayerTable[i][5]
+		local Text,Tracer,IsUser = PlayerTable[i][6],PlayerTable[i][7],PlayerTable[i][8]
 		 if Player and Player.Character and Player.Character:FindFirstChild'Head' and LP.Character and LP.Character:FindFirstChild'Head' then 
-			 local RelativePos,OnScreen = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
-			 Square.Visible = OnScreen
-			 Text.Visible = OnScreen
-			 print(DrawTable['Visible'])
-			 if DrawTable['Visible'] then 
-				 Line.Visible = OnScreen
-			 else 
-				Line.Visible = false 
-			 end 
-			 if OnScreen then 
-				 Square.Position = Vector2.new(RelativePos.X,RelativePos.Y)
-				 Square.Color = Color3.new(125,0,0)
-				 Text.Position = Square.Position + Vector2.new(0,10)
-				 local OsPlatform = WhitelistedOs[Player.osPlatform:lower()] or "this is a stupid skid please KoS them - Cy"
-				 if (LP.Character.Head.Position - Player.Character.Head.Position).magnitude <= 100 then 
-					Text.Text = Player.Name.." | Position: "..math.floor((LP.Character.Head.Position - Player.Character.Head.Position).magnitude).." | Health: "..checkHp(Player.Character).."\nOperating System: "..OsPlatform.."\nHas: Glock "..hasItem(Player,"Glock").." | Shotty "..hasItem(Player,"Shotty").." | Vest "..hasItem(Player,"BulletResist").."\nCurrent Tool: "..hasItem(Player,true).."\nCy Admin User: "..PlayerTable[i][5]
-				 else
-					 Text.Text = Player.Name.." | Position: "..math.floor((LP.Character.Head.Position - Player.Character.Head.Position).magnitude).."\nHealth: "..checkHp(Player.Character).."\nOperating System: "..OsPlatform.."\nCy Admin User: "..PlayerTable[i][5]
-				 end
-				 Text.Color = EspColour
-				 Line.To = Vector2.new(RelativePos.X,RelativePos.Y)
-				 Line.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2,workspace.CurrentCamera.ViewportSize.X / 2 + 400)
-				 Line.Thickness = DrawTable['Thickness']
-				 Line.Transparency = DrawTable['Transparency']
-				 if tostring(Player) == tostring(AimlockTarget) or tostring(Player) == tostring(CamlockPlayer) then 
-					Line.Color = Color3.fromRGB(144,0,0)
+			 local Part = Player.Character:FindFirstChild'HumanoidRootPart' or Player.Character:FindFirstChild'Torso'
+			 if Part then
+				 local Cframe = Part.CFrame
+				 local h = Player.Character.Head.Size.Y / 2
+				 local Size = Vector3.new(2,3,0) * (h * 2)
+				 local RelativeHeadPos,TextOnScreen = workspace.CurrentCamera:WorldToViewportPoint(Player.Character.Head.Position)
+				 local TopLeftPos = workspace.CurrentCamera:WorldToViewportPoint((Cframe * CFrame.new(Size.X,Size.Y,0)).p)
+				 local TopRightPos = workspace.CurrentCamera:WorldToViewportPoint((Cframe * CFrame.new(-Size.X,Size.Y,0)).p)
+				 local BottomLeftPos = workspace.CurrentCamera:WorldToViewportPoint((Cframe * CFrame.new(Size.X,-Size.Y,0)).p)
+				 local BottomRightPos = workspace.CurrentCamera:WorldToViewportPoint((Cframe * CFrame.new(-Size.X,-Size.Y,0)).p)
+				 if RobloxInForeground then 
+					 TopLeft.Visible = TextOnScreen
+					 TopRight.Visible = TextOnScreen
+					 BottomLeft.Visible = TextOnScreen
+					 BottomRight.Visible = TextOnScreen
+					 if DrawTable['Visible'] then 
+						 Tracer.Visible = TextOnScreen
+					 else 
+						Tracer.Visible = false
+					 end 
+					 Text.Visible = TextOnScreen
 				 else 
-					Line.Color = DrawTable['LineColour']
+					 TopLeft.Visible = false
+					 TopRight.Visible = false
+					 BottomLeft.Visible = false
+					 BottomRight.Visible = false
+					 Tracer.Visible = false
+					 Text.Visible = false
+				 end 
+				 if TextOnScreen and RobloxInForeground then
+					 Text.Position = Vector2.new(RelativeHeadPos.X,RelativeHeadPos.Y) + Vector2.new(0,-30)
+					 Text.Center = true
+					 Text.Color = EspColour
+					 Text.Text = Player.Name.." | Health: "..checkHp(Player.Character).." | Cy Admin User: "..IsUser.."\nHas: Glock "..hasItem(Player,"Glock").." | Shotty "..hasItem(Player,"Shotty").." | Vest "..hasItem(Player,"BulletResist")
+					 TopLeft.From = Vector2.new(TopLeftPos.X,TopLeftPos.Y)
+					 TopLeft.To = Vector2.new(TopRightPos.X,TopRightPos.Y)
+					 TopRight.From = Vector2.new(TopRightPos.X,TopRightPos.Y)
+					 TopRight.To = Vector2.new(BottomRightPos.X,BottomRightPos.Y)
+					 BottomLeft.From = Vector2.new(BottomLeftPos.X,BottomLeftPos.Y)
+					 BottomLeft.To = Vector2.new(TopLeftPos.X,TopLeftPos.Y)
+					 BottomRight.From = Vector2.new(BottomRightPos.X,BottomRightPos.Y)
+					 BottomRight.To = Vector2.new(RelativeHeadPos.X,RelativeHeadPos.Y)
+					 if tostring(Player) == tostring(AimlockTarget) or tostring(Player) == tostring(CamlockPlayer) then 
+						Tracer.Color = Color3.fromRGB(144,0,0)
+					 else 
+						Tracer.Color = DrawTable['LineColour']
+					 end
+					 Tracer.Thickness = DrawTable['Thickness']
+					 Tracer.Transparency = DrawTable['Transparency']
+					 Tracer.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2,workspace.CurrentCamera.ViewportSize.X / 2 + 400)
+					 Tracer.To = Vector2.new(RelativeHeadPos.X,RelativeHeadPos.Y)
 				 end
 			 end
-		end
+		 end
 	 end 
 end
 
