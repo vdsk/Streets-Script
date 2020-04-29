@@ -1358,7 +1358,7 @@ AddCommand(function(Arguments)
 		if Arguments[1] == "all" then 
 			local Players_ = Players:GetPlayers() 
 			for i = 1,#Players_ do 
-				if Players_[i] ~= LP and not EspTable[Players_[i].UserId] then
+				if Players_[i] ~= LP and not table.find(EspTable,Players_[i].UserId) then
 					table.insert(EspTable,Players_[i].UserId)
 					if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
 						espPlayer(Players_[i],"Legacy")
@@ -1370,7 +1370,7 @@ AddCommand(function(Arguments)
 		else 
 			local Player = PlrFinder(Arguments[1])
 			if not Player then return end 
-			if Player ~= LP and not EspTable[Players_[i].UserId] then
+			if Player ~= LP and not table.find(EspTable,Player.UserId) then
 				table.insert(EspTable,Player.UserId)
 				if not UseDraw or Arguments[2] and Arguments[2]:lower() == "legacy" then 
 					espPlayer(Player,"Legacy")
