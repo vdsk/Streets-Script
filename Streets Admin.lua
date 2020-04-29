@@ -2476,7 +2476,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","TRACERS FOR ESP? + TRACER LINE GOES RED WHEN YOU PUT AIMLOCK ON THEM????????????",10,nil)   
+notif("Newest Update:","esp boxes + espsettings command????? wow! (also holy fuck this was stressful to add if anyone cares lol)",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
