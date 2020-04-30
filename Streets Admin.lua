@@ -339,6 +339,7 @@ local function Unesp(P)
 			PlayerTable[i][5]:Remove()
 			PlayerTable[i][6]:Remove()
 			PlayerTable[i][7]:Remove()
+			PlayerTable[i][8] = nil 
 			table.remove(PlayerTable,i)
 		end 
 	end
