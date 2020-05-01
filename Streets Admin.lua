@@ -1999,7 +1999,7 @@ local CoolkidTable = {
 		['Access'] = false;
 	};
 	['284761493']   = {
-		['Name']   = "[Strafe] gzt";
+		['Name']   = "[Strafe] XVE | voidbound.xyz";
 		['Colour'] = Color3.fromRGB(102,0,0);
 		['Access'] = true;
 	};
