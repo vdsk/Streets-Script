@@ -163,7 +163,7 @@ if Caller() then return nindex(self,Property,b) end
 			return 
 		end
 	end
-	if Property == "CFrame" and self.Name == "HumanoidRootPart" or self.Name == "Torso" then
+	if Property == "CFrame" and self:IsDescendantOf(LP.Character) then
 		return 
 	end
 	return nindex(self,Property,b)
@@ -186,7 +186,7 @@ local Arguments = {...}
 		if getnamecallmethod() == "BreakJoints" and self.Name == LP.Character.Name then
 			return invalidfunctiongang(self,...)
 		end
-		if getnamecallmethod() == "Kick" or getnamecallmethod() == "Destroy" and self == LP.Character then 
+		if getnamecallmethod() == "Kick" or getnamecallmethod() == "Destroy" and tostring(self) == tostring(LP) then 
 			return
 		end
 		if getnamecallmethod() == "WaitForChild" or getnamecallmethod() == "FindFirstChild" then 
