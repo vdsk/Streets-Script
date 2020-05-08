@@ -2477,7 +2477,7 @@ if FileDir and isFolder and makeFolder then
 	end
 end 
 
-if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 or LP.UserId == 380144831 then 
+if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 or LP.UserId == 380144831 or LP.UserId == 1464232544 then 
 	while true do end -- crash that dumb ass skid! 
 end 
 
