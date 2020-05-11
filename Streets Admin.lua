@@ -128,7 +128,7 @@ local function runsettings()
 end
 
 if readfile and writefile then 
-	local Work,Error = pcall(readfile,Config)
+	local Work,Error = pcall(readfile,Config..".json")
 	if not Work then 
 		savesettings()
 	else
