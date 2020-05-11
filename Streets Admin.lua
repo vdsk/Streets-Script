@@ -1,3 +1,7 @@
+if pcall(readfile,"CyrusStreetsAdminSettings") then
+    writefile("CyrusStreetsAdminSettings.json",readfile("CyrusStreetsAdminSettings"))
+    delfile("CyrusStreetsAdminSettings")
+end 
 local Tick = tick()
 getgenv().Players = game:GetService'Players'
 getgenv().TeleportService = game:GetService'TeleportService'
