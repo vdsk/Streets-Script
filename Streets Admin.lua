@@ -82,8 +82,8 @@ local SettingsTable = {
 -- Hotkey start
 
 local function savesettings()
-	writefile(Config,HttpService:JSONEncode(SettingsTable))
-    local SettingsToSave = HttpService:JSONDecode(readfile(Config))
+	writefile(Config..".json",HttpService:JSONEncode(SettingsTable))
+    local SettingsToSave = HttpService:JSONDecode(readfile(Config..".json"))
     Keys = SettingsToSave.Keys;
 	ClickTpKey = SettingsToSave.ClickTpKey;
 	ShiftSpeed = SettingsToSave.ShiftSpeed;
@@ -103,11 +103,11 @@ getgenv().updateSettings = function()
 		AimlockMode = AimlockMode;
 		BlinkMode = BlinkMode;
     }
-    writefile(Config,HttpService:JSONEncode(New))
+    writefile(Config..".json",HttpService:JSONEncode(New))
 end
 
 local function runsettings()
-	local SettingsToRun = HttpService:JSONDecode(readfile(Config))
+	local SettingsToRun = HttpService:JSONDecode(readfile(Config..".json"))
     Keys = SettingsToRun.Keys
 	ClickTpKey = SettingsToRun.ClickTpKey
 	BlinkMode = SettingsToRun.BlinkMode
@@ -2477,7 +2477,7 @@ if FileDir and isFolder and makeFolder then
 	end
 end 
 
-if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 or LP.UserId == 380144831 or LP.UserId == 1464232544 or LP.UserId == 1261075999 or LP.UserId == 362275209 then 
+if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 then 
 	while true do end -- crash that dumb ass skid! 
 end 
 
