@@ -1926,17 +1926,12 @@ local CoolkidTable = {
 	};
 	['659119329'] 	= {
 		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-    ['12978668']  	= {
-		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
-		['Colour'] = Color3.fromRGB(125,0,0);
+		['Colour'] = Color3.fromRGB(212,224,255);
 		['Access'] = true;
 	};
     ['659119329']   = {
 		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
-		['Colour'] = Color3.fromRGB(125,0,0);
+		['Colour'] = Color3.fromRGB(212,224,255);
 		['Access'] = true;
 	};
 	['62009114'] 	= {
@@ -2498,7 +2493,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","esp boxes + espsettings command????? wow! (also holy fuck this was stressful to add if anyone cares lol)",10,nil)   
+notif("Newest Update:","THE ACC PERIIUS IS NOT ME it was pged https://discord.gg/nXcZH36 for more info",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
