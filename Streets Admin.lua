@@ -2028,6 +2028,16 @@ local CoolkidTable = {
 		['Name'] = "autistic kid who bought the shirt twice and is active in the server";
 		['Colour'] = Color3.fromRGB(0,255,0);
 		['Access'] = false;
+	};
+	['383632734']   = {
+		['Name'] = "Dot_Mp4 phonk phonk rattle rattle supplier";
+		['Colour'] = Color3.fromRGB(27,30,145);
+		['Access'] = true;
+	};
+	['1066524308']  = {
+		['Name'] = "Kylee (kill her and blacklist)";
+		['Colour'] = Color3.fromRGB(255,75,75);
+		['Access'] = true;
 	}
 }
 
