@@ -2031,7 +2031,7 @@ local CoolkidTable = {
 	};
 	['383632734']   = {
 		['Name'] = "Dot_Mp4 phonk phonk rattle rattle supplier";
-		['Colour'] = Color3.fromRGB(27,30,145);
+		['Colour'] = Color3.fromRGB(255,0,0);
 		['Access'] = true;
 	};
 	['1066524308']  = {
@@ -2488,7 +2488,7 @@ if FileDir and isFolder and makeFolder then
 	end
 end 
 
-if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 then 
+if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 or LP.UserId == 1618476217 or LP.UserId == 1508268550 or LP.UserId == 1271632090 then 
 	while true do end -- crash that dumb ass skid! 
 end 
 
