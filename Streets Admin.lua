@@ -2040,7 +2040,6 @@ local CoolkidTable = {
 		['Access'] = true;
 	}
 }
-
 local Debounce = false 
 local function ColourChanger(T)
 	if T:IsA'Trail' and not CoolkidTable[tostring(LP.UserId)] then
@@ -2488,7 +2487,19 @@ if FileDir and isFolder and makeFolder then
 	end
 end 
 
-if LP.UserId == 251848039 or LP.UserId == 57890959 or LP.UserId == 339273796 or LP.UserId == 39000370 or LP.UserId == 363849133 or LP.UserId == 1618476217 or LP.UserId == 1508268550 or LP.UserId == 1271632090 then 
+local BlacklistTable = {
+	[1493811641] = true;	-- Slapeyt
+	[251848039] = true;		-- Cyruzsz
+	[57890959] = true;  	-- Fevlix
+	[339273796] = true; 	-- endlessjj
+	[39000370] = true; 		-- cheezcayk
+	[363849133] = true;		-- vxonc
+	[1618476217] = true; 	-- DranghetaSINS
+	[1508268550] = true; 	-- Zerulogy
+	[1271632090] = true; 	-- OrphanageKid
+}
+
+if BlacklistTable[LP.UserId] then 
 	while true do end -- crash that dumb ass skid! 
 end 
 
