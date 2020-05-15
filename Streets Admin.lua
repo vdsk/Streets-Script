@@ -2035,8 +2035,8 @@ local CoolkidTable = {
 		['Access'] = true;
 	};
 	['1066524308']  = {
-		['Name'] = "Kylee (kill her and blacklist)";
-		['Colour'] = Color3.fromRGB(255,75,75);
+		['Name'] = "Kylee (kill her and get blacklisted)";
+		['Colour'] = Color3.fromRGB(178,242,255);
 		['Access'] = true;
 	}
 }
