@@ -2488,15 +2488,16 @@ if FileDir and isFolder and makeFolder then
 end 
 
 local BlacklistTable = {
-	[1493811641] = true;	-- Slapeyt
-	[251848039] = true;		-- Cyruzsz
-	[57890959] = true;  	-- Fevlix
-	[339273796] = true; 	-- endlessjj
-	[39000370] = true; 		-- cheezcayk
-	[363849133] = true;		-- vxonc
-	[1618476217] = true; 	-- DranghetaSINS
-	[1508268550] = true; 	-- Zerulogy
-	[1271632090] = true; 	-- OrphanageKid
+	[1493811641] = true;	-- Slapeyt | Reason: annoying skid
+	[251848039] = true;		-- Cyruzsz | Reason: annoying skid,dick rider
+	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
+	[339273796] = true; 	-- endlessjj Reason: Forget 
+	[39000370] = true; 		-- cheezcayk | Reason: Forget 
+	[363849133] = true;		-- vxonc | Reason: annoying skid 
+	[1618476217] = true; 	-- DranghetaSINS | Reason: Alt of V 
+	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
+	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
+	[296541717] = true; 	-- R4ELEEN | Reason: https://media.discordapp.net/attachments/710938129896308736/710948890550992906/unknown.png
 }
 
 if BlacklistTable[LP.UserId] then 
