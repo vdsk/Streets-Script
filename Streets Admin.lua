@@ -2038,6 +2038,11 @@ local CoolkidTable = {
 		['Name'] = "Kylee (kill her and get blacklisted)";
 		['Colour'] = Color3.fromRGB(178,242,255);
 		['Access'] = true;
+	};
+	['39939779']	= {
+		['Name'] = "jewish overlord kill now";
+		['Colour'] = Color3.fromRGB(0,1,0);
+		['Access'] = true;
 	}
 }
 local Debounce = false 
