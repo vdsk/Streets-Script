@@ -1935,7 +1935,7 @@ local CoolkidTable = {
 		['Access'] = true;
 	};
 	['1388703832'] 	= {
-		['Name']   = "!fishgang Co-owner Cy Alt | Creator of Cyrus' Streets Admin";
+		['Name']   = "!fishgang Co-owner Cy Main | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(212,224,255);
 		['Access'] = true;
 	};
