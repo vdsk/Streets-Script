@@ -30,7 +30,7 @@ local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Ins
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth,BlinkSpeed = 25,8,16,25,1
+local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth,BlinkSpeed,AimbotVelocity = 25,8,16,25,1,5
 local OldFov = workspace.CurrentCamera.FieldOfView
 local Config = "CyrusStreetsAdminSettings"
 local TargetPart,AimlockMode = "Prediction","LeftClick"
@@ -83,6 +83,7 @@ local SettingsTable = {
    TargetPart = "Prediction";
    AimlockMode = "LeftClick";
    BlinkMode = "Shift";
+   AimbotVelocity = 10;
 }
 
 -- Hotkey start
@@ -97,6 +98,7 @@ local function savesettings()
 	TargetPart = SettingsToSave.TargetPart;
 	AimlockMode = SettingsToSave.AimlockMode;
 	BlinkMode = SettingsToSave.BlinkMode;
+	AimbotVelocity = SettingsToSave.AimbotVelocity;
 end 
 
 getgenv().updateSettings = function()
@@ -108,6 +110,7 @@ getgenv().updateSettings = function()
 		TargetPart = TargetPart;
 		AimlockMode = AimlockMode;
 		BlinkMode = BlinkMode;
+		AimbotVelocity = AimbotVelocity;
     }
     writefile(Config..".json",HttpService:JSONEncode(New))
 end
@@ -127,6 +130,9 @@ local function runsettings()
 		ShiftSpeed = SettingsToRun.ShiftSpeed;
 		ControlSpeed = SettingsToRun.ControlSpeed;
 	end 
+	if SettingsToRun.AimbotVelocity then 
+		AimbotVelocity = SettingsToRun.AimbotVelocity
+	end
 end
 
 if readfile and writefile then 
@@ -229,9 +235,9 @@ local Arguments = {...}
 		if AimlockTarget and AimLock then
 			if TargetPart == "Prediction" then
 				if AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") then
-					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / 10)
+					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.HumanoidRootPart.Velocity / AimbotVelocity)
 				else 
-					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / 10)
+					return name(self,AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity / AimbotVelocity)
 				end 
 			else
 				if AimlockTarget.FindFirstChild(AimlockTarget,TargetPart) then 
@@ -369,14 +375,6 @@ wait()
 	PartFound.CFrame = OldPos
 	return true
 end 
-
-getgenv().FireGun = function(Tool)
-	if AimlockTarget and AimLock then
-		Tool.Fire:FireServer(AimlockTarget.Head.CFrame + AimlockTarget.Torso.Velocity/5)
-	else
-		Tool.Fire:FireServer(Mouse.Hit)
-	end
-end
 
 local function Button1Down()
 local MTarget = Mouse.Target
@@ -1355,10 +1353,18 @@ AddCommand(function(Arguments)
 	if Arguments[1] then
 		if WhiteListedParts[Arguments[1]:lower()] then
 			TargetPart = WhiteListedParts[Arguments[1]:lower()]
+			updateSettings()
 			notif("AimTarget","has been set to "..TargetPart,5,"rbxassetid://1281284684")
 		end
 	end
 end,"aimtarget",{},"Allows you to pick between a part for aimlock to target/prediction")
+
+AddCommand(function(Arguments)
+	if Arguments[1] and tonumber(Arguments[1]) then 
+		AimbotVelocity = Arguments[1]
+		updateSettings()
+	end 
+end,"aimvelocity",{},"Changes your aimbot prediction velocity default: 5")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -2525,7 +2531,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","THE ACC PERIIUS IS NOT ME it was pged https://discord.gg/nXcZH36 for more info",10,nil)   
+notif("Newest Update:","Added: aimvelocity [number] (Allows you to change your aimbot prediction velocity) | ForsakenCy is my new account",10,nil)   
 
 --[[
 if game.PlaceId == 455366377 then 
