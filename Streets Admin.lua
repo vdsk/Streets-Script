@@ -2504,7 +2504,6 @@ if FileDir and isFolder and makeFolder then
 end 
 
 local BlacklistTable = {
-	[1493811641] = true;	-- Slapeyt | Reason: annoying skid
 	[251848039] = true;		-- Cyruzsz | Reason: annoying skid,dick rider
 	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
 	[339273796] = true; 	-- endlessjj Reason: Forget 
