@@ -2059,6 +2059,11 @@ local CoolkidTable = {
 		['Name'] = "jewish overlord kill now";
 		['Colour'] = Color3.fromRGB(0,1,0);
 		['Access'] = true;
+	};
+	['1404681381]'] = {
+		['Name'] = "Monkey Killer";
+		['Colour'] = Color3.fromRGB(255,0,0);
+		['Access'] = true;
 	}
 }
 local Debounce = false 
