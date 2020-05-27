@@ -54,21 +54,28 @@ if UseDraw then
 	DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 end 
 
-if workspace:FindFirstChild'Armoured Truck' then
-	PartTable = {
-		['Burger'] = workspace:WaitForChild'Burger | $15';
-		['Drink'] = workspace:WaitForChild'Drink | $15';
-		['Ammo'] = workspace:WaitForChild'Buy Ammo | $25';
-		['Pipe'] = workspace:WaitForChild'Pipe | $100';
-		['Machete'] = workspace:WaitForChild'Machete | $70';
-		['SawedOff'] = workspace:WaitForChild'Sawed Off | $150';
-		['Spray'] = workspace:WaitForChild'Spray | $20';
-		['Uzi'] = workspace:WaitForChild'Uzi | $150';
-		['Glock'] = workspace:WaitForChild'Glock | $200';
-	}
-    workspace["Armoured Truck"]:Destroy()
-elseif workspace:FindFirstChild'TPer' then 
-    workspace['TPer']:Destroy()
+if game.PlaceId == 455366377 then 
+PartTable = {
+    ['Burger'] = workspace:WaitForChild'Burger | $15';
+    ['Drink'] = workspace:WaitForChild'Drink | $15';
+    ['Ammo'] = workspace:WaitForChild'Buy Ammo | $25';
+    ['Pipe'] = workspace:WaitForChild'Pipe | $100';
+    ['Machete'] = workspace:WaitForChild'Machete | $70';
+    ['SawedOff'] = workspace:WaitForChild'Sawed Off | $150';
+    ['Spray'] = workspace:WaitForChild'Spray | $20';
+    ['Uzi'] = workspace:WaitForChild'Uzi | $150';
+    ['Glock'] = workspace:WaitForChild'Glock | $200';
+}
+end
+
+if workspace:FindFirstChild'Armoured Truck' then 
+    local Part = Instance.new("Part", workspace)
+    Part.Name,Part.Color,Part.CFrame,Part.Size,Part.Material,Part.Anchored = "TP Region",Color3.fromRGB(196,40,28),CFrame.new(-136.858002,0,-523.700012),Vector3.new(9.93,1,20.31),"ForceField",true
+    workspace:FindFirstChild'Armoured Truck':Destroy()
+elseif workspace:FindFirstChild'TPer' then
+    local Part = Instance.new("Part", workspace)
+    Part.Name,Part.Color,Part.CFrame,Part.Size,Part.Material,Part.Anchored = "TP Region",Color3.fromRGB(196,40,28),CFrame.new(-31,-0.2,221),Vector3.new(12,1,6),"ForceField",true
+    workspace:FindFirstChild'TPer':Destroy()
 end
 
 LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
@@ -2547,7 +2554,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:", "I Slays am now editing the script, development will be slow due to rewrite.",10,"rbxassetid://4876209969")
+notif("Newest Update:", "I Slays, am now editing this script. | Van region added.",10,"rbxassetid://4876209969")
 --[[
 if game.PlaceId == 455366377 then 
 	local InfectedTable = {} 
