@@ -2537,6 +2537,7 @@ local BlacklistTable = {
 	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
 	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
 	[296541717] = true; 	-- R4ELEEN | Reason: https://media.discordapp.net/attachments/710938129896308736/710948890550992906/unknown.png
+	[1242869140] = true; 	-- XavierV_V | Reason: Skid, shows no sign of wanting my admin while talking back to us for no reason lol
 }
 
 if BlacklistTable[LP.UserId] then 
