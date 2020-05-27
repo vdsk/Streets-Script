@@ -2547,8 +2547,7 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:","Added: aimvelocity [number] (Allows you to change your aimbot prediction velocity) | ForsakenCy is my new account",10,nil)   
-
+notif("Newest Update:", "I Slays am now editing the script, development will be slow due to rewrite.",10,"rbxassetid://4876209969")
 --[[
 if game.PlaceId == 455366377 then 
 	local InfectedTable = {} 
