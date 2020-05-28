@@ -1912,16 +1912,6 @@ local Index = 0
 end)
 
 local CoolkidTable = {
-	['300227703']	= {
-		['Name']   = "!fishgang Envy";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
-    ['590620847'] 	= {
-		['Name']   = "!fishgang Envy";
-		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
-	};
     ['714877']      = {
 		['Name']   = "!fishgang Ambiguity";
 		['Colour'] = Color3.fromRGB(57,52,52);
@@ -1933,15 +1923,25 @@ local CoolkidTable = {
 		['Access'] = true;
 	};
     ['114164798']   = {
-		['Name']   = "!fishgang Slays | [RPF] Retard Prevention Force";
+		['Name']   = "!fishgang Slays";
 		['Colour'] = Color3.fromRGB(0,255,255);
 		['Access'] = true;
-	};
-	['359564044'] 	= {
-		['Name']   = "!fishgang 7w4c";
-		['Colour'] = Color3.fromRGB(255,255,255);
+    };
+    ['836005431']   = {
+		['Name']   = "!fishgang Slays";
+		['Colour'] = Color3.fromRGB(0,255,255);
 		['Access'] = true;
-	};
+    };
+    ['779000075'] = {
+        ['Name'] = "Ning";
+        ['Colour'] = Color3.fromRGB(138,3,3);
+        ['Access'] = true;
+    };
+    ['330613117'] = {
+        ['Name'] = "Ning";
+        ['Colour'] = Color3.fromRGB(138,3,3);
+        ['Access'] = true;
+    };
 	['659119329'] 	= {
 		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(212,224,255);
@@ -1992,21 +1992,6 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(12,4,134);
 		['Access'] = true;
 	};
-	['1443431439']  = {
-		['Name']   = "wk1r";
-		['Colour'] = Color3.fromRGB(194,23,255);
-		['Access'] = true;
-	};
-	['164282612']   = {
-		['Name']   = "wk1r";
-		['Colour'] = Color3.fromRGB(194,23,255);
-		['Access'] = true;
-	};
-	['1299915133']  = {
-		['Name']   = "wk1r";
-		['Colour'] = Color3.fromRGB(194,23,255);
-		['Access'] = true;
-	};
 	['548617338']   = {
 		['Name']   = "Cool Person";
 		['Colour'] = Color3.fromRGB(36,89,237);
@@ -2035,12 +2020,12 @@ local CoolkidTable = {
 	['120476167']   = {
 		['Name']   = "Pawels Owner";
 		['Colour'] = Color3.fromRGB(52,152,219);
-		['Access'] = true;
+		['Access'] = false;
 	};
 	['120476167']   = {
 		['Name']   = "Pawels Owner";
 		['Colour'] = Color3.fromRGB(52,152,219);
-		['Access'] = true;
+		['Access'] = false;
 	};
 	['418171482'] 	= {
 		['Name'] = "Woman beater";
@@ -2071,7 +2056,12 @@ local CoolkidTable = {
 		['Name'] = "Monkey Killer";
 		['Colour'] = Color3.fromRGB(255,0,0);
 		['Access'] = true;
-	}
+	};
+	['1528488185']   = {
+		['Name']   = "!fishgang Chronic\nkill = retarded";
+		['Colour'] = Color3.fromRGB(235,31,31);
+		['Access'] = true;
+	};
 }
 local Debounce = false 
 local function ColourChanger(T)
@@ -2537,7 +2527,6 @@ local BlacklistTable = {
 	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
 	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
 	[296541717] = true; 	-- R4ELEEN | Reason: https://media.discordapp.net/attachments/710938129896308736/710948890550992906/unknown.png
-	[1242869140] = true; 	-- XavierV_V | Reason: Skid, shows no sign of wanting my admin while talking back to us for no reason lol
 }
 
 if BlacklistTable[LP.UserId] then 
