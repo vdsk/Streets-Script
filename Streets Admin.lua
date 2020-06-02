@@ -299,7 +299,7 @@ local function hasItem(Player,Item)
 end 
 
 local function checkHp(Plr)
-	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
+	return Plr:FindFirstChildOfClass'Humanoid' and math.floor(Plr.Humanoid.Health) or "No Humanoid"
 end
 
 local function LegacyEsp(Player)
