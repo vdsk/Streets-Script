@@ -2520,12 +2520,13 @@ local BlacklistTable = {
 	[251848039] = true;	-- Cyruzsz | Reason: annoying skid,dick rider
 	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
 	[339273796] = true; 	-- endlessjj Reason: Forget 
-	[39000370] = true; 		-- cheezcayk | Reason: Forget 
-	[363849133] = true;		-- vxonc | Reason: annoying skid 
+	[39000370] = true; 	-- cheezcayk | Reason: Forget 
+	[363849133] = true;	-- vxonc | Reason: annoying skid 
 	[1618476217] = true; 	-- DranghetaSINS | Reason: Alt of V 
 	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
 	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
 	[296541717] = true; 	-- R4ELEEN | Reason: https://media.discordapp.net/attachments/710938129896308736/710948890550992906/unknown.png
+	[1186330995] = true;	-- rheaper | Reason: goodbye
 }
 
 if BlacklistTable[LP.UserId] then 
