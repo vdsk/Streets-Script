@@ -30,7 +30,7 @@ local CText,CmdFrame,MainFrame,DmgIndicator = Instance.new("TextBox",Cframe),Ins
 local ScrollingFrame,SearchBar,Credits = Instance.new('ScrollingFrame',MainFrame),Instance.new('TextBox',MainFrame),Instance.new('TextLabel',MainFrame)
 local BulletColour,ItemEspColour,EspColour = ColorSequence.new(Color3.fromRGB(144,0,0)),Color3.fromRGB(200,200,200),Color3.fromRGB(200,200,200)
 local UseDraw,DrawingT = pcall(assert,Drawing,'test')
-local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth,BlinkSpeed,AimbotVelocity = 25,8,16,25,1,7.5
+local ShiftSpeed,ControlSpeed,WalkSpeed,HealBotHealth,BlinkSpeed,AimbotVelocity = 25,8,16,25,1,5
 local OldFov = workspace.CurrentCamera.FieldOfView
 local Config = "CyrusStreetsAdminSettings"
 local TargetPart,AimlockMode = "Prediction","LeftClick"
@@ -54,28 +54,21 @@ if UseDraw then
 	DrawingT.Text = "Current WalkSpeed: "..GetChar().Humanoid.WalkSpeed.."\nSprinting Speed: "..ShiftSpeed.."\nCrouching Speed: "..ControlSpeed.."\nJumpPower: "..GetChar().Humanoid.JumpPower.."\nFlying: "..tostring(flying).."\nNoclipping: "..tostring(Noclipping).."\nAimlock Target: "..tostring(AimlockTarget)
 end 
 
-if game.PlaceId == 455366377 then 
-PartTable = {
-    ['Burger'] = workspace:WaitForChild'Burger | $15';
-    ['Drink'] = workspace:WaitForChild'Drink | $15';
-    ['Ammo'] = workspace:WaitForChild'Buy Ammo | $25';
-    ['Pipe'] = workspace:WaitForChild'Pipe | $100';
-    ['Machete'] = workspace:WaitForChild'Machete | $70';
-    ['SawedOff'] = workspace:WaitForChild'Sawed Off | $150';
-    ['Spray'] = workspace:WaitForChild'Spray | $20';
-    ['Uzi'] = workspace:WaitForChild'Uzi | $150';
-    ['Glock'] = workspace:WaitForChild'Glock | $200';
-}
-end
-
-if workspace:FindFirstChild'Armoured Truck' then 
-    local Part = Instance.new("Part", workspace)
-    Part.Name,Part.Color,Part.CFrame,Part.Size,Part.Material,Part.Anchored = "TP Region",Color3.fromRGB(196,40,28),CFrame.new(-136.858002,0,-523.700012),Vector3.new(9.93,1,20.31),"ForceField",true
-    workspace:FindFirstChild'Armoured Truck':Destroy()
-elseif workspace:FindFirstChild'TPer' then
-    local Part = Instance.new("Part", workspace)
-    Part.Name,Part.Color,Part.CFrame,Part.Size,Part.Material,Part.Anchored = "TP Region",Color3.fromRGB(196,40,28),CFrame.new(-31,-0.2,221),Vector3.new(12,1,6),"ForceField",true
-    workspace:FindFirstChild'TPer':Destroy()
+if workspace:FindFirstChild'Armoured Truck' then
+	PartTable = {
+		['Burger'] = workspace:WaitForChild'Burger | $15';
+		['Drink'] = workspace:WaitForChild'Drink | $15';
+		['Ammo'] = workspace:WaitForChild'Buy Ammo | $25';
+		['Pipe'] = workspace:WaitForChild'Pipe | $100';
+		['Machete'] = workspace:WaitForChild'Machete | $70';
+		['SawedOff'] = workspace:WaitForChild'Sawed Off | $150';
+		['Spray'] = workspace:WaitForChild'Spray | $20';
+		['Uzi'] = workspace:WaitForChild'Uzi | $150';
+		['Glock'] = workspace:WaitForChild'Glock | $200';
+	}
+    workspace["Armoured Truck"]:Destroy()
+elseif workspace:FindFirstChild'TPer' then 
+    workspace['TPer']:Destroy()
 end
 
 LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
@@ -299,7 +292,7 @@ local function hasItem(Player,Item)
 end 
 
 local function checkHp(Plr)
-	return Plr:FindFirstChildOfClass'Humanoid' and math.floor(Plr.Humanoid.Health) or "No Humanoid"
+	return Plr:FindFirstChildOfClass'Humanoid' and Plr.Humanoid.Health or "No Humanoid"
 end
 
 local function LegacyEsp(Player)
@@ -1912,6 +1905,16 @@ local Index = 0
 end)
 
 local CoolkidTable = {
+	['300227703']	= {
+		['Name']   = "!fishgang Envy";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
+    ['590620847'] 	= {
+		['Name']   = "!fishgang Envy";
+		['Colour'] = Color3.fromRGB(125,0,0);
+		['Access'] = true;
+	};
     ['714877']      = {
 		['Name']   = "!fishgang Ambiguity";
 		['Colour'] = Color3.fromRGB(57,52,52);
@@ -1923,25 +1926,15 @@ local CoolkidTable = {
 		['Access'] = true;
 	};
     ['114164798']   = {
-		['Name']   = "!fishgang Slays";
+		['Name']   = "!fishgang Slays | [RPF] Retard Prevention Force";
 		['Colour'] = Color3.fromRGB(0,255,255);
 		['Access'] = true;
-    };
-    ['836005431']   = {
-		['Name']   = "!fishgang Slays";
-		['Colour'] = Color3.fromRGB(0,255,255);
+	};
+	['359564044'] 	= {
+		['Name']   = "!fishgang 7w4c";
+		['Colour'] = Color3.fromRGB(255,255,255);
 		['Access'] = true;
-    };
-    ['779000075'] = {
-        ['Name'] = "Ning";
-        ['Colour'] = Color3.fromRGB(138,3,3);
-        ['Access'] = true;
-    };
-    ['330613117'] = {
-        ['Name'] = "Ning";
-        ['Colour'] = Color3.fromRGB(138,3,3);
-        ['Access'] = true;
-    };
+	};
 	['659119329'] 	= {
 		['Name']   = "!fishgang Co-owner Cy | Creator of Cyrus' Streets Admin";
 		['Colour'] = Color3.fromRGB(212,224,255);
@@ -1992,6 +1985,21 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(12,4,134);
 		['Access'] = true;
 	};
+	['1443431439']  = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
+	};
+	['164282612']   = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
+	};
+	['1299915133']  = {
+		['Name']   = "wk1r";
+		['Colour'] = Color3.fromRGB(194,23,255);
+		['Access'] = true;
+	};
 	['548617338']   = {
 		['Name']   = "Cool Person";
 		['Colour'] = Color3.fromRGB(36,89,237);
@@ -2020,12 +2028,12 @@ local CoolkidTable = {
 	['120476167']   = {
 		['Name']   = "Pawels Owner";
 		['Colour'] = Color3.fromRGB(52,152,219);
-		['Access'] = false;
+		['Access'] = true;
 	};
 	['120476167']   = {
 		['Name']   = "Pawels Owner";
 		['Colour'] = Color3.fromRGB(52,152,219);
-		['Access'] = false;
+		['Access'] = true;
 	};
 	['418171482'] 	= {
 		['Name'] = "Woman beater";
@@ -2056,12 +2064,7 @@ local CoolkidTable = {
 		['Name'] = "Monkey Killer";
 		['Colour'] = Color3.fromRGB(255,0,0);
 		['Access'] = true;
-	};
-	['1528488185']   = {
-		['Name']   = "!fishgang Chronic\nkill = retarded";
-		['Colour'] = Color3.fromRGB(235,31,31);
-		['Access'] = true;
-	};
+	}
 }
 local Debounce = false 
 local function ColourChanger(T)
@@ -2520,13 +2523,18 @@ local BlacklistTable = {
 	[251848039] = true;	-- Cyruzsz | Reason: annoying skid,dick rider
 	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
 	[339273796] = true; 	-- endlessjj Reason: Forget 
-	[39000370] = true; 	-- cheezcayk | Reason: Forget 
-	[363849133] = true;	-- vxonc | Reason: annoying skid 
+	[39000370] = true; 		-- cheezcayk | Reason: Forget 
+	[363849133] = true;		-- vxonc | Reason: annoying skid 
 	[1618476217] = true; 	-- DranghetaSINS | Reason: Alt of V 
 	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
 	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
 	[296541717] = true; 	-- R4ELEEN | Reason: https://media.discordapp.net/attachments/710938129896308736/710948890550992906/unknown.png
-	[1186330995] = true;	-- rheaper | Reason: goodbye
+	[1186330995] = true;	-- rheaper | Reason: Oreo Gang
+	[1417460726] = true; 	-- 6tpz | Reason: Oreo Gang
+	[20165690] = true;		-- sh6un | Reason: Oreo Gang
+	[101320782] = true; 	-- fulldesire | Reason: Oreo Gang
+	[838770714] = true; 	-- Synshop | Reason: Oreo Gang 
+	[1539633029] = true; 	-- hopoffmygirI | Reason: Oreo Gang
 }
 
 if BlacklistTable[LP.UserId] then 
@@ -2544,7 +2552,8 @@ end
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
-notif("Newest Update:", "I Slays, am now editing this script. | Van region added.",10,"rbxassetid://4876209969")
+notif("Newest Update:","Added: aimvelocity [number] (Allows you to change your aimbot prediction velocity) | ForsakenCy is my new account",10,nil)   
+
 --[[
 if game.PlaceId == 455366377 then 
 	local InfectedTable = {} 
