@@ -199,10 +199,10 @@ local Arguments = {...}
 		return name(self,...) 
 	end 
 		if getnamecallmethod() == "Destroy" and tostring(self) == "BodyGyro" or getnamecallmethod() == "Destroy" and tostring(self) == "BodyVelocity" then
-			return invalidfunctiongang(self,...)
+			return wait(9e9)
 		end
 		if getnamecallmethod() == "BreakJoints" and self.Name == LP.Character.Name then
-			return invalidfunctiongang(self,...)
+			return wait(9e9)
 		end
 		if getnamecallmethod() == "Kick" or getnamecallmethod() == "Destroy" and tostring(self) == tostring(LP) then 
 			return
@@ -1564,15 +1564,25 @@ AddCommand(function()
 end,"rainbowhats",{},"complete autism lol")
 
 AddCommand(function(Arguments)
-	if game.PlaceId == 455366377 then notif("Wont work","you need to be off streets",5,nil) return end 
+	if game.PlaceId == 455366377 then notif("Wont work","Prison Only",5,nil) return end
 	FeLoop = not FeLoop
-	if Arguments[1] and PlrFinder(Arguments[1]) then 
-        LoopPlayer = PlrFinder(Arguments[1])
-        GetChar():BreakJoints()
-	else 
+	if FeLoop and not CanUseFeloop then
+		wait(0.5)
+		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what 2+2 equals - Cy","All")
+		local Chat = LP.Chatted:Wait()
+		if Chat:lower() ~= "fish" then LP:Kick('That answer is wrong.') else CanUseFeloop = true end
+	end
+	if Arguments[1] then
+		FeLoop = true 
+		local Player = PlrFinder(Arguments[1])
+		if Player then 
+			GetChar():BreakJoints()
+			LoopPlayer = Player 
+		end
+	else
 		LoopPlayer = nil
 	end
-end,"feloop",{},"fe loops said player or turns it off")
+end,"feloop",{},"First you were a skid, Now you're annoying with a simple use of this command!","[Player]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -1662,7 +1672,7 @@ local PartFound = LP.Character:FindFirstChild'HumanoidRootPart' or LP.Character:
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime 
 	end
-	if FeLoop then
+	if FeLoop and CanUseFeloop then
 		local BChild = LP.Backpack:GetChildren()
         for i = 1,#BChild do 
             BChild[i].Parent = LP.Character
@@ -2549,6 +2559,7 @@ local Alias = Commands[i].Alias
 	end
 	CreateCommand(UDim2.new(0.0150422715,0,0.0127776451,0 + (i * 20)),Commands[i].Name.." "..Commands[i].Help)
 end
+print("Command Amount: "..#Commands)
 
 notif("Cyrus' Streets Admin has loaded!","It took "..(tick() - Tick).." seconds to load (Type Commands for help)\nDiscord Invite: nXcZH36",10,"rbxassetid://2474242690") 
 notif("Hotkeys:","No chat prefix\nCommandbar Prefix is '\nRight clicking door: lock/unlock\nPressing e with guns stomps",10,nil)   
