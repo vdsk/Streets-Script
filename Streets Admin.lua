@@ -1572,7 +1572,7 @@ AddCommand(function(Arguments)
 		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what 2+2 equals - Cy","All")
 		local Chat = LP.Chatted:Wait()
 		Chat = string.gsub(Chat, "\r", "")
-		if Chat:lower() ~= "fish" then LP:Kick('That answer is wrong.') else CanUseFeloop = true end
+		if Chat:lower() ~= "notfish" then LP:Kick('That answer is wrong.') else CanUseFeloop = true end
 	end
 	if Arguments[1] then
 		FeLoop = true 
