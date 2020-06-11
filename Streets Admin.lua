@@ -531,6 +531,7 @@ getgenv().FindCommand = function(Command)
 end
 
 getgenv().CheckCommand = function(Chat)
+	Chat = string.gsub(Chat, "\r", "")
 	local Arguments = string.split(Chat," ")
 	local NCommand = FindCommand(table.remove(Arguments,1):lower())
 	if NCommand then 
@@ -2533,7 +2534,8 @@ local BlacklistTable = {
 	[251848039] = true;	-- Cyruzsz | Reason: annoying skid,dick rider
 	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
 	[339273796] = true; 	-- endlessjj Reason: Forget 
-	[363849133] = true;	-- vxonc | Reason: annoying skid 
+	[39000370] = true; 		-- cheezcayk | Reason: Forget 
+	[363849133] = true;		-- vxonc | Reason: annoying skid 
 	[1618476217] = true; 	-- DranghetaSINS | Reason: Alt of V 
 	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
 	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
