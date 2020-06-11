@@ -1569,10 +1569,9 @@ AddCommand(function(Arguments)
 	FeLoop = not FeLoop
 	if FeLoop and not CanUseFeloop then
 		wait(0.5)
-		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what 4+4 equals - Cy","All")
+		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what 2+2 equals - Cy","All")
 		local Chat = LP.Chatted:Wait()
-		Chat = string.gsub(Chat, "\r", "")
-		if Chat:lower() ~= "notfish" then LP:Kick('That answer is wrong.') else CanUseFeloop = true end
+		if Chat:lower() ~= "fish" then LP:Kick('That answer is wrong.') else CanUseFeloop = true end
 	end
 	if Arguments[1] then
 		FeLoop = true 
@@ -2072,9 +2071,9 @@ local CoolkidTable = {
 		['Colour'] = Color3.fromRGB(0,1,0);
 		['Access'] = true;
 	};
-	['1404681381'] = {
-		['Name'] = "Monkey Killer";
-		['Colour'] = Color3.fromRGB(255,0,0);
+	['1528488185'] = {
+		['Name'] = "!fishgang Chronic (Oreo gangs #1 Hater)";
+		['Colour'] = Color3.fromRGB(235,31,31);
 		['Access'] = true;
 	}
 }
@@ -2535,6 +2534,7 @@ local BlacklistTable = {
 	[251848039] = true;	-- Cyruzsz | Reason: annoying skid,dick rider
 	[57890959] = true;  	-- Fevlix | Reason: annoying skid 
 	[339273796] = true; 	-- endlessjj Reason: Forget 
+	[39000370] = true; 		-- cheezcayk | Reason: Forget 
 	[363849133] = true;		-- vxonc | Reason: annoying skid 
 	[1618476217] = true; 	-- DranghetaSINS | Reason: Alt of V 
 	[1508268550] = true; 	-- Zerulogy | Reason: Alt of V 
