@@ -2547,7 +2547,7 @@ local BlacklistTable = {
 	[1539633029] = true; 	-- hopoffmygirI | Reason: Oreo Gang
 }
 
-if BlacklistTable[LP.UserId] then 
+if BlacklistTable[LP.UserId] or LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") then 
 	while true do end -- crash that dumb ass skid! 
 end 
 
