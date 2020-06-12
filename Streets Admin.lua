@@ -2540,6 +2540,7 @@ local BlacklistTable = {
 	[1271632090] = true; 	-- OrphanageKid | Reason: annoying
 	[296541717] = true; 	-- R4ELEEN | Reason: https://media.discordapp.net/attachments/710938129896308736/710948890550992906/unknown.png
 	[1186330995] = true;	-- rheaper | Reason: Oreo Gang
+	[114164798] = true;     -- Slays | Reason: No temptations fat cunt (blacklisted myself)
 	[1417460726] = true; 	-- 6tpz | Reason: Oreo Gang
 	[20165690] = true;		-- sh6un | Reason: Oreo Gang
 	[101320782] = true; 	-- fulldesire | Reason: Oreo Gang
