@@ -2017,9 +2017,9 @@ local CoolkidTable = {
 		['Access'] = false;
 	};
 	['1275692258']  = { 
-		['Name']   = "Big Dick (Vegan/Syntrix Creator who also paid me to put this)";
+		['Name']   = "Gross a lynx member";
 		['Colour'] = Color3.fromRGB(125,0,0);
-		['Access'] = true;
+		['Access'] = false;
 	};
 	['612618136']   = { 
 		['Name']   = "Bird (Donator)";
