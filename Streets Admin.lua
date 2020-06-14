@@ -2052,7 +2052,7 @@ local CoolkidTable = {
 		['Access'] = false;
 	};
 	['710288902'] 	= {
-		['Name'] = "autistic kid who bought the shirt twice and is active in the server";
+		['Name'] = "!fishgang Autism";
 		['Colour'] = Color3.fromRGB(0,255,0);
 		['Access'] = false;
 	};
