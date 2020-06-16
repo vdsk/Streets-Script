@@ -336,7 +336,7 @@ local NewIndex = Raw.__newindex;
 Raw.__newindex = Closure(function(self,Property,Value)
 	if Caller() then return NewIndex(self,Property,Value) end
 	StarterGui:SetCore('ResetButtonCallback',true)
-	if Property == "WalkSpeed" then return 16 end
+	if Property == "WalkSpeed" and not WalkShoot then return 16 end
 	if Property == "JumpPower" then return 37.5 end 
 	if Property == "HipHeight" then return 0 end 
 	if Property == "Health" then return 100 end
@@ -1800,6 +1800,7 @@ end,"blink",{},"Different method of speed (Uses CFrame)","[Number (Optional)]")
 
 AddCommand(function(Arguments)
 	WalkShoot = not WalkShoot
+	notif("WalkShoot","Has been set to "..tostring(WalkShoot),5,nil)
 end,"walkshoot",{"noslow"},"Allows you to turn On/Off Walk Shooting","[No Args]")
 
 AddCommand(function(Arguments)
