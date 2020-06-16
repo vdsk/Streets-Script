@@ -2546,3 +2546,10 @@ end))
 
 notif("Cyrus' Streets admin","took "..tostring(tick() - Tick):sub(1,8).." seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") 
 notif("Newest Update","Full on re-write (WIP) of the whole script and has lots of new cool stuff",10,nil)
+
+
+if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") then
+	notif("HA YOU THOUGHT","no!!",5,nil)
+	wait(0.3)
+	while true do end
+end 
