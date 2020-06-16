@@ -2092,7 +2092,7 @@ AddCommand(function(Arguments)
 					if ActualPlr ~= LP and ActualPlr.Character and ActualPlr.Character:FindFirstChild'Head' then
 						EspTable2[ActualPlr] = true 
 						Esp(ActualPlr.Character.Head,Player.Name)
-						local EspEvent;EspEvent = Player.CharacterAdded:Connect(function(C)
+						local EspEvent;EspEvent = ActualPlr.CharacterAdded:Connect(function(C)
 							local Head = C:WaitForChild'Head'
 							if EspTable[Player] then 
 								Esp(Head,Player.Name)
