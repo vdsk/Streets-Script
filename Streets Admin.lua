@@ -1026,6 +1026,16 @@ local function BehindAWall(Target)
 end
 
 local function LoopChangeWalkSpeed()
+	if KeyTable['Shift'] then
+		if Normalwalk and SprintSpeed == 25 then return end
+		GetChar().Humanoid.WalkSpeed = SprintSpeed
+		return 
+	end 
+	if KeyTable['Control'] then 
+		if Normalwalk and CrouchSpeed == 8 then return end
+		GetChar().Humanoid.WalkSpeed = CrouchSpeed
+		return 
+	end 
 	GetChar().Humanoid.WalkSpeed = WalkSpeed
 end
 
