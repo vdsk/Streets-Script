@@ -396,14 +396,16 @@ local Args = {...}
 	return Namecall(self,...)
 end)
 
-local OldRemote; OldRemote = hookfunction(Instance.new'RemoteEvent'.FireServer,function(self,...)
-	local Args = {...}
-	if tostring(self) == "Touch1" and AlwaysGh then 
-		Args[3] = true 
-		return OldRemote(self,unpack(Args))
-	end
-	return OldRemote(self,...)
-end)
+if hookfunction then 
+	local OldRemote; OldRemote = hookfunction(Instance.new'RemoteEvent'.FireServer,function(self,...)
+		local Args = {...}
+		if tostring(self) == "Touch1" and AlwaysGh then 
+			Args[3] = true 
+			return OldRemote(self,unpack(Args))
+		end
+		return OldRemote(self,...)
+	end)
+end 
 
 setreadonly(Raw,true)
 
@@ -1191,7 +1193,7 @@ local Target = Mouse.Target
 		if AirwalkOn then PartFound.CFrame = PartFound.CFrame + Vector3.new(0,5,0) end
 	end
 	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Fire' and not Character:FindFirstChild'KO' and GunStomp then 
-		LP.Backpack.ServerTraits:FireServer(LP.Backpack.Punch)
+		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
 	end
 	if Key.KeyCode == Enum.KeyCode.Quote then
 		wait()
@@ -2006,8 +2008,8 @@ end,"aimlock",{"aim"},"Aimbot (Different method than camlock)","[Player]")
 
 AddCommand(function(Arguments)
 	AutoTarget = not AutoTarget 
-	notif("AutoTarget","Has been set to"..tostring(AutoTarget),5,nil)
-end,"autotarget",{},"Auto Camlock/Aimlock on a person who shoots you (Toggle)","[No Args]")
+	notif("AutoTarget","Has been set to "..tostring(AutoTarget),5,nil)
+end,"autotarget",{"autolock"},"Auto Camlock/Aimlock on a person who shoots you (Toggle)","[No Args]")
 
 AddCommand(function()
 	AimbotAutoShoot = not AimbotAutoShoot
