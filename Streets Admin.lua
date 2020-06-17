@@ -43,7 +43,7 @@ local AutoFarm = false
 local Blinking = false
 local CamLocking = false 
 local DoubleJumpEnabled = false
-local EspDebounce = false
+local DamageIndicatorDebounce = false
 local ExploiterDetectionOn = false
 local FeLoop = false 
 local Flying = false
@@ -127,6 +127,8 @@ local CmdsScrolling = Instance.new('ScrollingFrame',CmdsFrame)
 local CmdBarFrame = Instance.new('Frame',CoreGui.RobloxGui)
 local CmdBarTextBox = Instance.new('TextBox',CmdBarFrame)
 local CmdBarImageLabel = Instance.new('ImageLabel',CmdBarFrame)
+
+local DmgIndicator = Instance.new('TextLabel',LP.PlayerGui.Chat.Frame)
 
 local RainbowFrame = Instance.new('Frame',CoreGui.RobloxGui)
 local RainbowLabel = Instance.new('TextLabel',RainbowFrame)
@@ -586,7 +588,7 @@ local function IsAUser(Player,Chat)
 end
 
 local function ColourifyGuns(GunTable,Colour)
-	for ToolIndex,Tool in pairs(GunTable:GetChildren()) do
+	for _,Tool in pairs(GunTable:GetChildren()) do
 		if Tool:IsA'Tool' and Tool:FindFirstChild'Fire' then  
 			for _,Part in pairs(Tool:GetDescendants()) do 
 				if Part:IsA'UnionOperation' or Part:IsA'Part' or Part:IsA'MeshPart' then 
@@ -914,6 +916,18 @@ local Character = GetChar()
 	end 
 end
 
+local function ShotOrHit(Character)
+	local Tool = Character:FindFirstChildOfClass'Tool'
+	return Tool,Tool:FindFirstChild'Fire' and "shot you" or "hit you"
+end
+
+local function ChangeDamageIndicatorText(Text)
+	DmgIndicator.Text = Text
+	DmgIndicator.Visible = true
+	wait(5)
+	DmgIndicator.Visible = false
+end
+
 local function ColourChanger(T)
 	if T:IsA'Trail' then 
 		T.Color = BulletColour
@@ -935,6 +949,9 @@ local function ColourChanger(T)
 				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
 			end
 		end
+		local PlayerC = T.Value
+		local Tool,Method = ShotOrHit(PlayerC)
+		ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
 	end
 end
 
@@ -2328,6 +2345,19 @@ coroutine.resume(coroutine.create(function()
 	HotkeysTextLabel.TextSize = 14
 	HotkeysTextLabel.TextWrapped = true
 	HotkeysTextLabel.TextYAlignment = Enum.TextYAlignment.Top
+	
+	-- Damage Indicator -- 
+	
+	DmgIndicator.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	DmgIndicator.BackgroundTransparency = 0.7
+	DmgIndicator.BorderColor3 = Color3.fromRGB(170,0,0)
+	DmgIndicator.Position = UDim2.new(0,0,1,0)
+	DmgIndicator.Size = UDim2.new(0,385,0,50)
+	DmgIndicator.Font = Enum.Font.Code
+	DmgIndicator.TextColor3 = Color3.fromRGB(255,255,255)
+	DmgIndicator.TextSize = 14
+	DmgIndicator.TextWrapped = true
+	DmgIndicator.Visible = false 
 end))
 
 --[[ End ]] -- 
