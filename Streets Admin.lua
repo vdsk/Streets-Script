@@ -2481,13 +2481,13 @@ coroutine.resume(coroutine.create(function()
 			for i = 1,#PlayerT do 
 				local Player = PlayerT[i]
 				if Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' then 
-					if Player.Character:FindFirstChild'Humanoid' then 
+					if Player.Character:FindFirstChild'Humanoid' and Player.Character:findFirstChild'Right Arm' then 
 						if ExploitDetectionPlayerTablePositions[Player.Name] then
 							local Pos1 = Player.Character.Head.Velocity
 							local Pos2 = ExploitDetectionPlayerTablePositions[Player.Name]
 							if not Player.Character.Head:FindFirstChildOfClass'BillboardGui' and Player.Character.Humanoid.Health > 0 and not Player.Character:FindFirstChild'KO' and not Player.Character:FindFirstChildOfClass'ForceField' then 
 								if (Vector3.new(Pos1.X,0,0) - Vector3.new(Pos2.X,0,0)).magnitude >= 85 or (Vector3.new(0,0,Pos1.Z) - Vector3.new(0,0,Pos2.Z)).magnitude >= 85 then
-									Esp(Player.Character.Head,"Exploiter: "..Player.Name.." Reason: moved too fast")
+									Esp(Player.Character.Head,"Exploiter: "..Player.Name.." Reason: moved too fast",Color3.fromRGB(255,255,255))
 									ExploitDetectionPlayerTablePositions[Player.Name] = Player.Character.Head.Velocity
 								else
 									ExploitDetectionPlayerTablePositions[Player.Name] = Player.Character.Head.Velocity
@@ -2498,7 +2498,7 @@ coroutine.resume(coroutine.create(function()
 						end
 					else
 						if not Player.Character.Head:FindFirstChildOfClass'BillboardGui' and Player.Character:FindFirstChildOfClass'Tool' then
-							Esp(Player.character.Head,"Exploiter: "..Player.Name.." Reason: Feloop")
+							Esp(Player.character.Head,"Exploiter: "..Player.Name.." Reason: Feloop/Anti Feloop",Color3.fromRGB(255,255,255))
 						end 
 					end
 				end
