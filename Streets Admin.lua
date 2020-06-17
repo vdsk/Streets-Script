@@ -1929,7 +1929,7 @@ AddCommand(function(Arguments)
 end,"decalsteal",{},"Steals a persons decal","[Player]")
 
 AddCommand(function()
-	if not game.PlaceId == 455366377 then notif("Wont work","Streets Only",5,nil) end 
+	if game.PlaceId ~= 455366377 then notif("Wont work","Streets Only",5,nil) return end 
 	if RainbowHats then RainbowHats = false LP.Backpack.Stank:FireServer("ren") end
 	if RainbowFrame.Visible then RainbowFrame.Visible = false return end 
 	RainbowScrolling:ClearAllChildren()
