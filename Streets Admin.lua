@@ -728,7 +728,7 @@ end
 
 local function Esp(Part,Name,Colour)
 	local Player = PlrFinder(Part.Parent.Name)
-	if Player and UseDrawingLib and not Colour then
+	if Player and wggew and not Colour then
 		Unesp(Player)
 		EspTable[#EspTable+1] = {['Player'] = Player,['Text'] = Drawing.new'Text',['Box'] = {Drawing.new'Line',Drawing.new'Line',Drawing.new'Line'}}
 	else
@@ -749,10 +749,12 @@ local function Esp(Part,Name,Colour)
 		if Player then
 			EspTable2[Player] = true
 			local Event;Event = RunService.Stepped:Connect(function()
-				if EspTable2[Player] and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChildOfClass'Humanoid' then 
-					local User = AdminUserTable[Player] and "Yes" or "No"
-					TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nHealth: "..math.floor(Player.Character.Humanoid.Health).." | Position: "..math.floor((GetChar().Head.Position - Player.Character.Head.Position).magnitude)
-				else
+				if EspTable2[Player] then 
+					if Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChildOfClass'Humanoid' then 
+						local User = AdminUserTable[Player] and "Yes" or "No"
+						TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nHealth: "..math.floor(Player.Character.Humanoid.Health).." | Position: "..math.floor((GetChar().Head.Position - Player.Character.Head.Position).magnitude)
+					end 
+				else 
 					Event:Disconnect()
 				end
 			end)
