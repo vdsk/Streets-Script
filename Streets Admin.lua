@@ -1494,7 +1494,7 @@ AddCommand(function()
 	end
 end,"draggablegui",{},"Makes your HUD draggable","[No Args]")
 
-AddCommand(function()
+AddCommand(function(Arguments)
 	if not Arguments[1] then 
 		GodMode = not GodMode
 		notif("GodMode","Has been set to "..tostring(GodMode),5,nil)
