@@ -406,11 +406,11 @@ local Args = {...}
 		elseif Args[1] == "stop" then 
 			PlayOnDeath = nil
 		end
-		if CallingMethod() == "WaitForChild" or CallingMethod() == "FindFirstChild" then 
-			if CallingScript and CallingScript() ~= script and TpBypass and Args[1] == "HumanoidRootPart" then
-				Args[1] = "Torso"
-				return Namecall(self,unpack(Args))
-			end
+	end
+	if CallingMethod() == "WaitForChild" or CallingMethod() == "FindFirstChild" then 
+		if CallingScript and CallingScript() ~= script and TpBypass and Args[1] == "HumanoidRootPart" then
+			Args[1] = "Torso"
+			return Namecall(self,unpack(Args))
 		end
 	end
 	return Namecall(self,...)
