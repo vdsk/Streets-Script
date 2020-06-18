@@ -1215,7 +1215,7 @@ local Target = Mouse.Target
 		Teleport(CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0)))
 	end
 	for i,v in pairs(Keys) do 
-		if v and Enum.KeyCode[v:match'[%a%d]+$':upper()] == Key.KeyCode then 
+		if v and v:match'[%a%d]+$' and Enum.KeyCode[v:match'[%a%d]+$':upper()] == Key.KeyCode then 
 			CheckCommand(v:match'^[%w%s]+')
 		end
 	end
