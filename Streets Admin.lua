@@ -146,6 +146,7 @@ local VanPart = Instance.new('Part',workspace)
 
 local AdminUserTable = {}
 local Commands = {}
+local Countries = {}
 local DetectedExploiters = {}
 local ExploitDetectionPlayerTablePositions = {}
 local EspTable = {}
@@ -311,7 +312,8 @@ coroutine.resume(coroutine.create(function()
 		VanPart:Destroy()
 	end
 	Players:Chat("I am a CyAdmin User") -- new admin
-	Players:Chat("Hey I'm a cyrus' streets admin user1") -- legacy admin 
+	Players:Chat("Hey I'm a cyrus' streets admin user1") -- legacy admin
+	Countries = HttpService:JSONDecode(game:HttpGet("http://country.io/names.json"))
 end))
 
 -- [[ End ]] -- 
@@ -737,7 +739,14 @@ local function Unesp(Part)
 			end
 		end 
 	end
-end 
+end
+
+local function Region(Player)
+	if gethiddenprop then 
+		return Countries[gethiddenprop(Player,"CountryRegionCodeReplicate")]
+	end
+	return "Can't show country"
+end
 
 local function Esp(Part,Name,Colour)
 	local Player = PlrFinder(Part.Parent.Name)
@@ -761,7 +770,7 @@ local function Esp(Part,Name,Colour)
 		local Player = PlrFinder(Name)
 		if Player then
 			local User = AdminUserTable[Player] and "Yes" or "No"
-			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
+			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCountry: "..Region(Player)
 		else 
 			TextLabel.Text = Name
 		end
@@ -923,11 +932,8 @@ end
 
 local function StateChanged(Old,New)
 local Character = GetChar()
-	if NoGh then
+	if NoGh and not Flying then
 		if New == Enum.HumanoidStateType.Freefall or New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding then
-			if game.PlaceId == 455366377 and Flying then 
-				wait(0.3)
-			end
 			Character.Humanoid.PlatformStand = false
 			Character.Humanoid:ChangeState(8)
 		end
@@ -2439,7 +2445,7 @@ coroutine.resume(coroutine.create(function()
 					if game.PlaceId == 455366377 and not Character:FindFirstChild'HumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
 						Character.Humanoid.PlatformStand = false
-						RunService.RenderStepped:Wait()
+						wait(0.1)
 					end
 					Character.Humanoid:ChangeState(8)
 				end
@@ -2525,7 +2531,7 @@ coroutine.resume(coroutine.create(function()
 					local BottomRight = WorldToViewportPoint((Torso.CFrame * CFrame.new(-SizeForBox.X,-SizeForBox.Y,0)).p)
 					ShowOrHideEsp(Table,OnScreen,Player)
 					local User = AdminUserTable[Player] and "Yes" or "No"
-					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User
+					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User.." | Country: "..Region(Player)
 		            Table['Text'].Position = Vector2.new(Pos.X,Pos.Y) + Vector2.new(0,10)
 		            Table['Box'][1].From = Vector2.new(TopLeft.X,TopLeft.Y)
 		            Table['Box'][1].To = Vector2.new(TopRight.X,TopRight.Y)
