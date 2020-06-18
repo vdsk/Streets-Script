@@ -1097,8 +1097,9 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
 		end 
 	end 
-	if FeLoop and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' and PartFound then 
-		PartFound.CFrame = LoopPlayer.Character.Torso.CFrame
+	if FeLoop and LoopPlayer and LoopPlayer.Character and PartFound then
+		local Part = LoopPlayer.Character:FindFirstChildWhichIsA('BasePart',true)
+		PartFound.CFrame = Part.CFrame
 		local BChildren = LP.Backpack:GetChildren()
 		for i = 1,#BChildren do 
 			local Child = BChildren[i]
@@ -1539,6 +1540,7 @@ AddCommand(function(Arguments)
 end,"nogroundhit",{"nogh","antigh","antigroundhit"},"Can't be groundhit","[No Args]")
 
 AddCommand(function(Arguments)
+	if game.PlaceId ~= 4669040 then notif("Due to an update snake did","this only works on prison.",5,nil) return end 
 	AlwaysGh = not AlwaysGh
 end,"alwaysgh",{"alwaysgroundhit"},"Beat people up like the school bully did to you when you were 13!","[No Args]")
 
