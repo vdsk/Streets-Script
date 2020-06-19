@@ -232,6 +232,11 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Ambiguity [Admin]";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(57,52,52);
+	};
+	[284761493] = {
+		['Name'] = "Zero";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(255,255,255)
 	}
 }
 
@@ -1097,9 +1102,8 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
 		end 
 	end 
-	if FeLoop and LoopPlayer and LoopPlayer.Character and PartFound then
-		local Part = LoopPlayer.Character:FindFirstChildWhichIsA('BasePart',true)
-		PartFound.CFrame = Part.CFrame
+	if FeLoop and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' and PartFound then 
+		PartFound.CFrame = LoopPlayer.Character.Torso.CFrame
 		local BChildren = LP.Backpack:GetChildren()
 		for i = 1,#BChildren do 
 			local Child = BChildren[i]
