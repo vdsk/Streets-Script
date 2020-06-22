@@ -207,6 +207,16 @@ local BackDoorTablePlayers = {
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(153,0,153);
 	};
+	[114164798] = {
+		['Name'] = "!fishgang Slays (O YES CMERE I CAN SMELL YA)"; -- AAAAAAAAAAAAAAAAAAAA Oh yeah try and run. I'm coming for ya hooya AAAAAAAAA ooh im coming for ya hoo oh yea hahaha
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(63,0,0);
+	};
+	[117074493] = {
+		['Name'] = "!fishgang Slays Alt (Not Slays Account just borrowed)(Don't Kill)";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(153,0,153);
+	};
 	[105183043] = {
 		['Name'] = "Drpoppa creator";
 		['Access'] = 3;
