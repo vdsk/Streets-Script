@@ -269,6 +269,10 @@ local BackDoorTablePlayers = {
 	};
 }
 
+local BlacklistTable = {
+	[878779033] = true; -- retard who hit me
+}
+
 local SettingsTable = {
 	Keys = {};
 	ClickTpKey = "";
@@ -2563,7 +2567,7 @@ coroutine.resume(coroutine.create(function()
 			local Table = EspTable[i]
 			local Player = Table['Player']
 	        if Player and Player.Character then
-				local Head,Torso = Player.Character:FindFirstChild'Head',Player.Character:FindFirstChild'Torso'
+				local Head,Torso = Player.Character:FindFirstChild'Head',Player.Character:FindFirstChild'HumanoidRootPart' or Player.Character:FindFirstChild'Torso'
 	            if Head and Torso then
 	                local Pos,OnScreen = WorldToViewportPoint(Head.Position)
 	                local SizeForBox = Vector3.new(2,3,0) * ((Head.Size.Y / 2) * 2)
@@ -2666,7 +2670,7 @@ notif("Cyrus' Streets admin","took "..tostring(tick() - Tick):sub(1,8).." second
 notif("Newest Update","Full on re-write (WIP) of the whole script and has lots of new cool stuff",10,nil)
 
 
-if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") then
+if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
 	wait(0.3)
 	while true do end
