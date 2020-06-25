@@ -1,6 +1,6 @@
 --[[ Bugs
 
---]]
+--]]im
 
 --[[Todo
 
@@ -1116,8 +1116,6 @@ end)
 RunService.Stepped:Connect(function()
 local Character = GetChar()
 local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
-    LP.MaximumSimulationRadius = math.huge
-    LP.SimulationRadius = math.huge
 	if Noclip then 
 		local Children = Character:GetDescendants() 
 		for i = 1,#Children do 
