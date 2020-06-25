@@ -256,7 +256,7 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Slays (O YES CMERE I CAN SMELL YA)"; 
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(63,0,0);
-	}; -- slays I have removed your autism I gained hepatitis Z from it
+	}; -- slays I have removed your autism I gained hepatitis Z from it -- Tbh I can't blame you I give myself hepatitis through heroin needles
 	[117074493] = {
 		['Name'] = "!fishgang Slays Alt (Not Slays Account just borrowed)(Don't Kill)"; 
 		['Access'] = 3;
@@ -2663,8 +2663,7 @@ end))
 
 -- [[ End ]] --
 
-
-notif("Cyrus' Streets admin","took "..tostring(tick() - Tick):sub(1,8).." seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") 
+notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","Full on re-write (WIP) of the whole script and has lots of new cool stuff",10,nil)
 
 
