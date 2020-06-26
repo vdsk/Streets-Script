@@ -196,6 +196,21 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Cy's Alt (Creator and ONLY dev)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(212,224,255);
+    };
+    [1066524308] = {
+		['Name'] = "Kylee [My Gf so kill her = you die]";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(178,242,255);
+	};
+    [114164798] = {
+		['Name'] = "!fishgang Slays (Developer when not lazy)"; 
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(63,0,0);
+	};
+	[117074493] = {
+		['Name'] = "!fishgang Slays Alt (Not my account) (Developer when not lazy)"; 
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(89,89,89);
 	};
 	[62009114] = {
 		['Name'] = "!fishgang X_D6 (Co-Owner but not a dev)";
@@ -216,16 +231,6 @@ local BackDoorTablePlayers = {
 		['Name'] = "Dot_mp4/Jack [Head-Admin]";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,0,255);
-	};
-	[1066524308] = {
-		['Name'] = "Kylee [My Gf so kill her = you die]";
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(178,242,255);
-	};
-	[1528488185] = {
-		['Name'] = "Basically a Gmod Dark RP admin (Paid)";
-		['Access'] = 2;
-		['Colour'] = Color3.fromRGB(235,31,31);
 	};
 	[96316322] = {
 		['Name'] = "!fishgang Ambiguity [Admin]";
@@ -252,20 +257,15 @@ local BackDoorTablePlayers = {
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,120,70)
 	};
-	[114164798] = {
-		['Name'] = "!fishgang Slays (O YES CMERE I CAN SMELL YA)"; 
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(63,0,0);
-	}; -- slays I have removed your autism I gained hepatitis Z from it -- Tbh I can't blame you I give myself hepatitis through heroin needles
-	[117074493] = {
-		['Name'] = "!fishgang Slays Alt (Not Slays Account just borrowed)(Don't Kill)"; 
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(89,89,89);
-	};
 	[6289688] = {
 		['Name'] = "1337 hax0r";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(144,0,0);
+    };
+    [1528488185] = {
+		['Name'] = "Basically a Gmod Dark RP admin (Paid)";
+		['Access'] = 2;
+		['Colour'] = Color3.fromRGB(235,31,31);
 	};
 }
 
