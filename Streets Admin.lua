@@ -271,6 +271,7 @@ local BackDoorTablePlayers = {
 
 local BlacklistTable = {
 	[878779033] = true; -- retard who hit me
+	[1052869632] = true; -- Generally annoying and fan boys tagged users and claims he can script when he can't (skid).
 }
 
 local SettingsTable = {
