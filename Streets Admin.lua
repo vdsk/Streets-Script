@@ -1996,7 +1996,7 @@ AddCommand(function(Arguments)
 end,"decalsteal",{},"Steals a persons decal","[Player]")
 
 AddCommand(function()
-	if not game.PlaceId == 455366377 then notif("Wont work","Streets Only",5,nil) end 
+	if game.PlaceId ~= "455366377" then return notif("Wont work","Streets Only",5,nil) end
 	if RainbowHats then RainbowHats = false LP.Backpack.Stank:FireServer("ren") end
 	if RainbowFrame.Visible then RainbowFrame.Visible = false return end 
 	RainbowScrolling:ClearAllChildren()
@@ -2011,6 +2011,7 @@ AddCommand(function()
 end,"rainbowhats",{},"Opens a GUI so you can pick what hat to rainbowize","[No Args]")
 
 AddCommand(function(Arguments)
+if game.PlaceId ~= "455366377" then return notif("Wont work","Streets Only",5,nil) end
 	if Arguments[1] and tonumber(Arguments[1]) then
 		Rainbowdelay = tonumber(Arguments[1])
 	end
