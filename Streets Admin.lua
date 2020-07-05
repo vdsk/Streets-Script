@@ -749,7 +749,7 @@ local function checkHp(Plr)
 end
 
 local function HasItem(Player,Item)
-	local ItemFound = Player.Character:FindFirstChild(Item) or Player.Backpack:FindFirstChild(Item)
+	local ItemFound = Player.Character:FindFirstChild(Item,true) or Player.Backpack:FindFirstChild(Item,true)
 	return ItemFound and "Yes" or "No" 
 end
 
@@ -2584,7 +2584,7 @@ coroutine.resume(coroutine.create(function()
 					local BottomRight = WorldToViewportPoint((Torso.CFrame * CFrame.new(-SizeForBox.X,-SizeForBox.Y,0)).p)
 					ShowOrHideEsp(Table,OnScreen,Player)
 					local User = AdminUserTable[Player] and "Yes" or "No"
-					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User.." | Country: "..Region(Player)
+					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).." | KO'ed: "..HasItem(Player,"Bone").."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User.." | Country: "..Region(Player)
 		            Table['Text'].Position = Vector2.new(Pos.X,Pos.Y) + Vector2.new(0,10)
 		            Table['Box'][1].From = Vector2.new(TopLeft.X,TopLeft.Y)
 		            Table['Box'][1].To = Vector2.new(TopRight.X,TopRight.Y)
