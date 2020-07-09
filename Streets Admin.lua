@@ -118,7 +118,7 @@ local SpinAnimation = Instance.new'Animation'
 SpinAnimation.AnimationId = "rbxassetid://188632011"
 local AirWalk = Instance.new'Part'
 AirWalk.Anchored = true 
-AirWalk.Size = Vector3.new(15,1,15)
+AirWalk.Size = Vector3.new(5,1,5)
 AirWalk.Transparency = 1 
 
 local CmdsFrame = Instance.new('Frame',CoreGui.RobloxGui)
@@ -365,121 +365,6 @@ end))
 
 -- [[ End ]] -- 
 
--- [[ Bypass ]] -- 
-
-local Raw = getrawmetatable(game)
-local Caller = checkcaller or is_protosmasher_caller or Cer.isCerus
-local CallingScript = getcallingscript or get_calling_script
-local Closure = newcclosure or read_me or function(Func) return Func end
-local CallingMethod = getnamecallmethod or get_namecall_method
-
-setreadonly(Raw,false)
-
-local Index = Raw.__index;
-Raw.__index = Closure(function(self,Indexed)
-	if TpBypass and CallingScript and CallingScript() ~= script and Indexed == "HumanoidRootPart" then 
-		return Index(self,"Torso")
-	end
-	return Index(self,Indexed)
-end)
-
-local NewIndex = Raw.__newindex;
-Raw.__newindex = Closure(function(self,Property,Value)
-	if Caller() then return NewIndex(self,Property,Value) end
-	StarterGui:SetCore('ResetButtonCallback',true)
-	if Property == "WalkSpeed" and not WalkShoot then return 16 end
-	if Property == "JumpPower" then return 37.5 end 
-	if Property == "HipHeight" then return 0 end 
-	if Property == "Health" then return 100 end
-	if self == workspace and Property == "Gravity" then return NormalGravity end
-	if Property == "CFrame" and self:IsDescendantOf(LP.Character) then return end 
-	return NewIndex(self,Property,Value)
-end)
-
-local Namecall = Raw.__namecall;
-Raw.__namecall = Closure(function(self,...)
-local Args = {...}
-	if Caller() then 
-		if CallingMethod() == "FindFirstChild" and Args[1] == "RealHumanoidRootPart" then 
-			Args[1] = "HumanoidRootPart" 
-			return Namecall(self,unpack(Args))
-		end
-		return Namecall(self,...) 
-	end 
-	if CallingMethod() == "Destroy" or CallingMethod() == "Kick" then 
-		if self == LP then return wait(9e9) end
-		if tostring(self) == 'BodyGyro' or tostring(self) == 'BodyVelocity' then return wait(9e9) end 
-	end
-	if CallingMethod() == "BreakJoints" and self == LP.Character then return wait(9e9) end
-	if CallingMethod() == "FireServer" then
-		if tostring(self) == "Fire" and Aimlock and AimlockTarget then 
-			local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") or AimlockTarget.FindFirstChild(AimlockTarget,"Torso")
-			if TargetPart then
-				if AimMode == "OldPrediction" then
-					return Namecall(self,TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity)
-				elseif AimMode == "Prediction" then
-					return Namecall(self,TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity)
-				end
-			end 
-			if AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
-				return Namecall(self,AimlockTarget[AimMode].CFrame)
-			end
-		end
-		if tostring(self) == "Input" and Aimlock and AimlockTarget then 
-			if typeof(Args[2]) == "table" then
-				local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,"HumanoidRootPart") or AimlockTarget.FindFirstChild(AimlockTarget,"Torso")
-				if TargetPart then
-					if AimMode == "OldPrediction" then 
-						Args[2].mousehit = TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity
-						return Namecall(self,unpack(Args))
-					elseif AimMode == "Prediction" then
-						Args[2].mousehit = TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity
-						return Namecall(self,unpack(Args))
-					end 
-				end
-				if AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
-					Args[2].mousehit = AimlockTarget[AimMode].CFrame 
-					return Namecall(self,unpack(Args))
-				end 
-			end 
-		end 
-		if tostring(self.Parent) == "ReplicatedStorage" or Args[1] == "hey" and not tostring(self) == "SayMessageRequest" then 
-			return wait(9e9)
-		end
-		if tostring(self) == "Touch1" and AlwaysGh then
-			Args[3] = true
-			return Namecall(self,unpack(Args)) 
-		end
-		if Args[1] == "play" then 
-			PlayOnDeath = Args[2]
-		elseif Args[1] == "stop" then 
-			PlayOnDeath = nil
-		end
-	end
-	if CallingMethod() == "WaitForChild" or CallingMethod() == "FindFirstChild" then 
-		if CallingScript and CallingScript() ~= script and TpBypass and Args[1] == "HumanoidRootPart" then
-			Args[1] = "Torso"
-			return Namecall(self,unpack(Args))
-		end
-	end
-	return Namecall(self,...)
-end)
-
-if hookfunction then 
-	local OldRemote; OldRemote = hookfunction(Instance.new'RemoteEvent'.FireServer,function(self,...)
-		local Args = {...}
-		if tostring(self) == "Touch1" and AlwaysGh then 
-			Args[3] = true 
-			return OldRemote(self,unpack(Args))
-		end
-		return OldRemote(self,...)
-	end)
-end 
-
-setreadonly(Raw,true)
-
--- [[ End ]] -- 
-
 -- [[ Hotkeys ]] -- 
 
 
@@ -698,6 +583,9 @@ if not Torso then return end
 	BodyVelocity.MaxForce = Vector3.new(9e9,9e9,9e9)
 	BodyVelocity.Velocity = Vector3.new(0,0.1,0)
 	local Table1 = {['W'] = 0;['A'] = 0;['S'] = 0;['D'] = 0;}
+	if not AirwalkOn then 
+		CheckCommand("airwalk")
+	end 
 	while Flying and Character:FindFirstChild'Humanoid' and Character.Humanoid.Health > 0 and wait() do 
 		if KeyTable['W'] then Table1['W'] = FlySpeed else Table1['W'] = 0 end 
 		if KeyTable['A'] then Table1['A'] = -FlySpeed else Table1['A'] = 0 end 
@@ -710,6 +598,9 @@ if not Torso then return end
 		end
 		BodyGyro.CFrame = workspace.CurrentCamera.CoordinateFrame
 	end
+	if AirwalkOn then 
+		CheckCommand("airwalk")
+	end 
 	BodyGyro:Destroy()
 	BodyVelocity:Destroy()
 end
@@ -873,12 +764,6 @@ local function GrabItem(Thing,OldPos)
 	return true
 end
 
-local function ChildAddedToChar(Thing)
-	if Thing.Name == "KO" and AutoDie then 
-		GetChar():BreakJoints()
-	end
-end
-
 local function HealthChanged(Health)
 	if Health <= HealBotHealth and HealBot and not TpBypass then 
 		if GrabItem("burger",GetChar().Head.CFrame) then
@@ -981,10 +866,11 @@ local function createCmd(Pos,CommandName,CommandInfo,CommandArgs)
 end
 
 local function StateChanged(Old,New)
-local Character = GetChar()
-	if New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh or Flying then
-		Character.Humanoid.PlatformStand = false
-		Character.Humanoid:ChangeState(8)
+	if Flying or NoGh then 
+		if New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding then
+			LP.Character.Humanoid.PlatformStand = false
+			LP.Character.Humanoid:ChangeState(8)
+		end
 	end 
 end
 
@@ -1003,6 +889,9 @@ end
 local function ColourChanger(T)
 	if T:IsA'Trail' then 
 		T.Color = BulletColour
+	end
+	if T.Name == "Bone" and AutoDie then 
+		GetChar():BreakJoints()
 	end
 	if T:IsA'ObjectValue' and T.Name == "creator" then 
 		if AutoTarget then
@@ -1068,14 +957,12 @@ if not GetChar():FindFirstChild'Head' then return end
 end
 
 local function BehindAWall(Target)
-	local RYEBread = Ray.new(workspace.CurrentCamera.CoordinateFrame.p,Target.Head.Position - workspace.CurrentCamera.CoordinateFrame.Position)
-	local RYEBreadHit = workspace:FindPartOnRay(RYEBread)
-	if RYEBreadHit then
-		if RYEBreadHit:IsDescendantOf(Target) then 
-			return false
-		else
-			return true 
-		end 
+	if Target:FindFirstChild'Head' then 
+		local RYEBread = Ray.new(workspace.CurrentCamera.CoordinateFrame.p,Target.Head.Position - workspace.CurrentCamera.CoordinateFrame.Position)
+		local RYEBreadHit = workspace:FindPartOnRay(RYEBread)
+		if RYEBreadHit then
+			return RYEBreadHit:IsDescendantOf(Target)
+		end
 	end 
 end
 
@@ -1095,7 +982,111 @@ local function LoopChangeWalkSpeed()
 			GetChar().Humanoid.WalkSpeed = WalkSpeed
 		end 
 	end
+end
+
+local function AimbotToCFrame()
+local CFrameToReturn;
+local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,'HumanoidRootPart') or AimlockTarget.FindFirstChild(AimlockTarget,'Torso')
+	if TargetPart and AimMode == "OldPrediction" then 
+		CFrameToReturn = TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity
+	elseif TargetPart and AimMode == "Prediction" then
+		CFrameToReturn = TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity
+	elseif AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
+		CFrameToReturn = AimlockTarget[AimMode].CFrame
+	end
+	return CFrameToReturn
+end
+
+-- [[ End ]] -- 
+
+-- [[ Bypass ]] -- .
+
+local Raw = getrawmetatable(game)
+local Caller = checkcaller or is_protosmasher_caller or Cer.isCerus
+local CallingScript = getcallingscript or get_calling_script
+local Closure = newcclosure or read_me or function(Func) return Func end
+local CallingMethod = getnamecallmethod or get_namecall_method
+
+setreadonly(Raw,false)
+
+local Index = Raw.__index;
+Raw.__index = Closure(function(self,Indexed)
+	if TpBypass and CallingScript and CallingScript() ~= script and Indexed == "HumanoidRootPart" then 
+		return Index(self,"Torso")
+	end
+	return Index(self,Indexed)
+end)
+
+local NewIndex = Raw.__newindex;
+Raw.__newindex = Closure(function(self,Property,Value)
+	if Caller() then return NewIndex(self,Property,Value) end
+	StarterGui:SetCore('ResetButtonCallback',true)
+	if Property == "WalkSpeed" and not WalkShoot then return 16 end
+	if Property == "JumpPower" then return 37.5 end 
+	if Property == "HipHeight" then return 0 end 
+	if Property == "Health" then return 100 end
+	if self == workspace and Property == "Gravity" then return NormalGravity end
+	if Property == "CFrame" and self:IsDescendantOf(LP.Character) then return end 
+	return NewIndex(self,Property,Value)
+end)
+
+local Namecall = Raw.__namecall;
+Raw.__namecall = Closure(function(self,...)
+local Args = {...}
+	if Caller() then 
+		if CallingMethod() == "FindFirstChild" and Args[1] == "RealHumanoidRootPart" then 
+			Args[1] = "HumanoidRootPart" 
+			return Namecall(self,unpack(Args))
+		end
+		return Namecall(self,...) 
+	end 
+	if CallingMethod() == "Destroy" or CallingMethod() == "Kick" then 
+		if self == LP then return wait(9e9) end
+		if tostring(self) == 'BodyGyro' or tostring(self) == 'BodyVelocity' then return wait(9e9) end 
+	end
+	if CallingMethod() == "BreakJoints" and self == LP.Character then return wait(9e9) end
+	if CallingMethod() == "FireServer" then
+		if tostring(self) == "Fire" and Aimlock and AimlockTarget then
+			return Namecall(self,AimbotToCFrame())
+		end 
+		if tostring(self) == "Input" and Aimlock and AimlockTarget then 
+			Args[2].mousehit = AimbotToCFrame()
+			return Namecall(self,unpack(Args))
+		end
+		if tostring(self.Parent) == "ReplicatedStorage" or Args[1] == "hey" and not tostring(self) == "SayMessageRequest" then 
+			return wait(9e9)
+		end
+		if tostring(self) == "Touch1" and AlwaysGh then
+			Args[3] = true
+			return Namecall(self,unpack(Args)) 
+		end
+		if Args[1] == "play" then 
+			PlayOnDeath = Args[2]
+		elseif Args[1] == "stop" then 
+			PlayOnDeath = nil
+		end
+	end
+	if CallingMethod() == "WaitForChild" or CallingMethod() == "FindFirstChild" then 
+		if CallingScript and CallingScript() ~= script and TpBypass and Args[1] == "HumanoidRootPart" then
+			Args[1] = "Torso"
+			return Namecall(self,unpack(Args))
+		end
+	end
+	return Namecall(self,...)
+end)
+
+if hookfunction then 
+	local OldRemote; OldRemote = hookfunction(Instance.new'RemoteEvent'.FireServer,function(self,...)
+		local Args = {...}
+		if tostring(self) == "Touch1" and AlwaysGh then 
+			Args[3] = true 
+			return OldRemote(self,unpack(Args))
+		end
+		return OldRemote(self,...)
+	end)
 end 
+
+setreadonly(Raw,true)
 
 -- [[ End ]] -- 
 
@@ -1132,12 +1123,12 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
-	if flying and LP.Character:FindFirstChild'Humanoid' and not FlyDebounce then
+	if flying and Character:FindFirstChild'Humanoid' and not FlyDebounce then
 		FlyDebounce = true
 		LP.Character.Humanoid:ChangeState(3)
 		wait(0.2)
 		FlyDebounce = false
-	end 
+	end
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime
 	end
@@ -1176,7 +1167,6 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 	end
 end)
 
-local CharacterChildAdded;CharacterChildAdded = LP.Character.ChildAdded:Connect(ChildAddedToChar)
 local HealthChangedEvent;HealthChangedEvent = LP.Character.Humanoid.HealthChanged:Connect(HealthChanged)
 local HumanoidStateChanged;HumanoidStateChanged = LP.Character.Humanoid.StateChanged:Connect(StateChanged)
 local ColourChangerEvent;ColourChangerEvent = LP.Character.DescendantAdded:Connect(ColourChanger)
@@ -1184,10 +1174,6 @@ local WalkSpeedChangedEvent;WalkSpeedChangedEvent = LP.Character.Humanoid:GetPro
 LP.CharacterAdded:Connect(function(C)
 	Flying = false 
 	C:WaitForChild'Humanoid' -- wait until the humanoid has been found
-	-- KO Event -- 
-	CharacterChildAdded:Disconnect()
-	CharacterChildAdded = nil 
-	CharacterChildAdded = C.ChildAdded:Connect(ChildAddedToChar)
 	-- HealBot Event --
 	HealthChangedEvent:Disconnect()
 	HealthChangedEvent = nil 
@@ -2008,7 +1994,7 @@ AddCommand(function(Arguments)
 end,"decalsteal",{},"Steals a persons decal","[Player]")
 
 AddCommand(function()
-	if game.PlaceId ~= "455366377" then return notif("Wont work","Streets Only",5,nil) end
+	if game.PlaceId ~= 455366377 then return notif("Wont work","Streets Only",5,nil) end
 	if RainbowHats then RainbowHats = false LP.Backpack.Stank:FireServer("ren") end
 	if RainbowFrame.Visible then RainbowFrame.Visible = false return end 
 	RainbowScrolling:ClearAllChildren()
@@ -2563,16 +2549,18 @@ coroutine.resume(coroutine.create(function()
 			end
 		end
 		local Gun = Character:FindFirstChildOfClass'Tool'
-		if AimbotAutoShoot and AimlockTarget and Gun:FindFirstChild'Fire' and Gun:FindFirstChild'Info' then
-			local TargetPart = AimlockTarget:FindFirstChild'HumanoidRootPart' or AimlockTarget:FindFirstChild'Torso'
-			if TargetPart and not BehindAWall(AimlockTarget) and not AimlockTarget:FindFirstChild'KO' and AimlockTarget:FindFirstChild'Humanoid' and AimlockTarget.Humanoid.Health > 0 then
-				if AimMode == "OldPrediction" and AimlockTarget.FindFirstChild(AimlockTarget,'Torso') then 
-					Gun.Fire:FireServer(AimlockTarget.Torso.CFrame + TargetPart.Velocity / AimbotVelocity)
-				elseif AimMode == "Prediction" and AimlockTarget:FindFirstChild'Torso' then 
-					Gun.Fire:FireServer(AimlockTarget.Torso.CFrame + AimlockTarget.Torso.Velocity / NewPredictionVelocity)
-				elseif AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
-					Gun.Fire:FireServer(AimlockTarget[AimMode].CFrame)
-				end
+		if AimbotAutoShoot and AimlockTarget and Gun and Gun:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 then
+			print(HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone"))
+			if not BehindAWall(AimlockTarget) and HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone") ~= "Yes" then
+				if game.PlaceId == 455366377 then
+					LP.Backpack.Input:FireServer("m1",{
+						['mousehit'] = AimbotToCFrame();
+						['shift'] = UserInput:IsKeyDown(Enum.KeyCode.LeftShift);
+						['velo'] = Character.Head.Velocity.magnitude;
+					})
+				else 
+					Gun.Fire:FireServer(AimbotToCFrame())
+				end 
 			end 
 		end
 		for i = 1,#EspTable do
@@ -2678,7 +2666,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Full on re-write (WIP) of the whole script and has lots of new cool stuff",10,nil)
+notif("Newest Update","Fixed some bugs on the aimlock,autoshoot and cleaned up some internal code",10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
