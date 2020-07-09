@@ -47,6 +47,7 @@ local DamageIndicatorDebounce = false
 local ExploiterDetectionOn = false
 local FeLoop = false 
 local Flying = false
+local FlyDebounce = false
 local Freecam = false
 local GodMode = false
 local GunStomp = true 
@@ -981,11 +982,9 @@ end
 
 local function StateChanged(Old,New)
 local Character = GetChar()
-	if NoGh and not Flying then
-		if New == Enum.HumanoidStateType.Freefall or New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding then
-			Character.Humanoid.PlatformStand = false
-			Character.Humanoid:ChangeState(8)
-		end
+	if New == Enum.HumanoidStateType.FallingDown or New == Enum.HumanoidStateType.PlatformStanding and NoGh or Flying then
+		Character.Humanoid.PlatformStand = false
+		Character.Humanoid:ChangeState(8)
 	end 
 end
 
@@ -1133,6 +1132,12 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
+	if flying and LP.Character:FindFirstChild'Humanoid' and not FlyDebounce then
+		FlyDebounce = true
+		LP.Character.Humanoid:ChangeState(3)
+		wait(0.2)
+		FlyDebounce = false
+	end 
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime
 	end
@@ -2494,11 +2499,11 @@ coroutine.resume(coroutine.create(function()
 		local Character = GetChar()
 		coroutine.resume(coroutine.create(function()
 			if Character and Character:FindFirstChildOfClass'Humanoid'then 
-				if workspace.Gravity < NormalGravity or Flying then 
+				if workspace.Gravity < NormalGravity then 
 					if game.PlaceId == 455366377 and not Character:FindFirstChild'HumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
 						Character.Humanoid.PlatformStand = false
-						wait(0.1)
+						wait(0.2)
 					end
 					Character.Humanoid:ChangeState(8)
 				end
