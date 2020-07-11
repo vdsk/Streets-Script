@@ -318,6 +318,13 @@ local FarmTable = {
 	['uzi'] = "328964620";
 }
 
+local EstimatedGunRanges = {
+	['Glock'] = 100;
+	['Uzi'] = 100;
+	['Sawed Off'] = 50;
+	['Shotty'] = 50;
+}
+
 local KeyTable = {
 	['W'] = false;
 	['A'] = false;
@@ -822,9 +829,14 @@ local function createRainbow(Pos,Text,Value)
 	RainbowButton.Text = Text
 	RainbowButton.TextWrapped = true
 	RainbowButton.MouseButton1Click:Connect(function()
-		LP.Backpack.Stank:FireServer("rep",Value.Parent)
-		RainbowFrame.Visible = false
-		RainbowHats = true 
+		if Text == "All" then 
+			RainbowHats = "All"
+			RainbowFrame.Visible = false
+		else 
+			LP.Backpack.Stank:FireServer("rep",Value.Parent)
+			RainbowFrame.Visible = false
+			RainbowHats = true
+		end 
 	end)
 	dragGUI(RainbowFrame,RainbowButton)
 end
@@ -953,7 +965,7 @@ end
 
 local function BehindAWall(Target)
 	if Target:FindFirstChild'Head' then 
-		local RYEBread = Ray.new(workspace.CurrentCamera.CoordinateFrame.p,Target.Head.Position - workspace.CurrentCamera.CoordinateFrame.Position)
+		local RYEBread = Ray.new(Target.Head.Position,GetChar().Head.Position)
 		local RYEBreadHit = workspace:FindPartOnRay(RYEBread)
 		if RYEBreadHit then
 			return RYEBreadHit:IsDescendantOf(Target)
@@ -1418,7 +1430,7 @@ CmdBarTextBox:GetPropertyChangedSignal("Text"):Connect(function()
 		for i = 1,#Children do 
 			local Child = Children[i]
 			if Child:IsA'TextLabel' then
-				local Text = string.lower(Child.Text):gsub("%[%l+%]%s",""):gsub("%[.+","")
+				local Text = string.lower(Child.Text):gsub("[Alias] ","")
 				if string.find(Text,CmdBarTextBox.Text:lower()) then
 					Child.Position = UDim2.new(0,0,0,10 + (Position * 20))
 					Position = Position + 1
@@ -1995,10 +2007,11 @@ AddCommand(function()
 	RainbowScrolling:ClearAllChildren()
 	RainbowFrame.Visible = true 
 	local C = LP.PlayerGui.HUD.Clan.Group.Reps:GetChildren()
+	createRainbow(UDim2.new(-0.002,0,0,-10),"All")
 	for i = 1,#C do
 		local Child = C[i]
 		if Child:IsA'TextButton' and Child:FindFirstChild'typ' then 
-			createRainbow(UDim2.new(-0.002,0,0,-50 + (i * 25)),Child.typ.Value,Child.typ)
+			createRainbow(UDim2.new(-0.002,0,0,-40 + (i * 30)),Child.typ.Value,Child.typ)
 		end
 	end
 end,"rainbowhats",{},"Opens a GUI so you can pick what hat to rainbowize","[No Args]")
@@ -2072,7 +2085,7 @@ AddCommand(function(Arguments)
 		end
 		updateHotkeys(ConfigurationFile)
 	end
-end,"aimmode",{"aimlockmode"},"LeftClick/RightClick/NoMouse (Sets the way you can aimlock)","[LeftClick/RightClick/NoMouse]")
+end,"aimmode",{"aimlockmode"},"LeftClick/RightClick/NoMouse/Closest (Sets the way you can aimlock)","[LeftClick/RightClick/NoMouse/Closest]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] and tonumber(Arguments[1]) then
@@ -2500,6 +2513,21 @@ coroutine.resume(coroutine.create(function()
 			end 
 		end))
 		local Tool = Character:FindFirstChildOfClass'Tool'
+		if AimbotAutoShoot and AimlockTarget and Tool and Tool:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 then
+			if not BehindAWall(AimlockTarget) and HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone") ~= "Yes" then
+				if AimlockTarget:FindFirstChild'Head' and (AimlockTarget.Head.Position - Character.Head.Position).magnitude <= EstimatedGunRanges[Tool.Name] then 
+					if game.PlaceId == 455366377 then
+						LP.Backpack.Input:FireServer("m1",{
+							['mousehit'] = AimbotToCFrame();
+							['shift'] = UserInput:IsKeyDown(Enum.KeyCode.LeftShift);
+							['velo'] = Character.Head.Velocity.magnitude;
+						})
+					else 
+						Tool.Fire:FireServer(AimbotToCFrame())
+					end
+				end 
+			end 
+		end
 		if Character:FindFirstChildOfClass'Humanoid' then 
 			if Tool and Tool:FindFirstChild'Ammo' then 
 				ValuesTextLabel.Text = "Health: "..math.floor(Character.Humanoid.Health).."\nCurrent WalkSpeed: "..math.floor(Character.Humanoid.WalkSpeed).."\nSprinting Speed: "..SprintSpeed.."\nCrouching Speed: "..CrouchSpeed.."\nBlink Speed: "..BlinkSpeed.."\nJumpPower: "..Character.Humanoid.JumpPower.."\nNoclipping: "..tostring(Noclip).."\nAimlocking: "..tostring(Aimlock).."\nAimlock Target: "..tostring(AimlockTarget).."\n"..Tool.Name.." Ammo&Clips: "..Tool.Ammo.Value.."/"..Tool.Clips.Value
@@ -2542,21 +2570,6 @@ coroutine.resume(coroutine.create(function()
 					PartFound.CFrame = PartFound.CFrame * CFrame.new(BlinkSpeed,0,0)
 				end
 			end
-		end
-		local Gun = Character:FindFirstChildOfClass'Tool'
-		if AimbotAutoShoot and AimlockTarget and Gun and Gun:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 then
-			print(HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone"))
-			if not BehindAWall(AimlockTarget) and HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone") ~= "Yes" then
-				if game.PlaceId == 455366377 then
-					LP.Backpack.Input:FireServer("m1",{
-						['mousehit'] = AimbotToCFrame();
-						['shift'] = UserInput:IsKeyDown(Enum.KeyCode.LeftShift);
-						['velo'] = Character.Head.Velocity.magnitude;
-					})
-				else 
-					Gun.Fire:FireServer(AimbotToCFrame())
-				end 
-			end 
 		end
 		for i = 1,#EspTable do
 			local Table = EspTable[i]
@@ -2652,8 +2665,12 @@ coroutine.resume(coroutine.create(function()
 	end))
 	while wait(Rainbowdelay) do 
 		if RainbowHats and LP.Backpack:FindFirstChild'Stank' then
-			local T = LP.PlayerGui.HUD.Clan.Group.cs:GetChildren()
-			LP.Backpack.Stank:FireServer("color",T[math.random(1,#T)])
+			if RainbowHats == "All" then 
+				local HatTable = LP.PlayerGui.HUD.Clan.Group.Reps:GetChildren()
+				LP.Backpack.Stank:FireServer("rep",HatTable[math.random(1,#HatTable)])
+			end 
+			local ColourTable = LP.PlayerGui.HUD.Clan.Group.cs:GetChildren()
+			LP.Backpack.Stank:FireServer("color",ColourTable[math.random(1,#ColourTable)])
 		end
 	end
 end))
@@ -2661,7 +2678,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Fixed some bugs on the aimlock,autoshoot and cleaned up some internal code",10,nil)
+notif("Newest Update","Fixed more bugs,internal stuff,added \"All\" to rainbowhats,Documented Aimmode Closest",10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
