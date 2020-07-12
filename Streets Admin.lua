@@ -473,7 +473,7 @@ getgenv().PlrFinder = function(PlayerString)
 	local PlayerString = PlayerString:lower()
 	local PlayerTable = Players:GetPlayers()
 	if #PlayerString == 2 and PlayerString == "me" then return LP end
-	if #PlayerString == 3 and PlayerString == "all" then return PlayerTable end
+	if #PlayerString == 3 and PlayerString == "all" or #PlayerString == 5 and PlayerString == "users" then return PlayerTable end
 	for i = 1,#PlayerTable do 
 		if PlayerTable[i].Name:lower():sub(1,#PlayerString) == PlayerString then
 			return PlayerTable[i]
@@ -714,7 +714,7 @@ local function IsAUser(Player,Chat)
 	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
 		AdminUserTable[Player] = true
 		if BackDoorTablePlayers[LP.UserId] then 
-			Esp(Player.Character.Head,Player.Name)
+			--Esp(Player.Character.Head,Player.Name)
 		end 
 		return true 
 	end
@@ -2200,20 +2200,22 @@ AddCommand(function(Arguments)
 	if Arguments[1] then 
 		local Player = PlrFinder(Arguments[1])
 		if Player and Player ~= LP then 
-			if typeof(Player) == "table" then 
+			if typeof(Player) == "table" then
 				for i = 1,#Player do
 					local ActualPlr = Player[i]
 					if ActualPlr ~= LP and ActualPlr.Character and ActualPlr.Character:FindFirstChild'Head' then
-						EspTable2[ActualPlr] = true 
-						Esp(ActualPlr.Character.Head,Player.Name)
-						local EspEvent;EspEvent = ActualPlr.CharacterAdded:Connect(function(C)
-							local Head = C:WaitForChild'Head'
-							if EspTable[Player] then 
-								Esp(Head,Player.Name)
-							else 
-								EspEvent:Disconnect()
-							end
-						end)
+						if Arguments[1] == "users" and AdminUserTable[ActualPlr] or Arguments[1] ~= "users" then 
+							EspTable2[ActualPlr] = true 
+							Esp(ActualPlr.Character.Head,Player.Name)
+							local EspEvent;EspEvent = ActualPlr.CharacterAdded:Connect(function(C)
+								local Head = C:WaitForChild'Head'
+								if EspTable[Player] then 
+									Esp(Head,Player.Name)
+								else 
+									EspEvent:Disconnect()
+								end
+							end)
+						end 
 					end 
 				end
 			else
@@ -2232,7 +2234,7 @@ AddCommand(function(Arguments)
 			end 
 		end 
 	end
-end,"esp",{},"Find a player anywhere in the map","[Player/All]")
+end,"esp",{},"Find a player anywhere in the map","[Player/All/Users]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -2678,7 +2680,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Fixed more bugs,internal stuff,added \"All\" to rainbowhats,Documented Aimmode Closest",10,nil)
+notif("Newest Update","Esp Users command (Only Esps CyAdmin Users)",10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
