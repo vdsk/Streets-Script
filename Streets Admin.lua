@@ -1295,7 +1295,7 @@ local Target = Mouse.Target
 	end
 	if CanSetHotkey then
 		local KeyCode = Key.KeyCode.Name
-		if KeyCode ~= "Unknown" and KeyCode ~= "Return" then
+		if KeyCode ~= "Unknown" and KeyCode ~= "Return" and Keycode ~= "Slash" then
 			if CanSetHotkey == "CmdBar" then
 				CmdBarKey = KeyCode
 				notif("CommandBarKey","Has been set to the hotkey: "..KeyCode,5,nil)
@@ -2822,7 +2822,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Added a stupid pawels gun animation (\"gunanim\")",10,nil)
+notif("Newest Update","Added a stupid pawels gun animation (\"gunanim\"),new UI for setting keys",10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
