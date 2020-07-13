@@ -925,8 +925,17 @@ local function ColourChanger(T)
 		wait()
 		GetChar().Humanoid:LoadAnimation(GunAnimation):Play()
 	end 
-	if T.Name == "Bone" and AutoDie then 
-		GetChar():BreakJoints()
+	if T.Name == "Bone" then 
+		if AutoDie then 
+			GetChar():BreakJoints()
+		end 
+		if GodMode and game.PlaceId == 455366377 then 
+			for i,v in pairs(GetChar():GetDescendants()) do 
+				if v:IsA'NumberValue' then 
+					v:Destroy()
+				end 
+			end
+		end 
 	end
 	if T:IsA'ObjectValue' and T.Name == "creator" then 
 		if AutoTarget then
@@ -1247,7 +1256,7 @@ LP.CharacterAdded:Connect(function(C)
 			Hr:Destroy()
 		end
 	end
-	if FeLoop or GodMode then
+	if FeLoop or GodMode and game.PlaceId ~= 455366377 then
 		C['Right Leg']:Destroy()
 		if FeLoop then 
 			local H = C.Humanoid:Clone()
@@ -1682,8 +1691,14 @@ end,"draggablegui",{},"Makes your HUD draggable","[No Args]")
 AddCommand(function(Arguments)
 	if not Arguments[1] then 
 		GodMode = not GodMode
+		if GodMode and game.PlaceId == 455366377 then 
+			notif("go get KO'ed","make sure you don't get dragged and like fly away somewhere when you get up you will be godded",5,nil)
+		else 
+			if GodMode then 
+				GetChar():BreakJoints()
+			end 
+		end 
 		notif("GodMode","Has been set to "..tostring(GodMode),5,nil)
-		GetChar():BreakJoints()
 	end
 end,"godmode",{"god"},"Turns on god-mode so you can't be hit (Breaks Tools)","[No Args]")
 
