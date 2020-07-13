@@ -290,6 +290,13 @@ local BlacklistTable = {
 	[872132185] = true; -- who names their child "matt" 
 }
 
+local RandomFeloopTable = {
+	function(Num1,Num2) return "+",Num1 + Num2 end; 
+	function(Num1,Num2) return "-",Num1 - Num2 end;
+	function(Num1,Num2) return "/",Num1 / Num2 end;
+	function(Num1,Num2) return "*",Num1 * Num2 end;
+}
+
 local SettingsTable = {
 	Keys = {};
 	ClickTpKey = "";
@@ -1255,14 +1262,12 @@ LP.CharacterAdded:Connect(function(C)
 			Hr:Destroy()
 		end
 	end
-	if FeLoop or GodMode and game.PlaceId ~= 455366377 then
+	if FeLoop then
 		C['Right Leg']:Destroy()
-		if FeLoop then 
-			local H = C.Humanoid:Clone()
-			C.Humanoid:Destroy()
-			H.Parent = C
-			workspace.CurrentCamera.CameraSubject = C
-		end
+		local H = C.Humanoid:Clone()
+		C.Humanoid:Destroy()
+		H.Parent = C
+		workspace.CurrentCamera.CameraSubject = C
 	end 
 	if PlayOnDeath then 
 		wait()
@@ -1508,26 +1513,28 @@ Players.PlayerRemoving:Connect(function(Player)
 end)
 
 CmdBarTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-	if CmdBarTextBox.Text ~= "" or CmdBarTextBox.Text ~= " " then 
-		local Position = 0 
-		local Children = CmdBarFrame:GetChildren()
-		for i = 1,#Children do 
-			local Child = Children[i]
-			if Child:IsA'TextLabel' then
-				local Text = string.lower(Child.Text):gsub("[Alias] ","")
-				if string.find(Text,CmdBarTextBox.Text:lower()) then
-					Child.Position = UDim2.new(0,0,0,10 + (Position * 20))
-					Position = Position + 1
-					if Position >= 7 then
+pcall(function()
+		if CmdBarTextBox.Text ~= "" or CmdBarTextBox.Text ~= " " then 
+			local Position = 0 
+			local Children = CmdBarFrame:GetChildren()
+			for i = 1,#Children do 
+				local Child = Children[i]
+				if Child:IsA'TextLabel' then
+					local Text = string.lower(Child.Text):gsub("[Alias] ","")
+					if string.find(Text,CmdBarTextBox.Text:lower()) then
+						Child.Position = UDim2.new(0,0,0,10 + (Position * 20))
+						Position = Position + 1
+						if Position >= 7 then
+							Child.Position = UDim2.new(0,0,0,1000)
+							Position = Position - 1
+						end
+					else 
 						Child.Position = UDim2.new(0,0,0,1000)
-						Position = Position - 1
 					end
-				else 
-					Child.Position = UDim2.new(0,0,0,1000)
 				end
 			end
 		end
-	end
+	end)
 end)
 
 CmdBarTextBox.FocusLost:Connect(function(PressedEnter)
@@ -1688,19 +1695,15 @@ AddCommand(function()
 end,"draggablegui",{},"Makes your HUD draggable","[No Args]")
 
 AddCommand(function(Arguments)
+if game.PlaceId ~= 455366377 then return end 
 	if not Arguments[1] then 
 		GodMode = not GodMode
-		if GodMode and game.PlaceId == 455366377 then 
+		if GodMode then 
 			notif("go get KO'ed","make sure you don't get dragged and like fly away somewhere when you get up you will be godded",5,nil)
-		else 
-			if GodMode then 
-				GetChar():BreakJoints()
-			end
 		end 
 		notif("GodMode","Has been set to "..tostring(GodMode),5,nil)
 	end
 end,"godmode",{"god"},"Turns on god-mode so you can't be hit (Breaks Tools)","[No Args]")
-
 
 AddCommand(function(Arguments)
 	local Descendants = game:GetDescendants()
@@ -2014,9 +2017,11 @@ AddCommand(function(Arguments)
 	FeLoop = not FeLoop
 	if FeLoop then 
 		wait(0.5)
-		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what 2+2 equals - Cy","All")
+		local Number1,Number2 = math.random(1,20),math.random(1,20)
+		local Operator,RandomizedNumber = RandomFeloopTable[math.random(1,#RandomFeloopTable)](Number1,Number2)
+		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what "..Number1..Operator..Number2.." equals - Cy","All")
 		local Chat = LP.Chatted:Wait()
-		if Chat:lower() ~= "fish" then LP:Kick('That answer is wrong.') end
+		if Chat ~= tostring(RandomizedNumber) then LP:Kick('That answer is wrong.') end
 	end
 	if Arguments[1] then
 		FeLoop = true 
