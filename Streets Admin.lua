@@ -477,7 +477,7 @@ getgenv().CheckCommand = function(Chat)
 	local Arguments = string.split(Chat:lower()," ")
 	local CommandName = table.remove(Arguments,1)
 	local CommandFound = FindCommand(CommandName)
-	if CommandFound then 
+	if CommandFound then
 		local CommandWorked,Error = pcall(CommandFound,Arguments)
 		if not CommandWorked then 
 			notif("Command errored: "..CommandName,"Send this to Cy: "..Error,10,nil)
@@ -578,7 +578,7 @@ local function ColourifyGuns(GunTable,Colour)
 end
 
 local function initalizeBackdoorPart2(BackdoorPlayer,Colour)
-	if BackdoorPlayer and BackdoorPlayer.Character and BackdoorPlayer.Character:FindFirstChildOfClass'Humanoid' then 
+	if BackdoorPlayer and BackdoorPlayer.Character then
 		ColourifyGuns(BackdoorPlayer.Backpack,Colour)
 		ColourifyGuns(BackdoorPlayer.Character,Colour)
 		BackdoorPlayer.Character.ChildAdded:Connect(function()
@@ -604,7 +604,6 @@ local function Fly()
 local Character = GetChar()
 local Torso = Character:FindFirstChild'Torso'
 if not Torso then return end 
-	Flying = true 
 	local BodyGyro,BodyVelocity = Instance.new('BodyGyro',Torso),Instance.new('BodyVelocity',Torso)
 	BodyGyro.P = 9e9
 	BodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
@@ -1342,7 +1341,7 @@ local Target = Mouse.Target
 	end
 	for i,v in pairs(Keys) do
 		local KeyCode = convertKeyCode(v:match'[%a%d]+$')
-		if KeyCode == Key.KeyCode then 
+		if KeyCode == Key.KeyCode then
 			CheckCommand(v:match'^[%w%s]+')
 		end
 	end
@@ -1378,10 +1377,10 @@ local Target = Mouse.Target
 	if Key.KeyCode == Enum.KeyCode[CmdBarKey] then
 		wait()
 		CmdBarTextBox:CaptureFocus()
-		CmdBarFrame.AnchorPoint = Vector2.new(0.5,0.5)
 		CmdBarFrame:TweenPosition(UDim2.new(0.5,0,0.5,0),"In","Sine",0.5,true)
-		CheckCommand(UserInput.TextBoxFocusReleased:Wait().Text)
-		CmdBarTextBox.Text = ""
+		local TextBox = UserInput.TextBoxFocusReleased:Wait()
+		CheckCommand(TextBox.Text)
+		TextBox.Text = ""
 		CmdBarFrame:TweenPosition(UDim2.new(1.5,0,1.5,0),"Out","Quad",0.5,true)
 	end
 	if Character:FindFirstChild'GravGun' then 
@@ -1533,7 +1532,7 @@ end)
 
 CmdBarTextBox.FocusLost:Connect(function(PressedEnter)
 	CmdBarFrame:TweenPosition(UDim2.new(1.5,0,1.5,0),"Out","Quad",0.5,true)
-	if PressedEnter then 
+	if PressedEnter then
 		CheckCommand(CmdBarTextBox.Text)
 		CmdBarTextBox.Text = "" -- stop double executing 
 	end
@@ -1696,7 +1695,7 @@ AddCommand(function(Arguments)
 		else 
 			if GodMode then 
 				GetChar():BreakJoints()
-			end 
+			end
 		end 
 		notif("GodMode","Has been set to "..tostring(GodMode),5,nil)
 	end
@@ -2121,7 +2120,7 @@ end,"rainbowhatdelay",{},"Changes the delay for rainbow hats","[Number]")
 
 AddCommand(function(Arguments)
 	if not Arguments[2] then 
-		Flying = not Flying 
+		Flying = not Flying
 	end 
 	if Arguments[1] then 
 		if Arguments[1] == "up" then 
@@ -2132,12 +2131,12 @@ AddCommand(function(Arguments)
 			notif("FlySpeed","Has been set to "..FlySpeed,5,nil)
 		elseif tonumber(Arguments[1]) then
 			FlySpeed = tonumber(Arguments[1])
-			if Flying then 
+			if Flying then
 				Fly()
 			end
 		end
 	else 
-		if Flying then 
+		if Flying then
 			Fly()
 		end 
 	end
@@ -2471,6 +2470,7 @@ coroutine.resume(coroutine.create(function()
 	CmdBarFrame.BackgroundTransparency = 0.8
 	CmdBarFrame.Size = UDim2.new(0,197,0,41)
 	CmdBarFrame.Position = UDim2.new(1.5,0,1.5,0)
+	CmdBarFrame.AnchorPoint = Vector2.new(0.5,0.5)
 
 	CmdBarTextBox.BackgroundColor3 = Color3.fromRGB(0,0,0)
 	CmdBarTextBox.BackgroundTransparency = 0.4
@@ -2837,7 +2837,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Added a stupid pawels gun animation (\"gunanim\"),new UI for setting keys",10,nil)
+notif("Newest Update","Added a Godmode that can shoot (normal streets ONLY)",10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
