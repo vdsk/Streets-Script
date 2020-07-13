@@ -34,6 +34,7 @@ local AimbotAutoShoot = false
 local AntiAim = false
 local Aimlock = false
 local AliasesEnabled = true
+local AnnoyOn = false
 local AlwaysGh = false 
 local AutoDie = false
 local AirwalkOn = false
@@ -96,6 +97,7 @@ local EspColour = Color3.fromRGB(255,255,255)
 
 local AimlockTarget;
 local AimlockTargetPosition;
+local AnnoyingPlayer;
 local CanSetHotkey;
 local CamlockPlayer;
 local ClickTpKey;
@@ -682,8 +684,10 @@ local function checkHp(Plr)
 end
 
 local function HasItem(Player,Item)
-	local ItemFound = Player.Character:FindFirstChild(Item,true) or Player.Backpack:FindFirstChild(Item,true)
-	return ItemFound and "Yes" or "No" 
+	if Player then 
+		local ItemFound = Player.Character:FindFirstChild(Item,true) or Player.Backpack:FindFirstChild(Item,true)
+		return ItemFound and "Yes" or "No" 
+	end 
 end
 
 local function Unesp(Part)
@@ -1059,6 +1063,30 @@ local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,'HumanoidRootPart'
 	return CFrameToReturn
 end
 
+local function updateGun()
+	local NewTool;
+	local Tool = LP.Character:FindFirstChildOfClass'Tool'
+	if Tool and EstimatedGunRanges[Tool.Name] and (Tool.Ammo.Value > 0 or Tool.Clips.Value > 0) then 
+		return true 
+	else 
+		for i,v in pairs(LP.Backpack:GetChildren()) do 
+			if v:IsA'Tool' and EstimatedGunRanges[v.Name] then
+				if v.Clips.Value > 0 or Tool.Ammo.Value > 0 then 
+					NewTool = v
+					break
+				end 
+			end 
+		end 
+		if NewTool then 
+			return NewTool
+		else 
+			GetChar():BreakJoints()
+			return false
+		end 
+	end 
+end 
+	
+
 -- [[ End ]] -- 
 
 -- [[ Bypass ]] -- .
@@ -1206,8 +1234,11 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			workspace.CurrentCamera.CoordinateFrame = CFrame.new(workspace.CurrentCamera.CoordinateFrame.p,CamlockPlayer.Character.Head.CFrame.p)
 		end 
 	end 
-	if FeLoop and LoopPlayer and LoopPlayer.Character and LoopPlayer.Character:FindFirstChild'Torso' and PartFound then 
-		PartFound.CFrame = LoopPlayer.Character.Torso.CFrame
+	if FeLoop and LoopPlayer and LoopPlayer.Character and PartFound then
+		local Part = LoopPlayer.Character:FindFirstChildWhichIsA('BasePart',true)
+		if Part then 
+			PartFound.CFrame = Part.CFrame
+		end 
 		local BChildren = LP.Backpack:GetChildren()
 		for i = 1,#BChildren do 
 			local Child = BChildren[i]
@@ -1215,6 +1246,40 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			Child:GetPropertyChangedSignal("Parent"):Wait()
 		end
 	end
+	if AnnoyOn and AnnoyingPlayer and AnnoyingPlayer.Character and PartFound then
+		local Part = AnnoyingPlayer.Character:FindFirstChild'Torso'
+		if Part then
+			if TriggerBot then 
+				if not Flying then 
+					CheckCommand("fly")
+				end
+				if not AimbotAutoShoot then 
+					CheckCommand("aimbotautoshoot")
+				end
+				if not Aimlock or AnnoyingPlayer and tostring(AimlockTarget) ~= tostring(AnnoyingPlayer) then 
+					CheckCommand("aim "..AnnoyingPlayer.Name)
+				end
+				if not Character:FindFirstChildOfClass'ForceField' then 
+					local Gun = updateGun()
+					local FoundTool = Character:FindFirstChildOfClass'Tool'
+					if typeof(Gun) ~= "boolean" and Gun and Gun ~= FoundTool then
+						if FoundTool then 
+							FoundTool.Parent = LP.Backpack
+							wait()
+						end
+						Gun.Parent = LP.Character 
+					end
+				end 
+				if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then 
+					PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
+				else 
+					PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
+				end
+			else 
+				PartFound.CFrame = Part.CFrame
+			end
+		end 
+	end 
 	if AutoStomp then 
 		local P = Players:GetPlayers() 
 		for i = 1,#P do 
@@ -2056,6 +2121,29 @@ AddCommand(function(Arguments)
 end,"feloop",{},"First you were a skid, Now you're annoying with a simple use of this command!","[Player]")
 
 AddCommand(function(Arguments)
+	AnnoyOn = not AnnoyOn
+	if Arguments[1] then 
+		if AnnoyOn then
+			local Player = PlrFinder(Arguments[1])
+			if Player then 
+				AnnoyingPlayer = Player
+			end 
+		end 
+	end 
+end,"annoy",{"shield"},"Loop Teleports you infront of the Player","[Player]")
+
+AddCommand(function(Arguments)
+	TriggerBot = not TriggerBot
+	if not TriggerBot then 
+		AnnoyOn = false 
+		AnnoyingPlayer = nil 
+	end  
+	if Arguments[1] then 
+		CheckCommand("annoy "..Arguments[1])
+	end 
+end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
+
+AddCommand(function(Arguments)
 	if Arguments[1] and Arguments[2] and tonumber(Arguments[2]) then
 		if Arguments[1] == "down" then 
 			LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Position = LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(),LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Size.Y + UDim.new(0,tonumber(Arguments[2])))
@@ -2693,7 +2781,7 @@ coroutine.resume(coroutine.create(function()
 			end 
 		end))
 		local Tool = Character:FindFirstChildOfClass'Tool'
-		if AimbotAutoShoot and AimlockTarget and Tool and Tool:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 then
+		if AimbotAutoShoot and AimlockTarget and Tool and Tool:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 and not AimlockTarget:FindFirstChildOfClass'ForceField' then
 			if not BehindAWall(AimlockTarget) and HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone") ~= "Yes" then
 				if AimlockTarget:FindFirstChild'Head' and (AimlockTarget.Head.Position - Character.Head.Position).magnitude <= EstimatedGunRanges[Tool.Name] then 
 					if game.PlaceId == 455366377 then
