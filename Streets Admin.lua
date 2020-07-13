@@ -1574,7 +1574,7 @@ end,"fieldofview",{"fov"},"Changes Field of View","[Number/Normal]")
 
 AddCommand(function()
 	wait(0.6)
-	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by ForsakenCy | Join the cord at nXcZH36","All")
+	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by CyTheBasedFoxMan | Join the cord at nXcZH36","All")
 end,"advertise",{},"Advertises the discord","[No Args]")
 
 AddCommand(function(Arguments)
