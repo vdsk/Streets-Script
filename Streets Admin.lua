@@ -933,7 +933,7 @@ local function ColourChanger(T)
 end
 
 local function RemoveGunAnimation(T)
-	if EstimatedGunRanges[T.Name] and GunAnim then 
+	if EstimatedGunRanges[T.Name] then 
 		stopAnim("889968874")
 	end 
 end
@@ -1770,6 +1770,7 @@ end,"antiaim",{},"Breaks camlock to an extent","[No Args]")
 
 AddCommand(function()
 	GunAnim = not GunAnim
+	notif("GunAnim","Has been set to "..tostring(GunAnim),5,nil)
 end,"gunanim",{},"STUPID PAWELS GUN ANIM WOW !!! SHUT UP NOW THANKS","[No Args]")
 
 AddCommand(function(Arguments)
