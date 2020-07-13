@@ -51,6 +51,7 @@ local FlyDebounce = false
 local Freecam = false
 local GodMode = false
 local GunStomp = true 
+local GunAnim = false
 local GravGunSeizureMode = false
 local HealBot = false
 local ItemEsp = false
@@ -116,6 +117,10 @@ AntiAimAnimation.AnimationId = "rbxassetid://215384594"
 
 local SpinAnimation = Instance.new'Animation'
 SpinAnimation.AnimationId = "rbxassetid://188632011"
+
+local GunAnimation = Instance.new'Animation'
+GunAnimation.AnimationId = "rbxassetid://889968874"
+
 local AirWalk = Instance.new'Part'
 AirWalk.Anchored = true 
 AirWalk.Size = Vector3.new(5,1,5)
@@ -897,6 +902,10 @@ local function ColourChanger(T)
 	if T:IsA'Trail' then 
 		T.Color = BulletColour
 	end
+	if EstimatedGunRanges[T.Name] and GunAnim then 
+		wait()
+		GetChar().Humanoid:LoadAnimation(GunAnimation):Play()
+	end 
 	if T.Name == "Bone" and AutoDie then 
 		GetChar():BreakJoints()
 	end
@@ -921,6 +930,12 @@ local function ColourChanger(T)
 		local Tool,Method = ShotOrHit(PlayerC)
 		ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
 	end
+end
+
+local function RemoveGunAnimation(T)
+	if EstimatedGunRanges[T.Name] and GunAnim then 
+		stopAnim("889968874")
+	end 
 end
 
 local function FreeCam(Speed)
@@ -1177,10 +1192,15 @@ end)
 local HealthChangedEvent;HealthChangedEvent = LP.Character.Humanoid.HealthChanged:Connect(HealthChanged)
 local HumanoidStateChanged;HumanoidStateChanged = LP.Character.Humanoid.StateChanged:Connect(StateChanged)
 local ColourChangerEvent;ColourChangerEvent = LP.Character.DescendantAdded:Connect(ColourChanger)
+local RemoveGunAnimationEvent;RemoveGunAnimationEvent = LP.Character.DescendantRemoving:Connect(RemoveGunAnimation)
 local WalkSpeedChangedEvent;WalkSpeedChangedEvent = LP.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(LoopChangeWalkSpeed)
 LP.CharacterAdded:Connect(function(C)
 	Flying = false 
 	C:WaitForChild'Humanoid' -- wait until the humanoid has been found
+	-- Gun Animation Event -- 
+	RemoveGunAnimationEvent:Disconnect()
+	RemoveGunAnimationEvent = nil 
+	RemoveGunAnimationEvent = LP.Character.DescendantRemoving:Connect(RemoveGunAnimation)
 	-- HealBot Event --
 	HealthChangedEvent:Disconnect()
 	HealthChangedEvent = nil 
@@ -1747,6 +1767,10 @@ AddCommand(function()
 		GetChar().Humanoid:LoadAnimation(AntiAimAnimation):Play(5,45,250)
 	end 
 end,"antiaim",{},"Breaks camlock to an extent","[No Args]")
+
+AddCommand(function()
+	GunAnim = not GunAnim
+end,"gunanim",{},"STUPID PAWELS GUN ANIM WOW !!! SHUT UP NOW THANKS","[No Args]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -2680,7 +2704,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Esp Users command (Only Esps CyAdmin Users)",10,nil)
+notif("Newest Update","Added a stupid pawels gun animation (\"gunanim\"),10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
