@@ -116,6 +116,12 @@ local ViewPlayerConnection;
 local AntiAimAnimation = Instance.new'Animation'
 AntiAimAnimation.AnimationId = "rbxassetid://215384594"
 
+local Dance1Animation = Instance.new'Animation'
+Dance1Animation.AnimationId = "rbxassetid://33796059"
+
+local Dance2Animation = Instance.new'Animation'
+Dance2Animation.AnimationId = "rbxassetid://35654637"
+
 local SpinAnimation = Instance.new'Animation'
 SpinAnimation.AnimationId = "rbxassetid://188632011"
 
@@ -1844,7 +1850,22 @@ end,"antiaim",{},"Breaks camlock to an extent","[No Args]")
 AddCommand(function()
 	GunAnim = not GunAnim
 	notif("GunAnim","Has been set to "..tostring(GunAnim),5,nil)
-end,"gunanim",{},"STUPID PAWELS GUN ANIM WOW !!! SHUT UP NOW THANKS","[No Args]")
+end,"gunanim",{},"STUPID GUN ANIM WOW !!! SHUT UP NOW THANKS","[No Args]")
+
+AddCommand(function(Arguments)
+	if Arguments[1] then
+		stopAnim("33796059")
+		stopAnim("35654637")
+		if Arguments[1] == "1" then 
+			GetChar().Humanoid:LoadAnimation(Dance1Animation):Play()
+		elseif Arguments[1] == "2" then 
+			GetChar().Humanoid:LoadAnimation(Dance2Animation):Play()
+		elseif Arguments[1] == "off" then 
+			stopAnim("33796059")
+			stopAnim("35654637")
+		end 
+	end
+end,"dance",{},"Stupid dance anims (1,2,Off)","[Dance 1/Dance 2/Off]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then 
@@ -2020,8 +2041,7 @@ AddCommand(function(Arguments)
 		local Number1,Number2 = math.random(1,20),math.random(1,20)
 		local Operator,RandomizedNumber = RandomFeloopTable[math.random(1,#RandomFeloopTable)](Number1,Number2)
 		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what "..Number1..Operator..Number2.." equals - Cy","All")
-		local Chat = LP.Chatted:Wait()
-		if Chat ~= tostring(RandomizedNumber) then LP:Kick('That answer is wrong.') end
+		if LP.Chatted:Wait() ~= tostring(RandomizedNumber) then LP:Kick('That answer is wrong.') end
 	end
 	if Arguments[1] then
 		FeLoop = true 
@@ -2842,7 +2862,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Added a Godmode that can shoot (normal streets ONLY)",10,nil)
+notif("Newest Update","Added a Godmode that can shoot (normal streets ONLY),Dance cmd Args: [1,2,off]",10,nil)
 
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
