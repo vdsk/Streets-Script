@@ -96,6 +96,7 @@ local EspColour = Color3.fromRGB(255,255,255)
 
 local AimlockTarget;
 local AimlockTargetPosition;
+local CanSetHotkey;
 local CamlockPlayer;
 local ClickTpKey;
 local ClockTime;
@@ -145,6 +146,13 @@ local ValuesTextLabel = Instance.new('TextLabel',ValuesFrame)
 
 local HotkeysFrame = Instance.new('Frame',CoreGui.RobloxGui)
 local HotkeysTextLabel = Instance.new('TextLabel',HotkeysFrame)
+
+local KeysFrame = Instance.new('Frame',CoreGui.RobloxGui)
+local AnyCmdButton = Instance.new('TextButton',KeysFrame)
+local KeysLabel = Instance.new('TextLabel',KeysFrame)
+local CmdBarKeyLabel = Instance.new('TextLabel',KeysFrame)
+local CmdBarKeyButton = Instance.new('TextButton',KeysFrame)
+local AnyCmdTextBox = Instance.new('TextBox',KeysFrame)
 
 local VanPart = Instance.new('Part',workspace)
 
@@ -290,7 +298,8 @@ local SettingsTable = {
 	AimMode = "Prediction";
 	AimlockMode = "LeftClick";
 	AimbotVelocity = 5;
-	CmdBarImage = "http://www.roblox.com/asset/?id=2812081613"
+	CmdBarImage = "http://www.roblox.com/asset/?id=2812081613";
+	CmdBarKey = "Quote"
 }
 
 if game.PlaceId == 455366377 then 
@@ -385,6 +394,7 @@ getgenv().initalizeHotkeys = function(ConfigToSaveTo)
 	AimlockMode = Settings.AimlockMode
 	AimbotVelocity = Settings.AimbotVelocity
 	CmdBarImage = Settings.CmdBarImage
+	CmdBarKey = Settings.CmdBarKey
 end
 
 getgenv().updateHotkeys = function(ConfigToUpdateTo)
@@ -397,7 +407,8 @@ getgenv().updateHotkeys = function(ConfigToUpdateTo)
 		AimMode = AimMode;
 		AimlockMode = AimlockMode;
 		AimbotVelocity = AimbotVelocity;
-		CmdBarImage = CmdBarImage
+		CmdBarImage = CmdBarImage;
+		CmdBarKey = CmdBarKey;
 	}
 	writefile(ConfigToUpdateTo,HttpService:JSONEncode(SettingsToUpdate))
 end
@@ -412,6 +423,7 @@ getgenv().runHotkeys = function(ConfigToRun)
 	AimlockMode = RunSettings.AimlockMode or "LeftClick"
 	AimbotVelocity = RunSettings.AimbotVelocity or 5
 	CmdBarImage = RunSettings.CmdBarImage or "http://www.roblox.com/asset/?id=2812081613"
+	CmdBarKey = RunSettings.CmdBarKey or "Quote"
 end
 if readfile and writefile then 
 	local FileExists = pcall(readfile,ConfigurationFile)
@@ -462,7 +474,6 @@ getgenv().FindCommand = function(CommandName)
 end
 
 getgenv().CheckCommand = function(Chat)
-	Chat = string.gsub(Chat, "\r", "")
 	local Arguments = string.split(Chat:lower()," ")
 	local CommandName = table.remove(Arguments,1)
 	local CommandFound = FindCommand(CommandName)
@@ -537,6 +548,17 @@ local function BackdoorCheck(Player,Chat)
 			Command['Func'](PlayerToMeme,table.concat(Arguments," "),Player)
 		end
 	end 
+end
+
+local function convertKeyCode(KeyCode)
+local KeyCodeToSet;
+	local Work,Error = pcall(function()
+		KeyCodeToSet = Enum.KeyCode[KeyCode]
+	end)
+	if not Work then
+		KeyCodeToSet = Enum.KeyCode[KeyCode:upper()]
+	end
+	return KeyCodeToSet
 end
 
 local function ColourifyGuns(GunTable,Colour)
@@ -718,9 +740,6 @@ end
 local function IsAUser(Player,Chat)
 	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
 		AdminUserTable[Player] = true
-		if BackDoorTablePlayers[LP.UserId] then 
-			--Esp(Player.Character.Head,Player.Name)
-		end 
 		return true 
 	end
 end
@@ -1274,6 +1293,29 @@ local Target = Mouse.Target
 			end
 		end
 	end
+	if CanSetHotkey then
+		local KeyCode = Key.KeyCode.Name
+		if KeyCode ~= "Unknown" and KeyCode ~= "Return" then
+			if CanSetHotkey == "CmdBar" then
+				CmdBarKey = KeyCode
+				notif("CommandBarKey","Has been set to the hotkey: "..KeyCode,5,nil)
+				CanSetHotkey = nil
+				KeysFrame.Visible = false
+			elseif CanSetHotkey == "AnyCmd" and AnyCmdTextBox.Text ~= "" then
+				for Index,Key in pairs(Keys) do
+					if Key:match("[%a%d]+$") == KeyCode then
+						table.remove(Keys,Index)
+					end
+				end
+				Keys[#Keys + 1] = AnyCmdTextBox.Text.."||"..KeyCode
+				notif(AnyCmdTextBox.text,"Has been set to the hotkey: "..KeyCode,5,nil)
+				CanSetHotkey = nil
+				AnyCmdTextBox.Text = ""
+				KeysFrame.Visible = false
+			end
+			updateHotkeys(ConfigurationFile)
+		end 
+	end
 	if Target and Key.UserInputType == Enum.UserInputType.MouseButton2 then 
 		local Target = Target.Parent
 		if Target and Target:FindFirstChild'Click' and Target:FindFirstChild'Locker' then 
@@ -1286,11 +1328,12 @@ local Target = Mouse.Target
 			end
 		end
 	end
-	if ClickTpKey ~= "" and Key.KeyCode == Enum.KeyCode[ClickTpKey:upper()] and Target then 
+	if ClicktpKey and ClickTpKey ~= "" and Key.KeyCode == Enum.KeyCode[ClickTpKey:upper()] and Target then 
 		Teleport(CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0)))
 	end
-	for i,v in pairs(Keys) do 
-		if v and v:match'[%a%d]+$' and Enum.KeyCode[v:match'[%a%d]+$':upper()] == Key.KeyCode then 
+	for i,v in pairs(Keys) do
+		local KeyCode = convertKeyCode(v:match'[%a%d]+$')
+		if KeyCode == Key.KeyCode then 
 			CheckCommand(v:match'^[%w%s]+')
 		end
 	end
@@ -1323,7 +1366,7 @@ local Target = Mouse.Target
 	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Fire' and not Character:FindFirstChild'KO' and GunStomp then 
 		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
 	end
-	if Key.KeyCode == Enum.KeyCode.Quote then
+	if Key.KeyCode == Enum.KeyCode[CmdBarKey] then
 		wait()
 		CmdBarTextBox:CaptureFocus()
 		CmdBarFrame.AnchorPoint = Vector2.new(0.5,0.5)
@@ -1434,6 +1477,19 @@ Players.PlayerAdded:Connect(function(Player)
 			Chatted:Disconnect()
 		end
 	end)
+end)
+
+AnyCmdButton.MouseButton1Click:Connect(function()
+	CanSetHotkey = "AnyCmd"
+	if AnyCmdTextBox.Text == "" then
+		AnyCmdButton.Text = "Type a command above"
+	else 
+		AnyCmdButton.Text = "Press a Key"
+	end 
+end)
+
+CmdBarKeyButton.MouseButton1Click:Connect(function()
+	CanSetHotkey = "CmdBar" 
 end)
 
 Players.PlayerRemoving:Connect(function(Player)
@@ -2291,25 +2347,14 @@ AddCommand(function(Arguments)
 	end
 end,"colour",{"color"},"Colour esp/bullet [3 Args (Number) (Optional)] defaults to 0","[Esp/Bullet] [3 numbers (Optional)]")
 
-AddCommand(function(Arguments)
-	if Arguments[1] and #Arguments[1] == 1 and Arguments[2] then
-		for Index,Key in pairs(Keys) do
-		if Key:match("[%a%d]+$") == Arguments[1] then
-				table.remove(Keys,Index)
-			end
-		end
-		local Hotkey = table.remove(Arguments, 1)
-		Keys[#Keys + 1] = table.concat(Arguments, " ").."||"..Hotkey
-		if writefile and readfile then 
-			updateHotkeys(ConfigurationFile)
-		end
-	end
-end,"hotkey",{"key"},"Hotkeys a command to a key","[Key]")
+AddCommand(function()
+	KeysFrame.Visible = not KeysFrame.Visible
+end,"hotkey",{"key"},"For Setting hotkeys, Type in the textbox, click the button and press a key","[No Args]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
 		for Index,Key in pairs(Keys) do
-		if Key:match("[%a%d]+$") == Arguments[1] then
+		if Key:match'[%a%d]+$' == Arguments[1]:upper() or Key:match("[%a%d]+$") == Arguments[1] then
 				table.remove(Keys,Index)
 				updateHotkeys(ConfigurationFile)
 			end
@@ -2411,7 +2456,7 @@ coroutine.resume(coroutine.create(function()
 	CmdBarFrame.BackgroundTransparency = 0.8
 	CmdBarFrame.Size = UDim2.new(0,197,0,41)
 	CmdBarFrame.Position = UDim2.new(1.5,0,1.5,0)
-	
+
 	CmdBarTextBox.BackgroundColor3 = Color3.fromRGB(0,0,0)
 	CmdBarTextBox.BackgroundTransparency = 0.4
 	CmdBarTextBox.BorderColor3 = Color3.fromRGB(170,0,0)
@@ -2454,7 +2499,7 @@ coroutine.resume(coroutine.create(function()
 	HotkeysFrame.Position = UDim2.new(0.8,0,1,0)
 	HotkeysFrame.AnchorPoint = Vector2.new(1,1)
 	HotkeysFrame.Size = UDim2.new(0,160,0,160)
-	
+
 	HotkeysTextLabel.BackgroundColor3 = Color3.fromRGB(0,0,0)
 	HotkeysTextLabel.BackgroundTransparency = 0.6
 	HotkeysTextLabel.BorderColor3 = Color3.fromRGB(170,0,0)
@@ -2479,7 +2524,75 @@ coroutine.resume(coroutine.create(function()
 	DmgIndicator.TextScaled = true
 	DmgIndicator.TextSize = 30
 	DmgIndicator.TextWrapped = true
-	DmgIndicator.Visible = false 
+	DmgIndicator.Visible = false
+
+	-- Hotkeys GUI -- 
+
+	KeysFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	KeysFrame.BackgroundTransparency = 0.6
+	KeysFrame.BorderColor3 = Color3.fromRGB(170,0,0)
+	KeysFrame.BorderSizePixel = 0
+	KeysFrame.Position = UDim2.new(0.5,0,0.5,0)
+	KeysFrame.AnchorPoint = Vector2.new(0.5,0.5)
+	KeysFrame.Size = UDim2.new(0,218,0,154)
+	KeysFrame.Visible = false 
+
+	AnyCmdButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	AnyCmdButton.BackgroundTransparency = 0.7
+	AnyCmdButton.BorderColor3 = Color3.fromRGB(170,0,0)
+	AnyCmdButton.Position = UDim2.new(0.17,0,0.43,0)
+	AnyCmdButton.Size = UDim2.new(0,49,0,49)
+	AnyCmdButton.Font = Enum.Font.SourceSans
+	AnyCmdButton.TextColor3 = Color3.fromRGB(255,255,255)
+	AnyCmdButton.TextSize = 13
+	AnyCmdButton.TextWrapped = true
+	AnyCmdButton.Text = "Type a command then click"
+	
+	KeysLabel.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	KeysLabel.BackgroundTransparency = 0.3
+	KeysLabel.BorderColor3 = Color3.fromRGB(170,0,0)
+	KeysLabel.Position = UDim2.new(0.004,0,-0.3,0)
+	KeysLabel.Size = UDim2.new(0,217,0,50)
+	KeysLabel.Font = Enum.Font.SciFi
+	KeysLabel.Text = "Keys GUI"
+	KeysLabel.TextColor3 = Color3.fromRGB(214,0,0)
+	KeysLabel.TextSize = 50
+	
+	CmdBarKeyLabel.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	CmdBarKeyLabel.BackgroundTransparency = 0.6
+	CmdBarKeyLabel.BorderColor3 = Color3.fromRGB(0,0,127)
+	CmdBarKeyLabel.Position = UDim2.new(0.6,0,0.07,0)
+	CmdBarKeyLabel.Size = UDim2.new(0,50,0,44)
+	CmdBarKeyLabel.Font = Enum.Font.Fantasy
+	CmdBarKeyLabel.Text = "CmdBar Key"
+	CmdBarKeyLabel.TextColor3 = Color3.fromRGB(255,255,255)
+	CmdBarKeyLabel.TextSize = 11
+	CmdBarKeyLabel.TextWrapped = true
+	
+	CmdBarKeyButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	CmdBarKeyButton.BackgroundTransparency = 0.7
+	CmdBarKeyButton.BorderColor3 = Color3.fromRGB(170,0,0)
+	CmdBarKeyButton.Position = UDim2.new(0.6,0,0.43,0)
+	CmdBarKeyButton.Size = UDim2.new(0,49,0,49)
+	CmdBarKeyButton.Font = Enum.Font.SourceSans
+	CmdBarKeyButton.Text = "Click then press a key"
+	CmdBarKeyButton.TextColor3 = Color3.fromRGB(255,255,255)
+	CmdBarKeyButton.TextSize = 13
+	CmdBarKeyButton.TextWrapped = true
+	
+	AnyCmdTextBox.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	AnyCmdTextBox.BackgroundTransparency = 0.6
+	AnyCmdTextBox.BorderColor3 = Color3.fromRGB(0,0,127)
+	AnyCmdTextBox.Position = UDim2.new(0.17,0,0.07,0)
+	AnyCmdTextBox.Size = UDim2.new(0,50,0,44)
+	AnyCmdTextBox.Font = Enum.Font.Fantasy
+	AnyCmdTextBox.PlaceholderColor3 = Color3.fromRGB(255,255,255)
+	AnyCmdTextBox.PlaceholderText = "CmdToSet"
+	AnyCmdTextBox.Text = ""
+	AnyCmdTextBox.TextColor3 = Color3.fromRGB(255,255,255)
+	AnyCmdTextBox.TextSize = 11
+	AnyCmdTextBox.TextWrapped = true
+	dragGUI(KeysFrame,KeysFrame)
 end))
 
 --[[ End ]] -- 
@@ -2628,7 +2741,7 @@ end))
 
 coroutine.resume(coroutine.create(function()
 	while wait(1) do
-		HotkeysTextLabel.Text = "Open Command Bar: '\nGunStomp: E"
+		HotkeysTextLabel.Text = "Open Command Bar: "..CmdBarKey.."\nGunStomp: E"
 		for i,v in pairs(Keys) do HotkeysTextLabel.Text = HotkeysTextLabel.Text.."\n"..v:match'^[%w%s]+'..": "..v:match'[%a%d]+$' end 
 		if ExploiterDetectionOn then 
 			local PlayerT = Players:GetPlayers()
