@@ -2741,7 +2741,11 @@ end))
 
 coroutine.resume(coroutine.create(function()
 	while wait(1) do
-		HotkeysTextLabel.Text = "Open Command Bar: "..CmdBarKey.."\nGunStomp: E"
+		if CmdBarKey == "Quote" then 
+			HotkeysTextLabel.Text = "Open Command Bar: '".."\nGunStomp: E"
+		else
+			HotkeysTextLabel.Text = "Open Command Bar: "..CmdBarKey.."\nGunStomp: E"
+		end 
 		for i,v in pairs(Keys) do HotkeysTextLabel.Text = HotkeysTextLabel.Text.."\n"..v:match'^[%w%s]+'..": "..v:match'[%a%d]+$' end 
 		if ExploiterDetectionOn then 
 			local PlayerT = Players:GetPlayers()
