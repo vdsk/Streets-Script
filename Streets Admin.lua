@@ -912,7 +912,9 @@ end
 local function ShotOrHit(Character)
 	if Character then 
 		local Tool = Character:FindFirstChildOfClass'Tool'
-		return Tool,Tool:FindFirstChild'Fire' and "shot you" or "hit you"
+		if Tool then 
+			return Tool,Tool:FindFirstChild'Fire' and "shot you" or "hit you"
+		end
 	end 
 end
 
