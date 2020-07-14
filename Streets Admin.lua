@@ -73,6 +73,7 @@ local AimlockMode = "LeftClick"
 local CamlockTarget = "Head"
 local SpamMessage = "Cyrus' Admin Or No Admin"
 local ConfigurationFile = "CyrusStreetsAdminSettings.json"
+
 -- Ints -- 
 
 local Rainbowdelay = 0
@@ -128,12 +129,15 @@ Dance2Animation.AnimationId = "rbxassetid://35654637"
 local SpinAnimation = Instance.new'Animation'
 SpinAnimation.AnimationId = "rbxassetid://188632011"
 
-local GunAnimation = Instance.new'Animation'
-GunAnimation.AnimationId = "rbxassetid://889968874"
+local GunAnimation1 = Instance.new'Animation'
+GunAnimation1.AnimationId = "rbxassetid://889968874"
+
+local GunAnimation2 = Instance.new'Animation'
+GunAnimation2.AnimationId = "rbxassetid://229339207"
 
 local AirWalk = Instance.new'Part'
 AirWalk.Anchored = true 
-AirWalk.Size = Vector3.new(5,1,5)
+AirWalk.Size = Vector3.new(20,1,20)
 AirWalk.Transparency = 1 
 
 local CmdsFrame = Instance.new('Frame',CoreGui.RobloxGui)
@@ -287,13 +291,6 @@ local BlacklistTable = {
 	[1052869632] = true; -- Generally annoying and fan boys tagged users and claims he can script when he can't (skid).
 	[481265818] = true; -- said he would dox me but wouldn't
 	[872132185] = true; -- who names their child "matt" 
-}
-
-local RandomFeloopTable = {
-	function(Num1,Num2) return "+",Num1 + Num2 end; 
-	function(Num1,Num2) return "-",Num1 - Num2 end;
-	function(Num1,Num2) return "/",Num1 / Num2 end;
-	function(Num1,Num2) return "*",Num1 * Num2 end;
 }
 
 local SettingsTable = {
@@ -932,7 +929,14 @@ local function ColourChanger(T)
 	end
 	if EstimatedGunRanges[T.Name] and GunAnim then 
 		wait()
-		GetChar().Humanoid:LoadAnimation(GunAnimation):Play()
+		if T.Name ~= "Shotty" and T.Name ~= "Sawed Off" then 
+			GetChar().Humanoid:LoadAnimation(GunAnimation1):Play()
+		else 
+			local Track = GetChar().Humanoid:LoadAnimation(GunAnimation2)
+			Track:Play()
+			wait()
+			Track:AdjustSpeed(0)
+		end 
 	end 
 	if T.Name == "Bone" then
 		if AutoDie then
@@ -982,6 +986,7 @@ end
 local function RemoveGunAnimation(T)
 	if EstimatedGunRanges[T.Name] then 
 		stopAnim("889968874")
+		stopAnim("229339207")
 	end 
 end
 
@@ -1218,10 +1223,12 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
-	if flying and Character:FindFirstChild'Humanoid' and not FlyDebounce then
+	if flying and Character:FindFirstChild'Humanoid' and (game.PlaceId == 455366377 and not FlyDebounce) then
 		FlyDebounce = true
 		LP.Character.Humanoid:ChangeState(3)
-		wait(0.2)
+		if game.PlaceId == 455366377 then 
+			wait(0.2)
+		end 
 		FlyDebounce = false
 	end
 	if ClockTime then 
@@ -1934,10 +1941,10 @@ AddCommand(function()
 	end 
 end,"antiaim",{},"Breaks camlock to an extent","[No Args]")
 
-AddCommand(function()
+AddCommand(function(Arguments)
 	GunAnim = not GunAnim
 	notif("GunAnim","Has been set to "..tostring(GunAnim),5,nil)
-end,"gunanim",{},"STUPID GUN ANIM WOW !!! SHUT UP NOW THANKS","[No Args]")
+end,"gunanim",{},"Stupid gun animations","[No Args]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
@@ -2123,13 +2130,6 @@ end,"walkshoot",{"noslow"},"Allows you to turn On/Off Walk Shooting","[No Args]"
 AddCommand(function(Arguments)
 	if game.PlaceId == 455366377 then notif("Wont work","Prison Only",5,nil) return end
 	FeLoop = not FeLoop
-	if FeLoop then 
-		wait(0.5)
-		local Number1,Number2 = math.random(1,20),math.random(1,20)
-		local Operator,RandomizedNumber = RandomFeloopTable[math.random(1,#RandomFeloopTable)](Number1,Number2)
-		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("To use Feloop, Tell me what "..Number1..Operator..Number2.." equals - Cy","All")
-		if LP.Chatted:Wait() ~= tostring(RandomizedNumber) then LP:Kick('That answer is wrong.') end
-	end
 	if Arguments[1] then
 		FeLoop = true 
 		local Player = PlrFinder(Arguments[1])
