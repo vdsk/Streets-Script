@@ -980,8 +980,10 @@ local function ColourChanger(T)
 			end)
 		end 
 		local PlayerC = T.Value
-		local Tool,Method = ShotOrHit(PlayerC)
-		ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
+		if PlayerC then 
+			local Tool,Method = ShotOrHit(PlayerC)
+			ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
+		end 
 	end
 end
 
