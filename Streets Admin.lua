@@ -1602,12 +1602,14 @@ Players.PlayerRemoving:Connect(function(Player)
 	if ExploitDetectionPlayerTablePositions[tostring(Player)] then 
 		ExploitDetectionPlayerTablePositions[tostring(Player)] = nil
 	end
-	if Player == AnnoyingPlayer then 
+	if Player == AnnoyingPlayer then
+		TriggerBot = false
 		AnnoyOn = false 
 		AnnoyingPlayer = nil
 		AimbotAutoShoot = false
 		Flying = false
 		AutoDie = false
+		AimlockTarget = nil
 	end 
 	Unesp(Player)
 end)
