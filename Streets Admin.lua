@@ -971,8 +971,8 @@ local function ColourChanger(T)
 		end
 		if AutoTriggerBot then
 			CheckCommand("triggerbot "..tostring(T.Value))
-			local Life;Life = Players:GetPlayerFromCharacter(T.Value).CharacterRemoving:Connect(function()
-				if TriggerBot then
+			local Life;Life = T.Value.DescendantAdded:Connect(function(T)
+				if T.Name == "Bone" and TriggerBot then
 					TriggerBot = true
 					CheckCommand("triggerbot")
 					Life:Disconnect()
@@ -1287,16 +1287,12 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 					end
 				end
 				if AnnoyingPlayer and AnnoyingPlayer.Character and not AnnoyingPlayer.Character:FindFirstChild('Bone',true) then
-					AutoStomp = false
 					if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then 
 						PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
 					else 
 						PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
 					end
 				else
-					if not AutoTriggerBot then 
-						AutoStomp = true
-					end 
 					PartFound.CFrame = Part.CFrame
 				end 
 			else 
