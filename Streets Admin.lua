@@ -1071,7 +1071,7 @@ local function updateGun()
 	else 
 		for i,v in pairs(LP.Backpack:GetChildren()) do 
 			if v:IsA'Tool' and EstimatedGunRanges[v.Name] then
-				if v.Clips.Value > 0 or Tool.Ammo.Value > 0 then 
+				if v:FindFirstChild'Clips' and (v.Clips.Value > 0 or Tool.Ammo.Value > 0) then 
 					NewTool = v
 					break
 				end 
