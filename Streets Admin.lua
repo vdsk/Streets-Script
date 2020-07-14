@@ -53,7 +53,6 @@ local FlyDebounce = false
 local Freecam = false
 local GodMode = false
 local GunStomp = true 
-local GunAnim = false
 local GravGunSeizureMode = false
 local HealBot = false
 local ItemEsp = false
@@ -73,6 +72,7 @@ local AimlockMode = "LeftClick"
 local CamlockTarget = "Head"
 local SpamMessage = "Cyrus' Admin Or No Admin"
 local ConfigurationFile = "CyrusStreetsAdminSettings.json"
+local GunAnim = "None"
 
 -- Ints -- 
 
@@ -929,11 +929,11 @@ local function ColourChanger(T)
 	if T:IsA'Trail' then 
 		T.Color = BulletColour
 	end
-	if EstimatedGunRanges[T.Name] and GunAnim then 
+	if EstimatedGunRanges[T.Name] and GunAnim ~= "None" then 
 		wait()
-		if T.Name ~= "Shotty" and T.Name ~= "Sawed Off" then 
+		if T.Name ~= "Shotty" and T.Name ~= "Sawed Off" or GunAnim == "1" then 
 			GetChar().Humanoid:LoadAnimation(GunAnimation1):Play()
-		else 
+		else
 			local Track = GetChar().Humanoid:LoadAnimation(GunAnimation2)
 			Track:Play()
 			wait()
@@ -1944,9 +1944,20 @@ AddCommand(function()
 end,"antiaim",{},"Breaks camlock to an extent","[No Args]")
 
 AddCommand(function(Arguments)
-	GunAnim = not GunAnim
-	notif("GunAnim","Has been set to "..tostring(GunAnim),5,nil)
-end,"gunanim",{},"Stupid gun animations","[No Args]")
+	if Arguments[1] then
+		if Arguments[1] == "1" then
+			GunAnim = "1"
+		elseif Arguments[1] == "2" then 
+			GunAnim = "2"
+		elseif Arguments[1] == "off" then 
+			GunAnim = "None"
+		else 
+			notif("GunAnim","Only [1/2/Off] work")
+			return
+		end 
+		notif("GunAnim","Has been set to "..GunAnim,5,nil)
+	end 
+end,"gunanim",{},"Stupid gun animations (gunanim [1/2/off])","[1/2/off]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
