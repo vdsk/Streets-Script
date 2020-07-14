@@ -39,7 +39,7 @@ local AlwaysGh = false
 local AutoDie = false
 local AirwalkOn = false
 local AutoStomp = false
-local AutoTriggerBot = false;
+local AutoTriggerBot = false
 local AutoTarget = false
 local AutoFarm = false
 local Blinking = false
@@ -913,8 +913,10 @@ local function StateChanged(Old,New)
 end
 
 local function ShotOrHit(Character)
-	local Tool = Character:FindFirstChildOfClass'Tool'
-	return Tool,Tool:FindFirstChild'Fire' and "shot you" or "hit you"
+	if Character then 
+		local Tool = Character:FindFirstChildOfClass'Tool'
+		return Tool,Tool:FindFirstChild'Fire' and "shot you" or "hit you"
+	end 
 end
 
 local function ChangeDamageIndicatorText(Text)
@@ -961,8 +963,15 @@ local function ColourChanger(T)
 				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
 			end
 		end
-		if AutoTriggerBot then 
+		if AutoTriggerBot then
 			CheckCommand("triggerbot "..tostring(T.Value))
+			local Life;Life = Players:GetPlayerFromCharacter(T.Value).CharacterRemoving:Connect(function()
+				if TriggerBot then
+					TriggerBot = true
+					CheckCommand("triggerbot")
+					Life:Disconnect()
+				end
+			end)
 		end 
 		local PlayerC = T.Value
 		local Tool,Method = ShotOrHit(PlayerC)
@@ -1017,7 +1026,7 @@ if not GetChar():FindFirstChild'Head' then return end
 end
 
 local function BehindAWall(Target)
-	if Target:FindFirstChild'Head' then 
+	if Target:FindFirstChild'Head' and GetChar():FindFirstChild'Head' then 
 		local RYEBread = Ray.new(Target.Head.Position,GetChar().Head.Position)
 		local RYEBreadHit = workspace:FindPartOnRay(RYEBread)
 		if RYEBreadHit then
@@ -1066,7 +1075,7 @@ local function updateGun()
 		for i,v in pairs(LP.Backpack:GetChildren()) do 
 			if v:IsA'Tool' and EstimatedGunRanges[v.Name] then
 				if v:FindFirstChild'Clips' then 
-					if v.Clips.Value > 0 or Tool.Ammo.Value > 0 then 
+					if v.Clips.Value > 0 or v.Ammo.Value > 0 then 
 						NewTool = v
 						break
 					end 
@@ -1218,7 +1227,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 	if ClockTime then 
 		Lighting.ClockTime = ClockTime
 	end
-	if AirwalkOn and Character:FindFirstChildOfClass'Humanoid' then
+	if AirwalkOn and Character:FindFirstChildOfClass'Humanoid' and PartFound then
 		Character.Humanoid.HipHeight = 0
 		AirWalk.CFrame = PartFound.CFrame + Vector3.new(0,-3.5,0)
 	end
@@ -1249,7 +1258,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 				if not Flying then 
 					CheckCommand("fly")
 				end
-				if not AimbotAutoShoot then 
+				if not AimbotAutoShoot and not AutoTriggerBot then 
 					CheckCommand("aimbotautoshoot")
 				end
 				if not Aimlock or AnnoyingPlayer and tostring(AimlockTarget) ~= tostring(AnnoyingPlayer) then 
@@ -1265,12 +1274,20 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 						end
 						Gun.Parent = LP.Character 
 					end
-				end 
-				if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then 
-					PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
-				else 
-					PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
 				end
+				if AnnoyingPlayer and AnnoyingPlayer.Character and not AnnoyingPlayer.Character:FindFirstChild('Bone',true) then
+					AutoStomp = false
+					if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then 
+						PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
+					else 
+						PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
+					end
+				else
+					if not AutoTriggerBot then 
+						AutoStomp = true
+					end 
+					PartFound.CFrame = Part.CFrame
+				end 
 			else 
 				PartFound.CFrame = Part.CFrame
 			end
@@ -1280,7 +1297,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 		local P = Players:GetPlayers() 
 		for i = 1,#P do 
 			local Player = P[i]
-			if Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChild'KO' and not Player:IsFriendsWith(LP.UserId) then
+			if Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChild'KO' then
 				if (PartFound.Position - Player.Character.Head.Position).magnitude < AutoStompRange and Player.Character.Humanoid.Health > 0 and not Player.Character:FindFirstChild'Dragged' and not table.find(StompWhitelist,Player.UserId) then
 					Teleport(Player.Character.Head.CFrame)
 					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Character:FindFirstChild'Punch')
@@ -1443,7 +1460,7 @@ local Target = Mouse.Target
 	if Key.KeyCode == Enum.KeyCode.Space then 
 		if AirwalkOn then PartFound.CFrame = PartFound.CFrame + Vector3.new(0,5,0) end
 	end
-	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Fire' and not Character:FindFirstChild'KO' and GunStomp then 
+	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Clips' and not Character:FindFirstChild'KO' and GunStomp then 
 		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
 	end
 	if Key.KeyCode == Enum.KeyCode[CmdBarKey] then
@@ -1583,6 +1600,7 @@ Players.PlayerRemoving:Connect(function(Player)
 		AnnoyingPlayer = nil
 		AimbotAutoShoot = false
 		Flying = false
+		AutoDie = false
 	end 
 	Unesp(Player)
 end)
@@ -2129,7 +2147,7 @@ AddCommand(function(Arguments)
 	if Arguments[1] then 
 		if AnnoyOn then
 			local Player = PlrFinder(Arguments[1])
-			if Player then 
+			if Player and Player ~= LP then 
 				AnnoyingPlayer = Player
 			end 
 		end 
@@ -2138,17 +2156,21 @@ end,"annoy",{"shield"},"Loop Teleports you infront of the Player","[Player]")
 
 AddCommand(function(Arguments)
 	TriggerBot = not TriggerBot
-	if not TriggerBot then 
+	if not TriggerBot then
+		wait()
 		AnnoyOn = false 
 		AnnoyingPlayer = nil
 		AimbotAutoShoot = false
 		Flying = false
+		AutoDie = false
 	end  
-	if Arguments[1] then 
+	if Arguments[1] and TriggerBot then
+		AutoDie = true 
 		CheckCommand("annoy "..Arguments[1])
+		CheckCommand("aimbotautoshoot")
 		if not NeverSitting then 
 			CheckCommand("neversit")
-		end 
+		end
 	end 
 end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
 
