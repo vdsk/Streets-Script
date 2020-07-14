@@ -1310,7 +1310,7 @@ LP.CharacterAdded:Connect(function(C)
 	-- Colour Changer Event -- 
 	ColourChangerEvent:Disconnect()
 	ColourChangerEvent = nil
-	ColourChangerEvent = C.Humanoid.DescendantAdded:Connect(ColourChanger)
+	ColourChangerEvent = C.DescendantAdded:Connect(ColourChanger)
 	-- WalkSpeed Event -- 
 	WalkSpeedChangedEvent:Disconnect()
 	WalkSpeedChangedEvent = nil 
@@ -1529,25 +1529,27 @@ Mouse.Button1Up:Connect(function()
 end)
 
 Players.PlayerAdded:Connect(function(Player)
-	local Head = Player.CharacterAdded:Wait():WaitForChild'Head'
-	if Head then 
-		if AimlockMode == "Closest" then 
-			AimlockClosest(Player)
-		end 
-		local Backdoor = BackDoorTablePlayers[Player.UserId]
-		if Backdoor then 
-			Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
-			Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
-			initalizeBackdoorPart2(Player,Backdoor['Colour'])
-			Player.CharacterAdded:Connect(function(C)
-				local Head = C:WaitForChild'Head'
-				if Head then
-					initalizeBackdoorPart2(Player,Backdoor['Colour'])
-					Esp(Head,Backdoor['Name'],Backdoor['Colour'])
-				end
-			end)
+	Player.CharacterAdded:Connect(function(C)
+		local Head = C:WaitForChild('Head',10)
+		if Head then 
+			if AimlockMode == "Closest" then 
+				AimlockClosest(Player)
+			end 
+			local Backdoor = BackDoorTablePlayers[Player.UserId]
+			if Backdoor then 
+				Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
+				Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
+				initalizeBackdoorPart2(Player,Backdoor['Colour'])
+				Player.CharacterAdded:Connect(function(C)
+					local Head = C:WaitForChild'Head'
+					if Head then
+						initalizeBackdoorPart2(Player,Backdoor['Colour'])
+						Esp(Head,Backdoor['Name'],Backdoor['Colour'])
+					end
+				end)
+			end
 		end
-	end
+	end)
 	local Chatted;Chatted = Player.Chatted:Connect(function(Chat)
 		local User = IsAUser(Player,Chat)
 		if User then 
@@ -2946,7 +2948,6 @@ end))
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","Added a triggerbot",10,nil)
-
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
