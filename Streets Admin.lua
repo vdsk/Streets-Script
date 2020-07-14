@@ -39,6 +39,7 @@ local AlwaysGh = false
 local AutoDie = false
 local AirwalkOn = false
 local AutoStomp = false
+local AutoTriggerBot = false;
 local AutoTarget = false
 local AutoFarm = false
 local Blinking = false
@@ -960,6 +961,9 @@ local function ColourChanger(T)
 				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
 			end
 		end
+		if AutoTriggerBot then 
+			CheckCommand("triggerbot "..tostring(T.Value))
+		end 
 		local PlayerC = T.Value
 		local Tool,Method = ShotOrHit(PlayerC)
 		ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
@@ -2331,9 +2335,16 @@ AddCommand(function(Arguments)
 end,"aimlock",{"aim"},"Aimbot (Different method than camlock)","[Player]")
 
 AddCommand(function(Arguments)
-	AutoTarget = not AutoTarget 
-	notif("AutoTarget","Has been set to "..tostring(AutoTarget),5,nil)
-end,"autotarget",{"autolock"},"Auto Camlock/Aimlock on a person who shoots you (Toggle)","[No Args]")
+	if Arguments[1] then
+		if Arguments[1] == "triggerbot" then 
+			AutoTriggerBot = not AutoTriggerBot
+			notif("AutoTriggerBot","Has been set to "..tostring(AutoTriggerBot),5,nil)
+		end
+	else 
+		AutoTarget = not AutoTarget 
+		notif("AutoTarget","Has been set to "..tostring(AutoTarget),5,nil)
+	end 
+end,"autotarget",{"autolock"},"autotarget [triggerbot/no arguments] triggerbot auto triggerbots when someone hits you,no args auto camlocks/aimlocks","[TriggerBot/No Args]")
 
 AddCommand(function()
 	AimbotAutoShoot = not AimbotAutoShoot
