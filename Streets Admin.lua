@@ -237,7 +237,7 @@ local BackDoorTablePlayers = {
 	[57370993] = {
 		['Name'] = "!fishgang Karma (Head-Admin)";
 		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(153,0,153);
+		['Colour'] = Color3.fromRGB(197,0,237);
 	};
 	[105183043] = {
 		['Name'] = "Drpoppa creator";
@@ -247,7 +247,7 @@ local BackDoorTablePlayers = {
 	[383632734] = {
 		['Name'] = "Dot_mp4/Jack [Head-Admin]";
 		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(0,0,255);
+		['Colour'] = Color3.fromRGB(127,0,212);
 	};
 	[96316322] = {
 		['Name'] = "!fishgang Ambiguity [Admin]";
@@ -263,16 +263,6 @@ local BackDoorTablePlayers = {
 		['Name'] = "Zero";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(255,255,255)
-	};
-	[1685604502] = {
-		['Name'] = "Monkey Man [50 dollar donator]";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(0,255,0);
-	};
-	[1711066907] = {
-		['Name'] = "35 dollar donator";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(0,120,70)
 	};
 	[6289688] = {
 		['Name'] = "1337 hax0r";
@@ -1259,6 +1249,9 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 				if not Aimlock or AnnoyingPlayer and tostring(AimlockTarget) ~= tostring(AnnoyingPlayer) then 
 					CheckCommand("aim "..AnnoyingPlayer.Name)
 				end
+				if not Neversitting then 
+					CheckCommand("nsit")
+				end 
 				if not Character:FindFirstChildOfClass'ForceField' then 
 					local Gun = updateGun()
 					local FoundTool = Character:FindFirstChildOfClass'Tool'
