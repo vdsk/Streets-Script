@@ -2841,7 +2841,7 @@ coroutine.resume(coroutine.create(function()
 			local Player = Table['Player']
 	        if Player and Player.Character then
 				local Head,Torso = Player.Character:FindFirstChild'Head',Player.Character:FindFirstChild'HumanoidRootPart' or Player.Character:FindFirstChild'Torso'
-	            if Head and Torso then
+	            if Head and Torso and Character:FindFirstChild'Head' then
 	                local Pos,OnScreen = WorldToViewportPoint(Head.Position)
 	                local SizeForBox = Vector3.new(2,3,0) * ((Head.Size.Y / 2) * 2)
 	                local TopLeft = WorldToViewportPoint((Torso.CFrame * CFrame.new(SizeForBox.X,SizeForBox.Y,0)).p)
@@ -2850,7 +2850,7 @@ coroutine.resume(coroutine.create(function()
 					local BottomRight = WorldToViewportPoint((Torso.CFrame * CFrame.new(-SizeForBox.X,-SizeForBox.Y,0)).p)
 					ShowOrHideEsp(Table,OnScreen,Player)
 					local User = AdminUserTable[Player] and "Yes" or "No"
-					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).." | KO'ed: "..HasItem(Player,"Bone").."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User.." | Country: "..Region(Player)
+					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).." | KO'ed: "..HasItem(Player,"Bone").." | Pos: "..math.floor((Character.Head.Position - Head.Position).magnitude).."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User.." | Country: "..Region(Player)
 		            Table['Text'].Position = Vector2.new(Pos.X,Pos.Y) + Vector2.new(0,10)
 		            Table['Box'][1].From = Vector2.new(TopLeft.X,TopLeft.Y)
 		            Table['Box'][1].To = Vector2.new(TopRight.X,TopRight.Y)
