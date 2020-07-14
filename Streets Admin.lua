@@ -2136,7 +2136,9 @@ AddCommand(function(Arguments)
 	TriggerBot = not TriggerBot
 	if not TriggerBot then 
 		AnnoyOn = false 
-		AnnoyingPlayer = nil 
+		AnnoyingPlayer = nil
+		AimbotAutoShoot = false
+		Flying = false
 	end  
 	if Arguments[1] then 
 		CheckCommand("annoy "..Arguments[1])
