@@ -1061,9 +1061,11 @@ local function updateGun()
 	else 
 		for i,v in pairs(LP.Backpack:GetChildren()) do 
 			if v:IsA'Tool' and EstimatedGunRanges[v.Name] then
-				if v:FindFirstChild'Clips' and (v.Clips.Value > 0 or Tool.Ammo.Value > 0) then 
-					NewTool = v
-					break
+				if v:FindFirstChild'Clips' then 
+					if v.Clips.Value > 0 or Tool.Ammo.Value > 0 then 
+						NewTool = v
+						break
+					end 
 				end 
 			end 
 		end 
@@ -1572,6 +1574,12 @@ Players.PlayerRemoving:Connect(function(Player)
 	if ExploitDetectionPlayerTablePositions[tostring(Player)] then 
 		ExploitDetectionPlayerTablePositions[tostring(Player)] = nil
 	end
+	if Player == AnnoyingPlayer then 
+		AnnoyOn = false 
+		AnnoyingPlayer = nil
+		AimbotAutoShoot = false
+		Flying = false
+	end 
 	Unesp(Player)
 end)
 
@@ -2134,7 +2142,9 @@ AddCommand(function(Arguments)
 	end  
 	if Arguments[1] then 
 		CheckCommand("annoy "..Arguments[1])
-		CheckCommand("neversit")
+		if not NeverSitting then 
+			CheckCommand("neversit")
+		end 
 	end 
 end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
 
