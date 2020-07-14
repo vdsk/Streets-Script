@@ -789,7 +789,7 @@ local function GrabItem(Thing,OldPos)
 		Track:play(0.1,1,1)
 		PartFound.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)
 		RunService.Heartbeat:wait()
-	until PartTable[Thing]:FindFirstChildOfClass'Part'.BrickColor == BrickColor.new'Bright red' or GetChar():FindFirstChild'KO' or GetChar().Humanoid.Health == 0
+	until PartTable[Thing]:FindFirstChildOfClass'Part'.BrickColor == BrickColor.new'Bright red' or GetChar():FindFirstChild('Bone',true) or GetChar().Humanoid.Health == 0
 	PartFound.CFrame = OldPos
 	return true
 end
@@ -1304,7 +1304,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 		local P = Players:GetPlayers() 
 		for i = 1,#P do 
 			local Player = P[i]
-			if Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChild'KO' then
+			if Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChild('Bone',true) then
 				if (PartFound.Position - Player.Character.Head.Position).magnitude < AutoStompRange and Player.Character.Humanoid.Health > 0 and not Player.Character:FindFirstChild'Dragged' and not table.find(StompWhitelist,Player.UserId) then
 					Teleport(Player.Character.Head.CFrame)
 					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Character:FindFirstChild'Punch')
@@ -1467,7 +1467,7 @@ local Target = Mouse.Target
 	if Key.KeyCode == Enum.KeyCode.Space then 
 		if AirwalkOn then PartFound.CFrame = PartFound.CFrame + Vector3.new(0,5,0) end
 	end
-	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Clips' and not Character:FindFirstChild'KO' and GunStomp then 
+	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Clips' and not Character:FindFirstChild('Bone',true) and GunStomp then 
 		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
 	end
 	if Key.KeyCode == Enum.KeyCode[CmdBarKey] then
@@ -2922,7 +2922,7 @@ coroutine.resume(coroutine.create(function()
 						if ExploitDetectionPlayerTablePositions[Player.Name] then
 							local Pos1 = Player.Character.Head.Velocity
 							local Pos2 = ExploitDetectionPlayerTablePositions[Player.Name]
-							if not Player.Character.Head:FindFirstChildOfClass'BillboardGui' and Player.Character.Humanoid.Health > 0 and not Player.Character:FindFirstChild'KO' and not Player.Character:FindFirstChildOfClass'ForceField' then 
+							if not Player.Character.Head:FindFirstChildOfClass'BillboardGui' and Player.Character.Humanoid.Health > 0 and not Player.Character:FindFirstChild('Bone',true) and not Player.Character:FindFirstChildOfClass'ForceField' then 
 								if (Vector3.new(Pos1.X,0,0) - Vector3.new(Pos2.X,0,0)).magnitude >= 85 or (Vector3.new(0,0,Pos1.Z) - Vector3.new(0,0,Pos2.Z)).magnitude >= 85 then
 									Esp(Player.Character.Head,"Exploiter: "..Player.Name.." Reason: moved too fast",Color3.fromRGB(255,255,255))
 									ExploitDetectionPlayerTablePositions[Player.Name] = Player.Character.Head.Velocity
