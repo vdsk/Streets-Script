@@ -2130,7 +2130,6 @@ AddCommand(function(Arguments)
 end,"walkshoot",{"noslow"},"Allows you to turn On/Off Walk Shooting","[No Args]")
 
 AddCommand(function(Arguments)
-	if game.PlaceId == 455366377 then notif("Wont work","Prison Only",5,nil) return end
 	FeLoop = not FeLoop
 	if Arguments[1] then
 		FeLoop = true 
