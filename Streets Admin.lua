@@ -1249,9 +1249,6 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 				if not Aimlock or AnnoyingPlayer and tostring(AimlockTarget) ~= tostring(AnnoyingPlayer) then 
 					CheckCommand("aim "..AnnoyingPlayer.Name)
 				end
-				if not Neversitting then 
-					CheckCommand("nsit")
-				end 
 				if not Character:FindFirstChildOfClass'ForceField' then 
 					local Gun = updateGun()
 					local FoundTool = Character:FindFirstChildOfClass'Tool'
@@ -2137,6 +2134,7 @@ AddCommand(function(Arguments)
 	end  
 	if Arguments[1] then 
 		CheckCommand("annoy "..Arguments[1])
+		CheckCommand("neversit")
 	end 
 end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
 
