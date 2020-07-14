@@ -262,7 +262,7 @@ local BackDoorTablePlayers = {
 	[284761493] = {
 		['Name'] = "Zero";
 		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(255,255,255)
+		['Colour'] = Color3.fromRGB(255,145,175)
 	};
 	[6289688] = {
 		['Name'] = "1337 hax0r";
@@ -931,9 +931,9 @@ local function ColourChanger(T)
 		wait()
 		GetChar().Humanoid:LoadAnimation(GunAnimation):Play()
 	end 
-	if T.Name == "Bone" then 
-		if AutoDie then 
-			GetChar():BreakJoints()
+	if T.Name == "Bone" then
+		if AutoDie then
+			GetChar().Humanoid.Health = 0
 		end 
 		if GodMode and game.PlaceId == 455366377 then 
 			for i,v in pairs(GetChar():GetDescendants()) do 
