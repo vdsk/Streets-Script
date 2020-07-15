@@ -176,7 +176,6 @@ local VanPart = Instance.new('Part',workspace)
 
 local AdminUserTable = {}
 local Commands = {}
-local Countries = {}
 local DetectedExploiters = {}
 local ExploitDetectionPlayerTablePositions = {}
 local EspTable = {}
@@ -387,7 +386,6 @@ coroutine.resume(coroutine.create(function()
 	end
 	Players:Chat("I am a CyAdmin User") -- new admin
 	Players:Chat("Hey I'm a cyrus' streets admin user1") -- legacy admin
-	Countries = HttpService:JSONDecode(game:HttpGet("http://country.io/names.json"))
 end))
 
 -- [[ End ]] -- 
@@ -713,13 +711,6 @@ local function Unesp(Part)
 	end
 end
 
-local function Region(Player)
-	if gethiddenprop then 
-		return Countries[gethiddenprop(Player,"CountryRegionCodeReplicate")]
-	end
-	return "Can't show country"
-end
-
 local function Esp(Part,Name,Colour)
 	local Player = PlrFinder(Part.Parent.Name)
 	if Player and UseDrawingLib and not Colour then
@@ -742,7 +733,7 @@ local function Esp(Part,Name,Colour)
 		local Player = PlrFinder(Name)
 		if Player then
 			local User = AdminUserTable[Player] and "Yes" or "No"
-			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCountry: "..Region(Player)
+			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
 		else 
 			TextLabel.Text = Name
 		end
@@ -2983,7 +2974,7 @@ coroutine.resume(coroutine.create(function()
 					local BottomRight = WorldToViewportPoint((Torso.CFrame * CFrame.new(-SizeForBox.X,-SizeForBox.Y,0)).p)
 					ShowOrHideEsp(Table,OnScreen,Player)
 					local User = AdminUserTable[Player] and "Yes" or "No"
-					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).." | KO'ed: "..HasItem(Player,"Bone").." | Pos: "..math.floor((Character.Head.Position - Head.Position).magnitude).."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User.." | Country: "..Region(Player)
+					Table['Text'].Text = Player.Name.." | Health: "..checkHp(Player.Character).." | KO'ed: "..HasItem(Player,"Bone").." | Pos: "..math.floor((Character.Head.Position - Head.Position).magnitude).."\nHas Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist").."\nCyAdmin User: "..User
 		            Table['Text'].Position = Vector2.new(Pos.X,Pos.Y) + Vector2.new(0,10)
 		            Table['Box'][1].From = Vector2.new(TopLeft.X,TopLeft.Y)
 		            Table['Box'][1].To = Vector2.new(TopRight.X,TopRight.Y)
