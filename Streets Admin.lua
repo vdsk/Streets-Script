@@ -1973,6 +1973,27 @@ AddCommand(function(Arguments)
 	end 
 end,"antiaim",{},"Breaks camlock to an extent","[Spin/No Args]")
 
+AddCommand(function()
+	local Punch = GetChar():FindFirstChild'Punch'
+	if Punch then 
+		if Punch.Grip == CFrame.new(math.huge,math.huge,math.huge) then
+			Punch.Parent = LP.Backpack
+			Punch.Grip = CFrame.new(0,0,0)
+			wait()
+			Punch.Parent = GetChar()
+			notif("SuperPunch","Turned off",5,nil)
+		else
+			Punch.Parent = LP.Backpack
+			Punch.Grip = CFrame.new(math.huge,math.huge,math.huge)
+			wait()
+			Punch.Parent = GetChar()
+			notif("SuperPunch","Turned on (Lasts one life also really buggy)",5,nil)
+		end
+	else 
+		notif("SuperPunch","Hold your fists",5,nil)
+	end 
+end,"superpunch",{},"This is really stupid and buggy but funny when it works","[No Args]")
+
 AddCommand(function(Arguments)
 	if Arguments[1] then
 		if Arguments[1] == "1" then
@@ -3030,7 +3051,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","antiaim spin added",10,nil)
+notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
