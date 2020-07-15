@@ -1401,17 +1401,19 @@ LP.CharacterAdded:Connect(function(C)
 		H.Parent = C
 		workspace.CurrentCamera.CameraSubject = C
 	end 
-	if PlayOnDeath then 
-		wait()
-		local Tool = LP.Backpack:WaitForChild'BoomBox'
-		if Tool then 
-			Tool.Parent = C
+	pcall(function()
+		if PlayOnDeath then 
 			wait()
-			Tool:FindFirstChildOfClass'RemoteEvent':FireServer("play",PlayOnDeath)
-			wait()
-			Tool.Parent = LP.Backpack
+			local Tool = LP.Backpack:WaitForChild'BoomBox'
+			if Tool then 
+				Tool.Parent = C
+				wait()
+				Tool:FindFirstChildOfClass'RemoteEvent':FireServer("play",PlayOnDeath)
+				wait()
+				Tool.Parent = LP.Backpack
+			end
 		end
-	end
+	end) -- code has stupid errors? pcall the fuck out of it
 end)
 
 UserInput.InputBegan:Connect(function(Key)
