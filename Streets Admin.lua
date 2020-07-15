@@ -981,12 +981,17 @@ local function ColourChanger(T)
 		end
 		if AutoTriggerBot then
 			CheckCommand("triggerbot "..tostring(T.Value))
-			local Life;Life = T.Value.DescendantAdded:Connect(function(T)
-				if T.Name == "Bone" and TriggerBot then
-					TriggerBot = true
-					CheckCommand("triggerbot")
-					Life:Disconnect()
-				end
+			AutoStomp = true 
+			local Life;Life = Players:GetPlayerFromCharacter(T.Value).CharacterRemoving:Connect(function()
+				TriggerBot = false 
+				AnnoyOn = false 
+				AnnoyingPlayer = nil
+				AimbotAutoShoot = false
+				Flying = false
+				AutoDie = false
+				AutoStomp = false
+				AimlockTarget = nil
+				Life:Disconnect()
 			end)
 		end 
 		local PlayerC = T.Value
@@ -1322,7 +1327,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 						end 
 					end
 				else
-					if not BuyingStuff and TriggerBotAutoReload or not TriggerBotAutoReload then 
+					if not BuyingStuff and TriggerBotAutoReload or not TriggerBotAutoReload and not AutoTriggerBot then 
 						PartFound.CFrame = Part.CFrame
 					end 
 				end 
@@ -2240,9 +2245,9 @@ AddCommand(function(Arguments)
 		AutoDie = false
 	end  
 	if Arguments[1] and TriggerBot then
-		AutoDie = true 
+		AutoDie = true
 		CheckCommand("annoy "..Arguments[1])
-		CheckCommand("aimbotautoshoot")
+		AimbotAutoShoot = true
 		if not NeverSitting then 
 			CheckCommand("neversit")
 		end
