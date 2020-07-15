@@ -980,10 +980,10 @@ local function ColourChanger(T)
 			end)
 		end 
 		local PlayerC = T.Value
-		if PlayerC then 
+		pcall(function()
 			local Tool,Method = ShotOrHit(PlayerC)
 			ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
-		end 
+		end)
 	end
 end
 
@@ -1287,10 +1287,24 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 					end
 				end
 				if AnnoyingPlayer and AnnoyingPlayer.Character and not AnnoyingPlayer.Character:FindFirstChild('Bone',true) then
-					if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then 
-						PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
-					else 
-						PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
+					if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then
+						local Random = math.random(1,6)
+						if Random >= 3 then 
+							PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
+						elseif Random <= 3 and Random ~= 1 then 
+							PartFound.CFrame = Part.CFrame * CFrame.new(-math.random(1,25),0,-math.random(1,25))
+						else 
+							PartFound.CFrame = Part.CFrame
+						end
+					else
+						local Random = math.random(1,6)
+						if Random >= 3 then 
+							PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
+						elseif Random <= 3 and Random ~= 1 then 
+							PartFound.CFrame = Part.CFrame * CFrame.new(-math.random(1,15),0,-math.random(1,15))
+						else 
+							PartFound.CFrame = Part.CFrame
+						end 
 					end
 				else
 					PartFound.CFrame = Part.CFrame
@@ -2833,7 +2847,7 @@ coroutine.resume(coroutine.create(function()
 		local Tool = Character:FindFirstChildOfClass'Tool'
 		if AimbotAutoShoot and AimlockTarget and Tool and Tool:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 and not AimlockTarget:FindFirstChildOfClass'ForceField' then
 			if not BehindAWall(AimlockTarget) and HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone") ~= "Yes" then
-				if AimlockTarget:FindFirstChild'Head' and (AimlockTarget.Head.Position - Character.Head.Position).magnitude <= EstimatedGunRanges[Tool.Name] then 
+				if AimlockTarget:FindFirstChild'Head' and Character:FindFirstChild'Head' and (AimlockTarget.Head.Position - Character.Head.Position).magnitude <= EstimatedGunRanges[Tool.Name] then 
 					if game.PlaceId == 455366377 then
 						LP.Backpack.Input:FireServer("m1",{
 							['mousehit'] = AimbotToCFrame();
@@ -3000,10 +3014,10 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Added a triggerbot",10,nil)
+notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
 	wait(0.3)
 	while true do end
-end 
+end
