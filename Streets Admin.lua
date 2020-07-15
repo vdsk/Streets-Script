@@ -1953,14 +1953,25 @@ AddCommand(function(Arguments)
 	end
 end,"playerinfo",{"info"},"[Player] [Os/Age(optional)]")
 
-AddCommand(function()
+AddCommand(function(Arguments)
 	AntiAim = not AntiAim
-	if AntiAim then
+	if not AntiAim then
 		stopAnim("215384594")
+		stopAnim("188632011")
 	else
-		GetChar().Humanoid:LoadAnimation(AntiAimAnimation):Play(5,45,250)
+		if Arguments[1] and Arguments[1] == "spin" then
+			local Track = GetChar().Humanoid:LoadAnimation(SpinAnimation)
+			while AntiAim and GetChar():FindFirstChild'Humanoid' and GetChar().Humanoid.Health > 0 and wait() do
+				stopAnim("188632011")
+				Track:play(0.1,1,10)
+			end 
+		else
+			stopAnim("215384594")
+			stopAnim("188632011")
+			GetChar().Humanoid:LoadAnimation(AntiAimAnimation):Play(5,45,250)
+		end 
 	end 
-end,"antiaim",{},"Breaks camlock to an extent","[No Args]")
+end,"antiaim",{},"Breaks camlock to an extent","[Spin/No Args]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
@@ -2942,7 +2953,7 @@ coroutine.resume(coroutine.create(function()
 			HotkeysTextLabel.Text = "Open Command Bar: '".."\nGunStomp: E"
 		else
 			HotkeysTextLabel.Text = "Open Command Bar: "..CmdBarKey.."\nGunStomp: E"
-		end 
+		end
 		for i,v in pairs(Keys) do HotkeysTextLabel.Text = HotkeysTextLabel.Text.."\n"..v:match'^[%w%s]+'..": "..v:match'[%a%d]+$' end 
 		if ExploiterDetectionOn then 
 			local PlayerT = Players:GetPlayers()
@@ -3019,7 +3030,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
+notif("Newest Update","antiaim spin added",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
