@@ -43,6 +43,7 @@ local AutoTriggerBot = false
 local AutoTarget = false
 local AutoFarm = false
 local Blinking = false
+local BuyingStuff = false
 local CamLocking = false 
 local DoubleJumpEnabled = false
 local DamageIndicatorDebounce = false
@@ -62,6 +63,8 @@ local NoGh = false
 local Noclip = false
 local Spamming = false
 local TpBypass = false
+local TriggerBot = false 
+local TriggerBotAutoReload = false
 local UseDrawingLib = pcall(assert,Drawing,'Hi')
 local WalkShoot = true
 
@@ -790,12 +793,14 @@ local function GrabItem(Thing,OldPos)
 	local Track = GetChar().Humanoid:LoadAnimation(SpinAnimation)
 	PartFound.CFrame = PartFound.CFrame * CFrame.new(math.random(20,45),0,math.random(1,5))
 	wait()
+	BuyingStuff = true 
 	repeat 
-		Track:play(0.1,1,1)
-		PartFound.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,0.5,0)
+		Track:play(0.1,1,10)
+		PartFound.CFrame = PartTable[Thing]:FindFirstChildOfClass'Part'.CFrame + Vector3.new(0,1.3,0)
 		RunService.Heartbeat:wait()
 	until PartTable[Thing]:FindFirstChildOfClass'Part'.BrickColor == BrickColor.new'Bright red' or GetChar():FindFirstChild('Bone',true) or GetChar().Humanoid.Health == 0
 	PartFound.CFrame = OldPos
+	BuyingStuff = false
 	return true
 end
 
@@ -1083,7 +1088,7 @@ end
 local function updateGun()
 	local NewTool;
 	local Tool = LP.Character:FindFirstChildOfClass'Tool'
-	if Tool and EstimatedGunRanges[Tool.Name] and (Tool.Ammo.Value > 0 or Tool.Clips.Value > 0) then 
+	if Tool and EstimatedGunRanges[Tool.Name] and ((Tool.Ammo.Value ~= 0 or Tool.Clips.Value > 0) and not Tool.Reloader.Value) then 
 		return true 
 	else 
 		for i,v in pairs(LP.Backpack:GetChildren()) do 
@@ -1098,8 +1103,13 @@ local function updateGun()
 		end 
 		if NewTool then 
 			return NewTool
-		else 
-			GetChar():BreakJoints()
+		else
+			if game.PlaceId == 455366377 and GetChar():FindFirstChildOfClass'Tool' and GetChar():FindFirstChildOfClass'Tool':FindFirstChild'Ammo' and TriggerBotAutoReload and not BuyingStuff and tonumber(LP.PlayerGui.HUD.Cash.Text:sub(2)) >= 25 then
+				GrabItem("ammo",GetChar().Head.CFrame)
+				return true
+			else
+				GetChar():BreakJoints()
+			end 
 			return false
 		end 
 	end 
@@ -1291,7 +1301,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 						Gun.Parent = LP.Character 
 					end
 				end
-				if AnnoyingPlayer and AnnoyingPlayer.Character and not AnnoyingPlayer.Character:FindFirstChild('Bone',true) then
+				if AnnoyingPlayer and AnnoyingPlayer.Character and not AnnoyingPlayer.Character:FindFirstChild('Bone',true) and (not BuyingStuff and TriggerBotAutoReload or not TriggerBotAutoReload) then
 					if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then
 						local Random = math.random(1,6)
 						if Random >= 3 then 
@@ -1312,9 +1322,11 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 						end 
 					end
 				else
-					PartFound.CFrame = Part.CFrame
+					if not BuyingStuff and TriggerBotAutoReload or not TriggerBotAutoReload then 
+						PartFound.CFrame = Part.CFrame
+					end 
 				end 
-			else 
+			else
 				PartFound.CFrame = Part.CFrame
 			end
 		end 
@@ -2236,6 +2248,11 @@ AddCommand(function(Arguments)
 		end
 	end 
 end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
+
+AddCommand(function()
+	if game.PlaceId ~= 455366377 then notif("TriggerBotAutoReload","Only works on normal Streets",5,nil) return end
+	TriggerBotAutoReload = not TriggerBotAutoReload
+end,"triggerbotautoreload",{},"Triggerbot auto reload (instead of resetting only works on Ts) (also probably buggy)","[No Args]")
 
 AddCommand(function(Arguments)
 	if Arguments[1] and Arguments[2] and tonumber(Arguments[2]) then
