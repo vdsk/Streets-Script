@@ -1088,7 +1088,7 @@ end
 local function updateGun()
 	local NewTool;
 	local Tool = LP.Character:FindFirstChildOfClass'Tool'
-	if Tool and EstimatedGunRanges[Tool.Name] and (Tool.Ammo.Value ~= 0 or Tool.Clips.Value > 0) then 
+	if Tool and EstimatedGunRanges[Tool.Name] and (Tool.Ammo.Value > 0 or Tool.Clips.Value > 0) then 
 		return true 
 	else 
 		for i,v in pairs(LP.Backpack:GetChildren()) do 
