@@ -979,19 +979,24 @@ local function ColourChanger(T)
 				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
 			end
 		end
-		if AutoTriggerBot then
-			CheckCommand("triggerbot "..tostring(T.Value))
-			AutoStomp = true 
-			local Life;Life = Players:GetPlayerFromCharacter(T.Value).CharacterRemoving:Connect(function()
-				TriggerBot = false 
-				AnnoyOn = false 
-				AnnoyingPlayer = nil
-				AimbotAutoShoot = false
-				Flying = false
-				AutoDie = false
-				AutoStomp = false
-				AimlockTarget = nil
-				Life:Disconnect()
+		if AutoTriggerBot and not TriggerBot then
+			local Player = T.Value
+			CheckCommand("triggerbot "..tostring(Player))
+			AutoStomp = true
+			local Life;Life = Players:GetPlayerFromCharacter(Player).CharacterRemoving:Connect(function(Char)
+				if tostring(Char) == tostring(AnnoyingPlayer) then 
+					TriggerBot = false 
+					AnnoyOn = false 
+					AnnoyingPlayer = nil
+					AimbotAutoShoot = false
+					Flying = false
+					AutoDie = false
+					AutoStomp = false
+					AimlockTarget = nil
+					Life:Disconnect()
+				else 
+					Life:Disconnect()
+				end 
 			end)
 		end 
 		local PlayerC = T.Value
@@ -1340,7 +1345,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 		local P = Players:GetPlayers() 
 		for i = 1,#P do 
 			local Player = P[i]
-			if Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChild('Bone',true) then
+			if PartFound and Player ~= LP and Player.Character and Player.Character:FindFirstChild'Head' and Player.Character:FindFirstChild('Bone',true) then
 				if (PartFound.Position - Player.Character.Head.Position).magnitude < AutoStompRange and Player.Character.Humanoid.Health > 0 and not Player.Character:FindFirstChild'Dragged' and not table.find(StompWhitelist,Player.UserId) then
 					Teleport(Player.Character.Head.CFrame)
 					LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack:FindFirstChild'Punch' or LP.Character:FindFirstChild'Punch')
