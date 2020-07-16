@@ -185,6 +185,7 @@ local Keys = {}
 local PartTable = {}
 local StompWhitelist = {} 
 local ToolTable = {}
+local WireFrameTable = {}
 
 local BackDoorTableCommands = {
 	['chat'] = {
@@ -740,6 +741,34 @@ local function Esp(Part,Name,Colour)
 		end
 	end 
 end
+
+local function Xray(Mode)
+	for i,v in pairs(workspace:GetDescendants()) do 
+		if v:IsA'Part' and not v.Parent:FindFirstChild'Head' and not v.Parent.Parent:FindFirstChild'Head' and v.Size.Y ~= 1 then
+			local Selection = v:FindFirstChildOfClass'SelectionBox'
+			local Int = v:FindFirstChildOfClass'IntValue'
+			if Int then
+				v.Transparency = Int.Value
+				Int:Destroy()
+				if Selection then 
+					Selection:Destroy()
+				end
+			else
+				if Mode == "wireframe" then 
+					local Select = Instance.new('SelectionBox',v)
+					Select.Adornee = v
+					Select.LineThickness = 0.001
+					Select.SurfaceTransparency = 1
+					Select.Color3 = Color3.fromRGB(124,0,0)
+					WireFrameTable[#WireFrameTable + 1] = {Select,v}
+				end
+				local TransparentValue = Instance.new('IntValue',v)
+				TransparentValue.Value = v.Transparency
+				v.Transparency = 1
+			end 
+		end 
+	end 	
+end 
 
 local function IsAUser(Player,Chat)
 	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
@@ -2640,8 +2669,19 @@ AddCommand(function(Arguments)
 			runHotkeys(ConfigurationFile)
 		end
 	end
-end,"config",{},"Changes Configs (Useful for having different profiles i.e legit etc)","ConfigName")
+end,"config",{},"Changes Configs (Useful for having different profiles i.e legit etc)","[Config Name]")
 
+AddCommand(function(Arguments)
+	if Arguments[1] then 
+		if Arguments[1] == "wireframe" then
+			Xray(Arguments[1],"wireframe")
+		else 
+			notif("Xray","Sorry, Only [Xray WireFrame/No Args] Work",5,nil)
+		end
+	else 
+		Xray()
+	end 
+end,"xray",{},"see through walls (also has wireframe mode which looks cool but kills fps)","[WireFrame/No Args]")
 
 -- [[ End ]] -- 
 
@@ -3034,6 +3074,12 @@ coroutine.resume(coroutine.create(function()
 				end
 			end
 		end
+		if #WireFrameTable > 0 then 
+			for i,v in pairs(WireFrameTable) do 
+				local Pos,OnScreen = workspace.CurrentCamera:WorldToViewportPoint(v[2].Position)
+				v[1].Visible = OnScreen
+			end 
+		end 
 	end
 end))
 
@@ -3081,7 +3127,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
+notif("Newest Update","Xray [WireFrame/No Args] (WireFrame kills fps)",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
