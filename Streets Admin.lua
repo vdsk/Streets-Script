@@ -32,6 +32,7 @@ GetChar():WaitForChild'Humanoid'
 
 local AimbotAutoShoot = false 
 local AntiAim = false
+local AntiKill = false
 local Aimlock = false
 local AliasesEnabled = true
 local AnnoyOn = false
@@ -183,6 +184,7 @@ local EspTable2 = {}
 local Keys = {}
 local PartTable = {}
 local StompWhitelist = {} 
+local ToolTable = {}
 
 local BackDoorTableCommands = {
 	['chat'] = {
@@ -1243,6 +1245,12 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
+	local Tool = Character:FindFirstChildOfClass'Tool'
+	if AntiKill and Tool and not table.find(ToolTable,Tool) then 
+		if Character:FindFirstChild'Right Arm' and Character['Right Arm']:FindFirstChild'RightGrip' then 
+			Character['Right Arm'].RightGrip:Destroy()
+		end 
+	end 
 	if flying and Character:FindFirstChild'Humanoid' and (game.PlaceId == 455366377 and not FlyDebounce) then
 		FlyDebounce = true
 		LP.Character.Humanoid:ChangeState(3)
@@ -1352,7 +1360,9 @@ local ColourChangerEvent;ColourChangerEvent = LP.Character.DescendantAdded:Conne
 local RemoveGunAnimationEvent;RemoveGunAnimationEvent = LP.Character.DescendantRemoving:Connect(RemoveGunAnimation)
 local WalkSpeedChangedEvent;WalkSpeedChangedEvent = LP.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(LoopChangeWalkSpeed)
 LP.CharacterAdded:Connect(function(C)
-	Flying = false 
+	Flying = false
+	AntiKill = false
+	ToolTable = {}
 	C:WaitForChild'Humanoid' -- wait until the humanoid has been found
 	-- Gun Animation Event -- 
 	RemoveGunAnimationEvent:Disconnect()
@@ -2276,15 +2286,16 @@ AddCommand(function(Arguments)
 			Arm:Destroy()
 		end
 	else
-		local ToolTable = LP.Backpack:GetChildren()
-		GetChar().ChildAdded:Connect(function(Tool)
-			if Tool:IsA'Tool' then 
-				if table.find(ToolTable,Tool) then return end 
-				wait()
-				Tool.Parent = LP.Backpack
-				table.insert(ToolTable,Tool)
+		AntiKill = true 
+		ToolTable = LP.Backpack:GetChildren()
+		local Character = GetChar()
+		Character.ChildAdded:Connect(function(Tool)
+			if Tool:IsA'Tool' then
+				if table.find(ToolTable,Tool) then return end
+				Tool:Destroy()
 			end
 		end)
+		notif("AntiKill","Turn on noclip for best results")
 	end
 end,"antikill",{},"Makes FE Loop not work (Legacy for removing right arm)","[Legacy (Optional)]")
 
