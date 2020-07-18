@@ -1278,6 +1278,12 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
+	if GodMode and game.PlaceId ~= 455366377 then
+		local RightLeg = Character:FindFirstChild'Right Leg'
+		if RightLeg then 
+			RightLeg:Destroy()
+		end 
+	end
 	local Tool = Character:FindFirstChildOfClass'Tool'
 	if AntiKill and Tool and not table.find(ToolTable,Tool) then 
 		if Character:FindFirstChild'Right Arm' and Character['Right Arm']:FindFirstChild'RightGrip' then 
@@ -1679,6 +1685,9 @@ Players.PlayerRemoving:Connect(function(Player)
 	if ExploitDetectionPlayerTablePositions[tostring(Player)] then 
 		ExploitDetectionPlayerTablePositions[tostring(Player)] = nil
 	end
+	if tostring(Player) == tostring(AimlockTarget) then 
+		AimlockTarget = nil
+	end
 	if Player == AnnoyingPlayer then
 		TriggerBot = false
 		AnnoyOn = false 
@@ -1874,11 +1883,15 @@ AddCommand(function()
 end,"draggablegui",{},"Makes your HUD draggable","[No Args]")
 
 AddCommand(function(Arguments)
-if game.PlaceId ~= 455366377 then return end 
 	if not Arguments[1] then 
 		GodMode = not GodMode
-		if GodMode then 
-			notif("go get KO'ed","make sure you don't get dragged and like fly away somewhere when you get up you will be godded",5,nil)
+		if GodMode then
+			if game.PlaceId == 455366377 then
+				notif("go get KO'ed","make sure you don't get dragged and like fly away somewhere when you get up you will be godded",5,nil)
+			end 
+		end
+		if game.PlaceId ~= 455366377 then
+			GetChar():BreakJoints()
 		end 
 		notif("GodMode","Has been set to "..tostring(GodMode),5,nil)
 	end
