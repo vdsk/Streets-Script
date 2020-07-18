@@ -1092,7 +1092,7 @@ end
 
 local function LoopChangeWalkSpeed()
 	if game.PlaceId == 455366377 then 
-		if KeyTable['Shift'] then
+		if KeyTable['Shift'] and (WalkShoot and (LP.Backpack:FindFirstChild'ServerTraits' and LP.Backpack.ServerTraits.Stann.Value > 0 or GetChar():FindFirstChild'Stamina' and GetChar().Stamina.Value > 0) or not WalkShoot) then
 			if Normalwalk and SprintSpeed == 25 then return end
 			GetChar().Humanoid.WalkSpeed = SprintSpeed
 			return 
@@ -1102,10 +1102,10 @@ local function LoopChangeWalkSpeed()
 			GetChar().Humanoid.WalkSpeed = CrouchSpeed
 			return 
 		end
-		if WalkShoot then 
+		if not WalkShoot then 
 			GetChar().Humanoid.WalkSpeed = WalkSpeed
-		end 
-	end
+		end
+	end 
 end
 
 local function AimbotToCFrame()
@@ -1176,7 +1176,7 @@ local NewIndex = Raw.__newindex;
 Raw.__newindex = Closure(function(self,Property,Value)
 	if Caller() then return NewIndex(self,Property,Value) end
 	StarterGui:SetCore('ResetButtonCallback',true)
-	if Property == "WalkSpeed" and not WalkShoot then return 16 end
+	if Property == "WalkSpeed" and WalkShoot then return 16 end
 	if Property == "JumpPower" then return 37.5 end 
 	if Property == "HipHeight" then return 0 end 
 	if Property == "Health" then return 100 end
@@ -1278,6 +1278,9 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
+	if KeyTable['Shift'] and WalkShoot and (LP.Backpack:FindFirstChild'ServerTraits' and LP.Backpack.ServerTraits.Stann.Value <= 5 or GetChar():FindFirstChild'Stamina' and GetChar().Stamina.Value <= 5) then 
+		GetChar().Humanoid.WalkSpeed = 16
+	end 
 	if GodMode and game.PlaceId ~= 455366377 then
 		local RightLeg = Character:FindFirstChild'Right Leg'
 		if RightLeg then 
@@ -1398,6 +1401,7 @@ local HumanoidStateChanged;HumanoidStateChanged = LP.Character.Humanoid.StateCha
 local ColourChangerEvent;ColourChangerEvent = LP.Character.DescendantAdded:Connect(ColourChanger)
 local RemoveGunAnimationEvent;RemoveGunAnimationEvent = LP.Character.DescendantRemoving:Connect(RemoveGunAnimation)
 local WalkSpeedChangedEvent;WalkSpeedChangedEvent = LP.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(LoopChangeWalkSpeed)
+
 LP.CharacterAdded:Connect(function(C)
 	Flying = false
 	AntiKill = false
@@ -1515,7 +1519,7 @@ local Target = Mouse.Target
 			end
 		end
 	end
-	if ClicktpKey and ClickTpKey ~= "" and Key.KeyCode == Enum.KeyCode[ClickTpKey:upper()] and Target then 
+	if ClickTpKey and ClickTpKey ~= "" and Key.KeyCode == Enum.KeyCode[ClickTpKey:upper()] and Target then 
 		Teleport(CFrame.new(Mouse.Hit.p + Vector3.new(0,5,0)))
 	end
 	for i,v in pairs(Keys) do
@@ -1551,7 +1555,20 @@ local Target = Mouse.Target
 		if AirwalkOn then PartFound.CFrame = PartFound.CFrame + Vector3.new(0,5,0) end
 	end
 	if Key.KeyCode == Enum.KeyCode.E and Character:FindFirstChildOfClass'Tool' and Character:FindFirstChildOfClass'Tool':FindFirstChild'Clips' and not Character:FindFirstChild('Bone',true) and GunStomp then 
-		LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
+		if game.PlaceId == 455366377 then 
+			local OldTool = Character:FindFirstChildOfClass'Tool'
+			OldTool.Parent = LP.Backpack
+			wait()
+			local Punch = LP.Backpack.Punch
+			Punch.Parent = Character
+			LP.Backpack.Input:FireServer("e",{})
+			wait(1)
+			Punch.Parent = LP.Backpack
+			wait()
+			OldTool.Parent = Character
+		else
+			LP.Backpack.ServerTraits.Finish:FireServer(LP.Backpack.Punch)
+		end 
 	end
 	if Key.KeyCode == Enum.KeyCode[CmdBarKey] then
 		wait()
@@ -3145,10 +3162,10 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
+notif("Newest Update","Fixed WalkShoot",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	notif("HA YOU THOUGHT","no!!",5,nil)
 	wait(0.3)
 	while true do end
-end 
+end
