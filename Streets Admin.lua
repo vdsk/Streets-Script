@@ -736,7 +736,7 @@ local function Esp(Part,Name,Colour,Blacklisted)
 		BillBoard.Adornee = Part
 		BillBoard.Size = UDim2.new(0,100,0,100)
 		BillBoard.StudsOffset = Vector3.new(0,1.3,0)
-		BillBoard.AlwaysOnTop = true
+		BillBoard.AlwaysOnTop = not Blacklisted and true or false
 		TextLabel.BackgroundTransparency = 1
 		TextLabel.Size = UDim2.new(1,0,0,40)
 		TextLabel.TextColor3 = Colour or EspColour
@@ -1673,7 +1673,7 @@ Players.PlayerAdded:Connect(function(Player)
 			end 
 			local Backdoor = BackDoorTablePlayers[Player.UserId]
 			local Blacklist = BlacklistTable[Player.UserId]
-			if Blacklist then
+			if Blacklist or Player:IsInGroup(5152759) or string.find(Player.Name:lower(),"lynx") then
 				Esp(Player.Character.Head,Player.Name,Color3.fromRGB(102,51,0),true)
 				Player.CharacterAdded:Connect(function(C)
 					local Head = C:WaitForChild'Head'
@@ -3141,7 +3141,7 @@ coroutine.resume(coroutine.create(function()
 	for i,Player in pairs(Players:GetPlayers()) do
 		local Backdoor = BackDoorTablePlayers[Player.UserId]
 		local Blacklist = BlacklistTable[Player.UserId]
-		if Blacklist and Player.character and Player.Character:FindFirstChild'Head' then
+		if (Blacklist or Player:IsInGroup(5152759) or string.find(Player.Name:lower(),"lynx")) and Player.character and Player.Character:FindFirstChild'Head' then
 			Esp(Player.Character.Head,Player.Name,Color3.fromRGB(102,51,0),true)
 			Player.CharacterAdded:Connect(function(C)
 				local Head = C:WaitForChild'Head'
