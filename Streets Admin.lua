@@ -3,7 +3,7 @@
 --]]
 
 --[[Todo
-
+	Add a scuffed bfg (in testing)
 ]]
 
 -- [[ Variables ]] --
@@ -46,7 +46,9 @@ local AutoTarget = false
 local AutoFarm = false
 local Blinking = false
 local BuyingStuff = false
-local CamLocking = false 
+local CamLocking = false
+local CurrentlyShooting = false
+local BfgOn = false
 local DoubleJumpEnabled = false
 local DamageIndicatorDebounce = false
 local ExploiterDetectionOn = false
@@ -477,7 +479,7 @@ getgenv().Teleport = function(Part)
 	if typeof(Part) == "CFrame" then 
 		local Character = GetChar()
 		local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
-		if not Character:FindFirstChild'HumanoidRootPart' or (Part.p - PartFound.CFrame.p).magnitude < 50 then
+		if PartFound and not Character:FindFirstChild'HumanoidRootPart' or (Part.p - PartFound.CFrame.p).magnitude < 50 then
 			PartFound.CFrame = Part
 		else
 			TweenService:Create(PartFound,TweenInfo.new(3.2,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{CFrame = Part}):Play()
@@ -977,7 +979,14 @@ local function ColourChanger(T)
 	if T:IsA'Trail' then 
 		T.Color = BulletColour
 	end
-	if EstimatedGunRanges[T.Name] and GunAnim ~= "None" then 
+	if BfgOn and T:FindFirstChild('Clips',true) then
+		for _,v in pairs(LP.Backpack:GetChildren()) do 
+			if v:IsA'Tool' and v:FindFirstChild('Clips',true) then 
+				v.Parent = GetChar()
+			end 
+		end
+	end 
+	if not BfgOn and EstimatedGunRanges[T.Name] and GunAnim ~= "None" then 
 		wait()
 		if T.Name ~= "Shotty" and T.Name ~= "Sawed Off" or GunAnim == "1" then 
 			GetChar().Humanoid:LoadAnimation(GunAnimation1):Play()
@@ -1657,6 +1666,27 @@ Mouse.Button1Down:Connect(function()
 		if Players:GetPlayerFromCharacter(Target.Parent) or not Target.Anchored then
 			GravGunBodyPosition = createBodyPos(Target)
 		end 
+	end
+	if BfgOn and GetChar():FindFirstChildOfClass'Tool' and GetChar():FindFirstChildOfClass'Tool':FindFirstChild('Clips',true) and not CurrentlyShooting then
+		CurrentlyShooting = true 
+		GetChar().Humanoid:UnequipTools()
+		local OldTool;
+		for _,Tool in pairs(LP.Backpack:GetChildren()) do 
+			if Tool:IsA'Tool' and Tool:FindFirstChild('Clips',true) then 
+				Tool.Parent = GetChar()
+				OldTool = Tool
+				LP.Backpack.Input:FireServer("m1",{
+					['mousehit'] = Aimlock and AimlockTarget and AimbotToCFrame() or Mouse.Hit;
+					['shift'] = UserInput:IsKeyDown(Enum.KeyCode.LeftShift);
+					['velo'] = 0;
+			   })
+			   wait(0.3)
+			   Tool.Parent = LP.Backpack
+			   wait(0.3)
+			end 
+		end
+		OldTool.Parent = GetChar()
+		CurrentlyShooting = false
 	end
 end)
 
@@ -2540,6 +2570,11 @@ AddCommand(function(Arguments)
 		notif("Aimlock","Has been set to "..tostring(Aimlock),5,nil)		
 	end
 end,"aimlock",{"aim"},"Aimbot (Different method than camlock)","[Player]")
+
+--[[AddCommand(function()
+	if game.PlaceId ~= 455366377 then notif("BFG","Streets only",5,nil) end
+	BfgOn = not BfgOn
+end,"bfg",{},"Shitty bfg I made (Normal Ts Only)","[No Args]")]]
 
 AddCommand(function(Arguments)
 	if Arguments[1] then
