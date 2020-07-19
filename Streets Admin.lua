@@ -1287,7 +1287,7 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 			end
 		end 
 	end
-	if KeyTable['Shift'] and WalkShoot and (LP.Backpack:FindFirstChild'ServerTraits' and LP.Backpack.ServerTraits.Stann.Value <= 5 or GetChar():FindFirstChild'Stamina' and GetChar().Stamina.Value <= 5) then 
+	if KeyTable['Shift'] and SprintSpeed == 25 and WalkShoot and (LP.Backpack:FindFirstChild'ServerTraits' and LP.Backpack.ServerTraits.Stann.Value <= 5 or GetChar():FindFirstChild'Stamina' and GetChar().Stamina.Value <= 5) then 
 		GetChar().Humanoid.WalkSpeed = 16
 	end 
 	if GodMode and game.PlaceId ~= 455366377 then
