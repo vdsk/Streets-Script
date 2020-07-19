@@ -30,7 +30,7 @@ GetChar():WaitForChild'Humanoid'
 
 -- Bools -- 
 
-local AimbotAutoShoot = false 
+local AimbotAutoShoot = false
 local AntiAim = false
 local AntiKill = false
 local Aimlock = false
@@ -41,6 +41,7 @@ local AutoDie = false
 local AirwalkOn = false
 local AutoStomp = false
 local AutoTriggerBot = false
+local AutoFeloop = false
 local AutoTarget = false
 local AutoFarm = false
 local Blinking = false
@@ -310,6 +311,8 @@ local BlacklistTable = {
 		I add him: https://cdn.discordapp.com/attachments/726179909906464870/734191062435758201/image0.png
 		gets mad he got exposed: https://cdn.discordapp.com/attachments/726179909906464870/734191218400952381/image0.png
 	]]
+	[338649839] = true; -- literally a pedophile and a skid
+	[54133607] = true; -- Claims to hate me yet uses my script lol?
 }
 
 local SettingsTable = {
@@ -997,10 +1000,11 @@ local function ColourChanger(T)
 			end
 		end 
 	end
-	if T:IsA'ObjectValue' and T.Name == "creator" then 
+	if T:IsA'ObjectValue' and T.Name == "creator" then
+		local Player = T.Value
 		if AutoTarget then
 			if Aimlock then 
-				AimlockTarget = T.Value
+				AimlockTarget = Player
 				local Connection;Connection = Players:GetPlayerFromCharacter(AimlockTarget).CharacterAdded:Connect(function(C)
 					if tostring(C) == tostring(AimlockTarget) then 
 						AimlockTarget = C 
@@ -1011,11 +1015,13 @@ local function ColourChanger(T)
 				end)
 			end
 			if CamLocking then 
-				CamlockPlayer = Players:GetPlayerFromCharacter(T.Value)
+				CamlockPlayer = Players:GetPlayerFromCharacter(Player)
 			end
 		end
+		if AutoFeloop then 
+			CheckCommand("feloop "..tostring(Player))
+		end 
 		if AutoTriggerBot and not TriggerBot then
-			local Player = T.Value
 			CheckCommand("triggerbot "..tostring(Player))
 			AutoStomp = true
 			local Life;Life = Players:GetPlayerFromCharacter(Player).CharacterRemoving:Connect(function(Char)
@@ -1034,10 +1040,9 @@ local function ColourChanger(T)
 				end 
 			end)
 		end 
-		local PlayerC = T.Value
 		pcall(function()
-			local Tool,Method = ShotOrHit(PlayerC)
-			ChangeDamageIndicatorText(PlayerC.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - PlayerC.Head.Position).magnitude).." studs with a "..Tool.Name)
+			local Tool,Method = ShotOrHit(Player)
+			ChangeDamageIndicatorText(Player.Name.." has "..Method.." from "..math.floor((GetChar().Head.Position - Player.Head.Position).magnitude).." studs with a "..Tool.Name)
 		end)
 	end
 end
@@ -1724,6 +1729,10 @@ Players.PlayerRemoving:Connect(function(Player)
 	if tostring(Player) == tostring(AimlockTarget) then 
 		AimlockTarget = nil
 	end
+	if Player == LoopPlayer then 
+		FeLoop = false 
+		LoopPlayer = nil
+	end 
 	if Player == AnnoyingPlayer then
 		TriggerBot = false
 		AnnoyOn = false 
@@ -1732,7 +1741,7 @@ Players.PlayerRemoving:Connect(function(Player)
 		Flying = false
 		AutoDie = false
 		AimlockTarget = nil
-	end 
+	end
 	Unesp(Player)
 end)
 
@@ -2537,12 +2546,15 @@ AddCommand(function(Arguments)
 		if Arguments[1] == "triggerbot" then 
 			AutoTriggerBot = not AutoTriggerBot
 			notif("AutoTriggerBot","Has been set to "..tostring(AutoTriggerBot),5,nil)
+		elseif Arguments[1] == "feloop" then 
+			AutoFeloop = not AutoFeloop
+			notif("AutoFeloop","Has been set to "..tostring(AutoFeloop),5,nil)
 		end
 	else 
 		AutoTarget = not AutoTarget 
 		notif("AutoTarget","Has been set to "..tostring(AutoTarget),5,nil)
 	end 
-end,"autotarget",{"autolock"},"autotarget [triggerbot/no arguments] triggerbot auto triggerbots when someone hits you,no args auto camlocks/aimlocks","[TriggerBot/No Args]")
+end,"autotarget",{"autolock"},"autotarget [triggerbot/feloop/no arguments] triggerbot auto triggerbots when someone hits you,no args auto camlocks/aimlocks","[TriggerBot/FeLoop/No Args]")
 
 AddCommand(function()
 	AimbotAutoShoot = not AimbotAutoShoot
@@ -3191,7 +3203,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","TriggerBot more like CancerBot (it's more op now)",10,nil)
+notif("Newest Update","Added autotarget feloop",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	while true do end
