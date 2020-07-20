@@ -302,6 +302,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(125,0,0);
 	};
+	[70550151] = {
+		['Name'] = "Nigerian prince (Bird)";
+		['Access'] = 2;
+		['Colour'] = Color3.fromRGB(125,0,0);
+	}
 }
 
 local BlacklistTable = {
