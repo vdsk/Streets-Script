@@ -306,6 +306,11 @@ local BackDoorTablePlayers = {
 		['Name'] = "Nigerian prince (Bird)";
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(125,0,0);
+	};
+	[1773860961] = {
+		['Name'] = "Est (Gave me 9b kills on customs";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(0,0,0);
 	}
 }
 
