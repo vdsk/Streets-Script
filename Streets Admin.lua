@@ -758,7 +758,7 @@ local function Esp(Part,Name,Colour,Blacklisted)
 				local User = AdminUserTable[Player] and "Yes" or "No"
 				TextLabel.Text = Name.." | CyAdmin User: "..User.."\nHas (Gamepasses) Glock: "..HasItem(Player,"Glock").." | Shotty: "..HasItem(Player,"Shotty").." | Vest: "..HasItem(Player,"BulletResist")
 			else 
-				TextLabel.Text = "[Blacklisted skid] "..Player.Name.." (can be for just being in lynx")
+				TextLabel.Text = "[Blacklisted skid] "..Player.Name.." (can be for just being in lynx)"
 			end 
 		else 
 			TextLabel.Text = Name
