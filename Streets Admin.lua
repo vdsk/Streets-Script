@@ -117,6 +117,8 @@ local GravGunBodyVelocity;
 local GravGunTool;
 local LoopPlayer;
 local PlayOnDeath;
+local RemoteGunPlayer;
+local RemoteGunBodyPos;
 local SpawnWs;
 local SpawnJP;
 local SpawnHH;
@@ -1149,7 +1151,7 @@ local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,'HumanoidRootPart'
 	if TargetPart and AimMode == "OldPrediction" then 
 		CFrameToReturn = TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity
 	elseif TargetPart and AimMode == "Prediction" then
-		CFrameToReturn = TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity
+		CFrameToReturn = (TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity) + (TargetPart.RotVelocity / NewPredictionVelocity)
 	elseif AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
 		CFrameToReturn = AimlockTarget[AimMode].CFrame
 	end
@@ -1315,6 +1317,9 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 	end
 	if KeyTable['Shift'] and SprintSpeed == 25 and WalkShoot and (LP.Backpack:FindFirstChild'ServerTraits' and LP.Backpack.ServerTraits.Stann.Value <= 5 or GetChar():FindFirstChild'Stamina' and GetChar().Stamina.Value <= 5) then 
 		GetChar().Humanoid.WalkSpeed = 16
+	end
+	if RemoteGunBodyPos and RemoteGunPlayer and RemoteGunPlayer.Character and RemoteGunPlayer.Character:FindFirstChild'Torso' then 
+	
 	end 
 	if GodMode and game.PlaceId ~= 455366377 then
 		local RightLeg = Character:FindFirstChild'Right Leg'
@@ -1390,21 +1395,17 @@ local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFi
 				if AnnoyingPlayer and AnnoyingPlayer.Character and not AnnoyingPlayer.Character:FindFirstChild('Bone',true) and (not BuyingStuff and TriggerBotAutoReload or not TriggerBotAutoReload) then
 					if Character:FindFirstChild'Glock' or Character:FindFirstChild'Uzi' then
 						local Random = math.random(1,6)
-						if Random >= 3 then 
+						if Random <= 3 then 
 							PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,25),0,math.random(1,25))
-						elseif Random <= 3 and Random ~= 1 then 
+						elseif Random > 3 then 
 							PartFound.CFrame = Part.CFrame * CFrame.new(-math.random(1,25),0,-math.random(1,25))
-						else 
-							PartFound.CFrame = Part.CFrame
 						end
 					else
 						local Random = math.random(1,6)
-						if Random >= 3 then 
+						if Random <= 3 then 
 							PartFound.CFrame = Part.CFrame * CFrame.new(math.random(1,15),0,math.random(1,15))
-						elseif Random <= 3 and Random ~= 1 then 
+						elseif Random > 3 then 
 							PartFound.CFrame = Part.CFrame * CFrame.new(-math.random(1,15),0,-math.random(1,15))
-						else 
-							PartFound.CFrame = Part.CFrame
 						end 
 					end
 				else
@@ -2395,9 +2396,21 @@ AddCommand(function(Arguments)
 	end 
 end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
 
---[[AddCommand(function()
-
-end,"remotegun",{},"Hold any gun","[Player]")]]
+AddCommand(function(Arguments)
+	if not GetChar():FindFirstChildOfClass'Tool' or not GetChar():FindFirstChildOfClass'Tool':FindFirstChild'Clips' then notif("Tool needed","Hold a gun",5,nil) return end 
+	if RemoteGunBodyPos then 
+		RemoteGunBodyPos:Destroy()
+		RemoteGunBodyPos = nil
+		RemoteGunPlayer = nil
+	end
+	if Arguments[1] then 
+		local Player = PlrFinder(Arguments[1])
+		if Player then 
+			RemoteGunPlayer = Player
+			RemoteGunBodyPos = createBodyPos(GetChar():FindFirstChildOfClass'Tool'.Handle)
+		end
+	end
+end,"remotegun",{},"Hold any gun","[Player]")
 
 AddCommand(function()
 	if game.PlaceId ~= 455366377 then notif("TriggerBotAutoReload","Only works on normal Streets",5,nil) return end
