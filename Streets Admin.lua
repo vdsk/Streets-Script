@@ -4,6 +4,7 @@
 
 --[[Todo
 	Add a scuffed bfg (in testing)
+	Remote Gun (In Testing)
 ]]
 
 -- [[ Variables ]] --
@@ -325,6 +326,7 @@ local BlacklistTable = {
 	]]
 	[338649839] = true; -- literally a pedophile and a skid
 	[54133607] = true; -- Claims to hate me yet uses my script lol?
+	[347481927] = true; -- XXXtentacion
 }
 
 local SettingsTable = {
@@ -2392,6 +2394,10 @@ AddCommand(function(Arguments)
 		end
 	end 
 end,"triggerbot",{},"triggerbot goes brrrrrrrrrrrrrrrr","[Player]")
+
+--[[AddCommand(function()
+
+end,"remotegun",{},"Hold any gun","[Player]")]]
 
 AddCommand(function()
 	if game.PlaceId ~= 455366377 then notif("TriggerBotAutoReload","Only works on normal Streets",5,nil) return end
