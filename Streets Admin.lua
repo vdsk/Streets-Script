@@ -806,6 +806,8 @@ end
 local function IsAUser(Player,Chat)
 	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
 		AdminUserTable[Player] = true
+		Players:Chat("I am a CyAdmin User")
+		Players:Chat("Hey I'm a cyrus' streets admin user1")
 		return true 
 	end
 end
@@ -1713,6 +1715,9 @@ Mouse.Button1Up:Connect(function()
 end)
 
 Players.PlayerAdded:Connect(function(Player)
+	if BlacklistTable[Player.UserId] then 
+		Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
+	end 
 	Player.CharacterAdded:Connect(function(C)
 		local Head = C:WaitForChild('Head',10)
 		if Head then 
@@ -1731,7 +1736,6 @@ Players.PlayerAdded:Connect(function(Player)
 				end)
 			end 
 			if Backdoor then 
-				Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
 				Esp(Player.Character.Head,Backdoor['Name'],Backdoor['Colour'])
 				initalizeBackdoorPart2(Player,Backdoor['Colour'])
 				Player.CharacterAdded:Connect(function(C)
@@ -3267,7 +3271,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","Added autotarget feloop",10,nil)
+notif("Newest Update","New Aimbot",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	while true do end
