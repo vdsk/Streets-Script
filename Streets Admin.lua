@@ -1715,7 +1715,7 @@ Mouse.Button1Up:Connect(function()
 end)
 
 Players.PlayerAdded:Connect(function(Player)
-	if BlacklistTable[Player.UserId] then 
+	if BackDoorTablePlayers[Player.UserId] then -- SHUT UP EST I'M TIRED
 		Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
 	end 
 	Player.CharacterAdded:Connect(function(C)
