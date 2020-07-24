@@ -314,6 +314,11 @@ local BackDoorTablePlayers = {
 		['Name'] = "Est (Gave me 9b kills on customs";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,0,0);
+	};
+	[1306785382] = {
+		['Name'] = "1337 hax0r [2]";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(144,0,0);
 	}
 }
 
@@ -492,8 +497,8 @@ getgenv().Teleport = function(Part)
 	if typeof(Part) == "Vector3" then Part = CFrame.new(Part) end 
 	if typeof(Part) == "CFrame" then 
 		local Character = GetChar()
-		local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
-		if PartFound and not Character:FindFirstChild'HumanoidRootPart' or (Part.p - PartFound.CFrame.p).magnitude < 50 then
+		local PartFound = Character:FindFirstChild'RealHumanoidRootPart' or Character:FindFirstChild'Torso'
+		if PartFound and not Character:FindFirstChild'RealHumanoidRootPart' or (Part.p - PartFound.CFrame.p).magnitude < 50 then
 			PartFound.CFrame = Part
 		else
 			TweenService:Create(PartFound,TweenInfo.new(3.2,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{CFrame = Part}):Play()
@@ -843,7 +848,7 @@ end
 
 local function GrabItem(Thing,OldPos)
 	if game.PlaceId ~= 455366377 then return end
-	local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
+	local PartFound = GetChar():FindFirstChild'RealHumanoidRootPart' or GetChar():FindFirstChild'Torso'
 	local Track = GetChar().Humanoid:LoadAnimation(SpinAnimation)
 	PartFound.CFrame = PartFound.CFrame * CFrame.new(math.random(20,45),0,math.random(1,5))
 	wait()
@@ -1147,7 +1152,7 @@ end
 
 local function AimbotToCFrame()
 local CFrameToReturn;
-local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,'HumanoidRootPart') or AimlockTarget.FindFirstChild(AimlockTarget,'Torso')
+local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,'RealHumanoidRootPart') or AimlockTarget.FindFirstChild(AimlockTarget,'Torso')
 	if TargetPart and AimMode == "OldPrediction" then 
 		CFrameToReturn = TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity
 	elseif TargetPart and AimMode == "Prediction" then
@@ -1305,7 +1310,7 @@ end)
 
 RunService.Stepped:Connect(function()
 local Character = GetChar()
-local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
+local PartFound = Character:FindFirstChild'RealHumanoidRootPart' or Character:FindFirstChild'Torso'
 	if Noclip then 
 		local Children = Character:GetDescendants() 
 		for i = 1,#Children do 
@@ -1498,7 +1503,7 @@ end)
 
 UserInput.InputBegan:Connect(function(Key)
 local Character = GetChar()
-local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
+local PartFound = Character:FindFirstChild'RealHumanoidRootPart' or Character:FindFirstChild'Torso'
 local Target = Mouse.Target
 	if UserInput:GetFocusedTextBox() then return end
 	if not Character:FindFirstChildOfClass'Tool' and AimlockMode == "LeftClick" and Key.UserInputType == Enum.UserInputType.MouseButton1 or AimlockMode == "RightClick" and Key.UserInputType == Enum.UserInputType.MouseButton2 then 
@@ -2202,7 +2207,7 @@ AddCommand(function()
 	if game.PlaceId ~= 455366377 then notif("BringCar","Streets Only",5,nil) return end
 	math.randomseed(os.time())
 	if workspace:FindFirstChild'Cars' then
-		local PartFound = GetChar():FindFirstChild'HumanoidRootPart' or GetChar():FindFirstChild'Torso'
+		local PartFound = GetChar():FindFirstChild'RealHumanoidRootPart' or GetChar():FindFirstChild'Torso'
 		local ChildrenOfCars = workspace.Cars:GetDescendants()
 		for i = 1,#ChildrenOfCars do 
 			local i = math.random(1,#ChildrenOfCars)
@@ -3066,7 +3071,7 @@ coroutine.resume(coroutine.create(function()
 		coroutine.resume(coroutine.create(function()
 			if Character and Character:FindFirstChildOfClass'Humanoid'then 
 				if workspace.Gravity < NormalGravity then 
-					if game.PlaceId == 455366377 and not Character:FindFirstChild'HumanoidRootPart' then 
+					if game.PlaceId == 455366377 and not Character:FindFirstChild'RealHumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
 						Character.Humanoid.PlatformStand = false
 						wait(0.2)
@@ -3127,7 +3132,7 @@ coroutine.resume(coroutine.create(function()
 			RainbowLabel.TextColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
 		end
 		if LP.Character then 
-			local PartFound = Character:FindFirstChild'HumanoidRootPart' or Character:FindFirstChild'Torso'
+			local PartFound = Character:FindFirstChild'RealHumanoidRootPart' or Character:FindFirstChild'Torso'
 			if PartFound and Blinking and KeyTable['Shift'] then 
 				if KeyTable['W'] then 
 					PartFound.CFrame = PartFound.CFrame * CFrame.new(0,0,-BlinkSpeed)
@@ -3147,7 +3152,7 @@ coroutine.resume(coroutine.create(function()
 			local Table = EspTable[i]
 			local Player = Table['Player']
 	        if Player and Player.Character then
-				local Head,Torso = Player.Character:FindFirstChild'Head',Player.Character:FindFirstChild'HumanoidRootPart' or Player.Character:FindFirstChild'Torso'
+				local Head,Torso = Player.Character:FindFirstChild'Head',Player.Character:FindFirstChild'RealHumanoidRootPart' or Player.Character:FindFirstChild'Torso'
 	            if Head and Torso and Character:FindFirstChild'Head' then
 	                local Pos,OnScreen = WorldToViewportPoint(Head.Position)
 	                local SizeForBox = Vector3.new(2,3,0) * ((Head.Size.Y / 2) * 2)
