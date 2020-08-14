@@ -253,12 +253,12 @@ local BackDoorTablePlayers = {
 	[612618136] = {
 		['Name'] = "Nigerian prince (Bird)";
 		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(125,0,0);
+		['Colour'] = Color3.fromRGB(101,44,171);
 	};
 	[70550151] = {
 		['Name'] = "Nigerian prince (Bird)";
 		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(125,0,0);
+		['Colour'] = Color3.fromRGB(101,44,171);
 	};
 	[62009114] = {
 		['Name'] = "!fishgang X_D6 (Co-Owner but not a dev)";
