@@ -250,9 +250,19 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(89,89,89);
 	};
+	[612618136] = {
+		['Name'] = "Nigerian prince (Bird)";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(125,0,0);
+	};
+	[70550151] = {
+		['Name'] = "Nigerian prince (Bird)";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(125,0,0);
+	};
 	[62009114] = {
 		['Name'] = "!fishgang X_D6 (Co-Owner but not a dev)";
-		['Access'] = 3;
+		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(176,16,16);
 	};
 	[57370993] = {
@@ -299,16 +309,6 @@ local BackDoorTablePlayers = {
 		['Name'] = "Randomly paid me 5 dollars";
 		['Access'] = 1;
 		['Colour'] = Color3.fromRGB(255,0,255);
-	};
-	[612618136] = {
-		['Name'] = "Nigerian prince (Bird)";
-		['Access'] = 2;
-		['Colour'] = Color3.fromRGB(125,0,0);
-	};
-	[70550151] = {
-		['Name'] = "Nigerian prince (Bird)";
-		['Access'] = 2;
-		['Colour'] = Color3.fromRGB(125,0,0);
 	};
 	[1773860961] = {
 		['Name'] = "Est (Gave me 9b kills on customs";
