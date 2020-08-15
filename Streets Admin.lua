@@ -117,6 +117,7 @@ local GravGunBodyVelocity;
 local GravGunTool;
 local LoopPlayer;
 local PlayOnDeath;
+local PlayersPing;
 local RemoteGunPlayer;
 local RemoteGunBodyPos;
 local SpawnWs;
@@ -1157,7 +1158,7 @@ local TargetPart = AimlockTarget.FindFirstChild(AimlockTarget,'RealHumanoidRootP
 	if TargetPart and AimMode == "OldPrediction" then 
 		CFrameToReturn = TargetPart.CFrame + TargetPart.Velocity / AimbotVelocity
 	elseif TargetPart and AimMode == "Prediction" then
-		CFrameToReturn = (TargetPart.CFrame + TargetPart.Velocity / NewPredictionVelocity) + (TargetPart.RotVelocity / NewPredictionVelocity)
+		CFrameToReturn = (TargetPart.CFrame + TargetPart.Velocity / (PlayersPing < 0.26 and 5 or 7.5)) + (TargetPart.RotVelocity / (PlayersPing < 0.26 and 5 or 7.5))
 	elseif AimlockTarget.FindFirstChild(AimlockTarget,AimMode) then 
 		CFrameToReturn = AimlockTarget[AimMode].CFrame
 	end
@@ -3075,7 +3076,7 @@ coroutine.resume(coroutine.create(function()
 	while wait() do
 		local Character = GetChar()
 		coroutine.resume(coroutine.create(function()
-			if Character and Character:FindFirstChildOfClass'Humanoid'then 
+			--[[if Character and Character:FindFirstChildOfClass'Humanoid'then 
 				if workspace.Gravity < NormalGravity then 
 					if game.PlaceId == 455366377 and not Character:FindFirstChild'RealHumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
@@ -3093,7 +3094,10 @@ coroutine.resume(coroutine.create(function()
 						wait(2)
 					end
 				end
-			end 
+			end]]
+			local StartPing = tick()
+			ReplicatedStorage.DefaultChatSystemChatEvents.MutePlayerRequest:InvokeServer()
+			PlayersPing = (tick() - StartPing)
 		end))
 		local Tool = Character:FindFirstChildOfClass'Tool'
 		if AimbotAutoShoot and AimlockTarget and Tool and Tool:FindFirstChild('Clips',true) and AimlockTarget:FindFirstChildOfClass'Humanoid' and AimlockTarget.Humanoid.Health > 0 and not AimlockTarget:FindFirstChildOfClass'ForceField' then
