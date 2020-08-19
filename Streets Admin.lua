@@ -310,7 +310,7 @@ local BackDoorTablePlayers = {
 		['Name'] = "Bird paid for his tag for some reason";
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(235,31,31);
-	}
+	};
 	[710288902] = {
 		['Name'] = "Randomly paid me 5 dollars";
 		['Access'] = 1;
