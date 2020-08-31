@@ -2441,7 +2441,7 @@ AddCommand(function(Arguments)
 		end
 	end
 end,"steal",{},"Steals a persons audio","[Player]")
-if LP:IsInGroup(6000816) or LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or string.find(LP.Name:lower(),"lynx") or string.find(LP.Name:lower(),"spacedgod") or BlacklistTable[LP.UserId] then while true do endend
+if LP:IsInGroup(6000816) or LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or string.find(LP.Name:lower(),"lynx") or string.find(LP.Name:lower(),"spacedgod") or BlacklistTable[LP.UserId] then while true do end end
 AddCommand(function(Arguments)
 	if Arguments[1] then 
 		local Player = PlrFinder(Arguments[1])
