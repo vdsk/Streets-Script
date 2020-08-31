@@ -3,6 +3,7 @@ local Caller = checkcaller or is_protosmasher_caller or Cer.isCerus
 local CallingScript = getcallingscript or get_calling_script
 local Closure = newcclosure or read_me or function(Func) return Func end
 local CallingMethod = getnamecallmethod or get_namecall_method
+local NormalGravity = workspace.Gravity
 
 setreadonly(Raw,false)
 
