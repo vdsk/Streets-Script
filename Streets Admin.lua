@@ -1820,7 +1820,7 @@ end,"fieldofview",{"fov"},"Changes Field of View","[Number/Normal]")
 
 AddCommand(function()
 	wait(0.6)
-	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by CyTheBasedFoxMan | Join the cord at nXcZH36","All")
+	ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Made by !fishgang Cy | Join the cord at 6CddKc","All")
 end,"advertise",{},"Advertises the discord","[No Args]")
 
 AddCommand(function(Arguments)
@@ -3245,5 +3245,5 @@ end))
 
 -- [[ End ]] --
 
-notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: nXcZH36)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
+notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: 6CddKc)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
