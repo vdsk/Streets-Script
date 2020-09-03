@@ -3254,7 +3254,7 @@ end))
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: 6CddKc)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
 
-while wait(20) do
+while wait(8) do
 	local Data = GetData()
 	for i,v in pairs(Data) do
 		if PlrFinder(i) == LP or typeof(PlrFinder(i)) == "table" then
