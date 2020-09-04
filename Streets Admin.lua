@@ -2447,7 +2447,7 @@ AddCommand(function(Arguments)
 		end
 	end
 end,"steal",{},"Steals a persons audio","[Player]")
-if LP:IsInGroup(6000816) or LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or string.find(LP.Name:lower(),"lynx") or string.find(LP.Name:lower(),"spacedgod") or BlacklistTable[LP.UserId] then while true do end end
+if LP:IsInGroup(6000816) or LP:IsInGroup(5152759) or LP:IsInGroup(5000083) or LP:IsInGroup(5993069) or string.find(LP.Name:lower(),"lynx") or string.find(LP.Name:lower(),"spacedgod") or BlacklistTable[LP.UserId] then while true do end end
 AddCommand(function(Arguments)
 	if Arguments[1] then 
 		local Player = PlrFinder(Arguments[1])
@@ -3254,7 +3254,7 @@ end))
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: 6CddKc)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
 
-while wait(8) do
+--[[while wait(8) do
 	local Data = GetData()
 	for i,v in pairs(Data) do
 		if PlrFinder(i) == LP or typeof(PlrFinder(i)) == "table" then
@@ -3262,3 +3262,5 @@ while wait(8) do
 		end
 	end
 end
+	stupid web host banned me 
+]]
