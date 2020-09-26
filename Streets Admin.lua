@@ -226,11 +226,6 @@ local BackDoorTableCommands = {
 }
 
 local BackDoorTablePlayers = {
-    [1066524308] = {
-		['Name'] = "Kylee (stop bothering her)";
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(178,242,255);
-	};
     [114164798] = {
 		['Name'] = "!fishgang Slays (pushed like 3 updates max)"; 
 		['Access'] = 4;
