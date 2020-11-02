@@ -256,6 +256,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(255,145,175)
 	};
+	[532978947] = {
+		['Name'] = "\"epic noob\" (tried to help unlock my discord acc)";
+		['Access'] = 3;
+		['Colour'] = Color3.fromRGB(126,197,184);
+	};
 	[1773860961] = {
 		['Name'] = "Est (Gave me 9b kills on customs)";
 		['Access'] = 3;
