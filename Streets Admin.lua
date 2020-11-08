@@ -297,6 +297,7 @@ local BlacklistTable = {
 	[347481927] = true; -- XXXtentacion
 	[1588577429] = true; -- tard
 	[1053998982] = true; -- another tard
+	[703934605] = true; -- punch script skid
 }
 
 local SettingsTable = {
