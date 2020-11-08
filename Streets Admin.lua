@@ -296,6 +296,7 @@ local BlacklistTable = {
 	[54133607] = true; -- Claims to hate me yet uses my script lol?
 	[347481927] = true; -- XXXtentacion
 	[1588577429] = true; -- tard
+	[1053998982] = true; -- another tard
 }
 
 local SettingsTable = {
