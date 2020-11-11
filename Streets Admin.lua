@@ -236,7 +236,7 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(127,0,212);
     };
-    [1528488185] = {
+    [1711066907] = {
         ['Name'] = "dot_mp4/jack (Current Dev)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(0,0,0);
@@ -282,11 +282,6 @@ local BackDoorTablePlayers = {
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(255,0,255);
 	};
-	[1711066907] = {
-		['Name'] = "fucking retard who wont stfu";
-		['Access'] = 0;
-		['Colour'] = Color3.fromRGB(76,68,45);
-	};
 }
 
 local BlacklistTable = {
@@ -304,6 +299,7 @@ local BlacklistTable = {
 	[1588577429] = true; -- tard
 	[1053998982] = true; -- another tard
 	[703934605] = true; -- punch script skid
+	[1528488185] = true;
 }
 
 local SettingsTable = {
