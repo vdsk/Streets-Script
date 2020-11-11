@@ -281,6 +281,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(235,31,31);
 	};
+	[710288902] = {
+		['Name'] = "Ryson (Donator)";
+		['Access'] = 2;
+		['Colour'] = Color3.fromRGB(255,0,255);
+	};
 }
 
 local BlacklistTable = {
@@ -298,7 +303,6 @@ local BlacklistTable = {
 	[1588577429] = true; -- tard
 	[1053998982] = true; -- another tard
 	[703934605] = true; -- punch script skid
-	[210593348] = true; -- whore
 }
 
 local SettingsTable = {
@@ -1696,7 +1700,7 @@ Mouse.Button1Down:Connect(function()
 			if Tool:IsA'Tool' and Tool:FindFirstChild('Clips',true) then 
 				Tool.Parent = GetChar()
 				OldTool = Tool
-				LP.Backpack.Input:FireServer("m1",{
+				LP.Backpack.Input:FireServer("ml",{
 					['mousehit'] = Aimlock and AimlockTarget and AimbotToCFrame() or Mouse.Hit;
 					['shift'] = UserInput:IsKeyDown(Enum.KeyCode.LeftShift);
 					['velo'] = 0;
@@ -3107,7 +3111,7 @@ coroutine.resume(coroutine.create(function()
 			if not BehindAWall(AimlockTarget) and HasItem(Players:GetPlayerFromCharacter(AimlockTarget),"Bone") ~= "Yes" then
 				if AimlockTarget:FindFirstChild'Head' and Character:FindFirstChild'Head' and (AimlockTarget.Head.Position - Character.Head.Position).magnitude <= EstimatedGunRanges[Tool.Name] then 
 					if game.PlaceId == 455366377 then
-						LP.Backpack.Input:FireServer("m1",{
+						LP.Backpack.Input:FireServer("ml",{
 							['mousehit'] = AimbotToCFrame();
 							['shift'] = UserInput:IsKeyDown(Enum.KeyCode.LeftShift);
 							['velo'] = Character.Head.Velocity.magnitude;
