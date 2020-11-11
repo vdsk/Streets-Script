@@ -236,7 +236,7 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(127,0,212);
     };
-    [1711066907] = {
+    [1528488185] = {
         ['Name'] = "dot_mp4/jack (Current Dev)";
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(0,0,0);
@@ -270,11 +270,7 @@ local BackDoorTablePlayers = {
 		['Name'] = "Est (Gave me 9b kills on customs)";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,0,0);
-    };
-    [1528488185] = {
-		['Name'] = "Basically a Gmod Dark RP admin (Paid)";
-		['Access'] = 2;
-		['Colour'] = Color3.fromRGB(235,31,31);
+
 	};
 	[1615606414] = {
 		['Name'] = "Bird paid for his tag for some reason";
@@ -286,7 +282,7 @@ local BackDoorTablePlayers = {
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(255,0,255);
 	};
-	[567153118] = {
+	[1711066907] = {
 		['Name'] = "fucking retard who wont stfu";
 		['Access'] = 0;
 		['Colour'] = Color3.fromRGB(76,68,45);
