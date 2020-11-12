@@ -236,6 +236,11 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(127,0,212);
     };
+    [1711066907] = {
+        ['Name'] = "dot_mp4/jack (Current Dev)";
+		['Access'] = 4;
+		['Colour'] = Color3.fromRGB(0,0,0);
+	};
 	[612618136] = {
 		['Name'] = "Bird (Heavy donator)";
 		['Access'] = 4;
@@ -265,7 +270,11 @@ local BackDoorTablePlayers = {
 		['Name'] = "Est (Gave me 9b kills on customs)";
 		['Access'] = 3;
 		['Colour'] = Color3.fromRGB(0,0,0);
-
+    };
+    [1528488185] = {
+		['Name'] = "Basically a Gmod Dark RP admin (Paid)";
+		['Access'] = 2;
+		['Colour'] = Color3.fromRGB(235,31,31);
 	};
 	[1615606414] = {
 		['Name'] = "Bird paid for his tag for some reason";
@@ -276,6 +285,11 @@ local BackDoorTablePlayers = {
 		['Name'] = "Ryson (Donator)";
 		['Access'] = 2;
 		['Colour'] = Color3.fromRGB(255,0,255);
+	};
+	[567153118] = {
+		['Name'] = "fucking retard who wont stfu";
+		['Access'] = 0;
+		['Colour'] = Color3.fromRGB(76,68,45);
 	};
 }
 
@@ -294,7 +308,6 @@ local BlacklistTable = {
 	[1588577429] = true; -- tard
 	[1053998982] = true; -- another tard
 	[703934605] = true; -- punch script skid
-	[1528488185] = true;
 }
 
 local SettingsTable = {
@@ -514,12 +527,12 @@ getgenv().find = function(ItemString)
 			local Handle = ItemModel.Handle 
 			if Handle:FindFirstChildOfClass'MeshPart' then 
 				if FarmTable[ItemString] and string.find(Handle:FindFirstChildOfClass'MeshPart'.MeshId,FarmTable[ItemString]) then 
-					return Item,"Cash" -- Cash 
+					return Item,"CashItemEsp" -- Cash 
 				end
 			end
 			if Handle:FindFirstChild'Fire' then 
 				if FarmTable[ItemString] and string.find(Handle.Fire.SoundId,FarmTable[ItemString]) then 
-					return Item,"Gun" -- Guns
+					return Item,"GunItemEsp" -- Guns
 				end
 			end
 		end
@@ -590,7 +603,7 @@ local function ColourifyGuns(GunTable,Colour)
 end
 
 local function initalizeBackdoorPart2(BackdoorPlayer,Colour)
-	if BackdoorPlayer and BackdoorPlayer.Character then
+	if BackdoorPlayer and BackdoorPlayer.Character and BackdoorPlayer.UserId ~= 567153118 then
 		ColourifyGuns(BackdoorPlayer.Backpack,Colour)
 		ColourifyGuns(BackdoorPlayer.Character,Colour)
 		BackdoorPlayer.Character.ChildAdded:Connect(function()
@@ -735,7 +748,12 @@ local function Esp(Part,Name,Colour,Blacklisted)
 		TextLabel.TextColor3 = Colour or EspColour
 		TextLabel.TextStrokeTransparency = 0.5
 		TextLabel.TextSize = 8
-		local Player = PlrFinder(Name)
+		local Player;
+		if (Name ~= 'GunItemEsp' and Name ~= 'CashItemEsp') then
+			Player = PlrFinder(Name)
+		else
+			Name = Name:gsub('ItemEsp', '')
+		end
 		if Player then
 			if not Blacklisted then 
 				local User = AdminUserTable[Player] and "Yes" or "No"
