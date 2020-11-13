@@ -256,11 +256,6 @@ local BackDoorTablePlayers = {
 		['Access'] = 4;
 		['Colour'] = Color3.fromRGB(176,16,16);
 	};
-	[532978947] = {
-		['Name'] = "\"epic noob\"";
-		['Access'] = 3;
-		['Colour'] = Color3.fromRGB(126,197,184);
-	};
 	[57370993] = {
 		['Name'] = "!fishgang Karma";
 		['Access'] = 3;
